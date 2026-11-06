@@ -1,19 +1,6 @@
 import React from 'react';
-import { 
-  Globe, 
-  Rss, 
-  ExternalLink,
-  Heart,
-  ShieldCheck
-} from 'lucide-react';
-import { 
-  InstagramIcon, 
-  TelegramIcon, 
-  MailIcon, 
-  GithubIcon,
-  Verify1Icon,
-  BloggerBIcon
-} from './BloggerIcons';
+import { Rss, Plus } from 'lucide-react';
+import { BloggerBIcon } from './BloggerIcons';
 
 interface BloggerFooterProps {
   onOpenPrivacy?: () => void;
@@ -23,293 +10,230 @@ export const BloggerFooter: React.FC<BloggerFooterProps> = ({
   onOpenPrivacy
 }) => {
   return (
-    <footer className="w-full bg-[#18181b] border-t border-[#27272a] mt-14 pt-10 pb-20 md:pb-10 select-none text-xs text-[#a1a1aa]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+    <footer className="w-full bg-[#18181b] border-t border-[#252526] mt-16 pt-12 pb-16 select-none text-xs text-[#989b9f]">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* 4 Kolonlu Grid (.fotN) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 pb-8">
+        {/* Blogger Plus UI 1:1 Footer (.abtU & LinkList21..24) */}
+        <div className="flex flex-col lg:flex-row items-start justify-between gap-10 lg:gap-12">
           
-          {/* Kolon 1: Logo & Marka & Takip Et & Sosyal Medya (Image21 & LinkList21) */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <img
-                src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjuF5-IgFBevlNcBbXMSdl7Egn34HcWcPccvcujWL1XU0r_22ZPQIFUySo7l_YmmIwpzmkppKZUPJVAl0ipZ-HHB4LyzCQgq39Ii7PPcvvcTbBWkPa2Z2_fYvD57BQrq9yNckevGtzc79XFgbfi9QZQ9wKVIJfVA1R3cmj98A4Ce9jxeDU4R4lvggThYP4/s150/minimize%20nsw.png"
-                alt="NEGRONN SHOW"
-                className="w-10 h-10 rounded-xl object-contain bg-[#252526] p-1 border border-[#383838] shadow-sm"
-              />
-              <div>
-                <h3 className="text-white font-bold text-sm tracking-wide flex items-center gap-1.5">
-                  <span>NEGRONN</span>
-                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#38bdf8]/20 text-[#38bdf8] font-mono">
-                    SHOW
-                  </span>
-                </h3>
-                <p className="text-[11px] text-[#71717a]">ALİ YILDIZ Linkwarden</p>
+          {/* Sol Kısım: + İkonu ve Yazar / Marka Kartı (.abtU) */}
+          <div className="flex items-start gap-4 sm:gap-6 shrink-0">
+            {/* En Sol + İkonu */}
+            <div className="pt-2 text-[#71717a] hover:text-white transition-colors cursor-pointer select-none">
+              <Plus className="w-4 h-4" />
+            </div>
+
+            <div className="space-y-4">
+              {/* Profil & Başlık */}
+              <div className="flex items-center gap-3.5">
+                <img
+                  src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjuF5-IgFBevlNcBbXMSdl7Egn34HcWcPccvcujWL1XU0r_22ZPQIFUySo7l_YmmIwpzmkppKZUPJVAl0ipZ-HHB4LyzCQgq39Ii7PPcvvcTbBWkPa2Z2_fYvD57BQrq9yNckevGtzc79XFgbfi9QZQ9wKVIJfVA1R3cmj98A4Ce9jxeDU4R4lvggThYP4/s150/minimize%20nsw.png"
+                  alt="NSW Logo"
+                  className="w-12 h-12 rounded-xl object-cover shadow-md"
+                />
+                <div className="space-y-1">
+                  <h3 className="text-white font-bold text-base tracking-wider uppercase leading-none">
+                    NEGRONN
+                  </h3>
+                  <a
+                    href="https://www.blogger.com/followers/follow/1915278968279215939?hl=tr"
+                    target="_blank"
+                    rel="nofollow noreferrer noopener"
+                    className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-black/60 hover:bg-black/80 border border-white/10 text-white text-[11px] font-semibold tracking-wider transition-colors shadow-sm"
+                    title="Blogger Takip Et: SHOW"
+                  >
+                    <BloggerBIcon className="w-3 h-3 text-white fill-current" />
+                    <span>SHOW</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Sosyal Alt Bağlantılar: Youtube / Whatsapp / Haritalar */}
+              <div className="flex items-center gap-2 text-xs text-[#989b9f]">
+                <a
+                  href="https://www.youtube.com/@ngronn/post"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors"
+                >
+                  Youtube
+                </a>
+                <span className="text-[#52525b]">/</span>
+                <a
+                  href="https://www.wa.me/+905446412904"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors"
+                >
+                  Whatsapp
+                </a>
+                <span className="text-[#52525b]">/</span>
+                <a
+                  href="https://asgardia.space/en/social/users/1166609"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors"
+                >
+                  Haritalar
+                </a>
+              </div>
+
+              {/* RSS Feed Bağlantısı */}
+              <div className="pt-1">
+                <a
+                  href="https://negronshow.blogspot.com/feeds/posts/default?alt=rss"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs text-[#989b9f] hover:text-[#60cdff] transition-colors"
+                  title="Feed"
+                >
+                  <Rss className="w-3.5 h-3.5" />
+                  <span>Feed</span>
+                </a>
               </div>
             </div>
-
-            <p className="text-[11px] text-[#9ca3af] leading-relaxed">
-              Local-First mimarisiyle 352 bağlantı, 14 koleksiyon ve 26 etiket tek dosya olarak çevrimdışı yanınızda.
-            </p>
-
-            {/* Blogger Takip Et Butonu (.abtFollowBtn) */}
-            <div>
-              <a
-                href="https://www.blogger.com/followers/follow/1915278968279215939?hl=tr"
-                target="_blank"
-                rel="nofollow noreferrer noopener"
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#ff5722]/15 hover:bg-[#ff5722] text-[#ff5722] hover:text-white border border-[#ff5722]/30 text-xs font-semibold transition-all duration-200 active:scale-95 shadow-sm"
-              >
-                <BloggerBIcon className="w-3.5 h-3.5 fill-current" />
-                <span>Blogger Takip Et</span>
-              </a>
-            </div>
-
-            {/* Sosyal Medya İkonları (.sL) */}
-            <div className="flex items-center gap-2 pt-1 text-[#a1a1aa]">
-              <a
-                href="https://www.youtube.com/@ngronn/post"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-7 h-7 rounded-lg bg-[#252526] hover:bg-[#ff0000] hover:text-white flex items-center justify-center border border-[#333333] transition-colors"
-                title="YouTube"
-              >
-                <span className="font-bold text-[10px]">YT</span>
-              </a>
-              <a
-                href="https://www.wa.me/+905446412904"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-7 h-7 rounded-lg bg-[#252526] hover:bg-[#25d366] hover:text-white flex items-center justify-center border border-[#333333] transition-colors"
-                title="WhatsApp"
-              >
-                <span className="font-bold text-[10px]">WA</span>
-              </a>
-              <a
-                href="https://t.me/aleyyulala"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-7 h-7 rounded-lg bg-[#252526] hover:bg-[#229ed9] hover:text-white flex items-center justify-center border border-[#333333] transition-colors"
-                title="Telegram"
-              >
-                <TelegramIcon className="w-3.5 h-3.5" />
-              </a>
-              <a
-                href="https://www.instagram.com/aleyul.ala/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-7 h-7 rounded-lg bg-[#252526] hover:bg-[#e1306c] hover:text-white flex items-center justify-center border border-[#333333] transition-colors"
-                title="Instagram"
-              >
-                <InstagramIcon className="w-3.5 h-3.5" />
-              </a>
-              <a
-                href="https://github.com/Aleyulala/x"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-7 h-7 rounded-lg bg-[#252526] hover:bg-white hover:text-black flex items-center justify-center border border-[#333333] transition-colors"
-                title="GitHub Repo"
-              >
-                <GithubIcon className="w-3.5 h-3.5" />
-              </a>
-              <a
-                href="mailto:mrstar14155@gmail.com"
-                className="w-7 h-7 rounded-lg bg-[#252526] hover:bg-[#ea4335] hover:text-white flex items-center justify-center border border-[#333333] transition-colors"
-                title="E-posta"
-              >
-                <MailIcon className="w-3.5 h-3.5" />
-              </a>
-            </div>
           </div>
 
-          {/* Kolon 2: Destek & İletişim */}
-          <div className="space-y-3">
-            <h4 className="text-white font-bold uppercase tracking-wider text-xs border-b border-[#27272a] pb-2">
-              Destek
-            </h4>
-            <ul className="space-y-2 text-[#9ca3af]">
-              <li>
-                <a 
-                  href="https://github.com/Aleyulala/saved/discussions/?pli=1" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="hover:text-[#38bdf8] transition-colors flex items-center gap-1.5"
-                >
-                  <span>Geri Bildirim</span>
-                  <ExternalLink className="w-2.5 h-2.5 opacity-50" />
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="https://notebooklm.google.com/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="hover:text-[#38bdf8] transition-colors flex items-center gap-1.5"
-                >
-                  <span>Notlarınız (NotebookLM)</span>
-                  <ExternalLink className="w-2.5 h-2.5 opacity-50" />
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="https://docs.google.com/forms/u/0/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="hover:text-[#38bdf8] transition-colors flex items-center gap-1.5"
-                >
-                  <span>Forum & İletişim</span>
-                  <ExternalLink className="w-2.5 h-2.5 opacity-50" />
-                </a>
-              </li>
-              <li>
-                {onOpenPrivacy ? (
-                  <button
-                    type="button"
-                    onClick={onOpenPrivacy}
-                    className="hover:text-[#38bdf8] transition-colors flex items-center gap-1.5 cursor-pointer text-left"
-                  >
-                    <span>Politikalar & Gizlilik</span>
-                  </button>
-                ) : (
-                  <a 
-                    href="https://aleyulala.github.io/saved/privacy.html" 
-                    target="_blank" 
+          {/* Sağ Kısım: 3 Kolonlu Blogger Menüsü (Forum, Servis, Ödeme) */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 sm:gap-14 lg:gap-16 text-xs">
+            
+            {/* Kolon 1: Forum */}
+            <div className="space-y-3">
+              <h4 className="text-white font-bold text-sm tracking-wide">
+                Forum
+              </h4>
+              <ul className="space-y-2 text-[#9ca3af]">
+                <li>
+                  {onOpenPrivacy ? (
+                    <button
+                      type="button"
+                      onClick={onOpenPrivacy}
+                      className="hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer text-left"
+                    >
+                      <span className="text-[#71717a]">–</span>
+                      <span>Hakkında</span>
+                    </button>
+                  ) : (
+                    <a
+                      href="https://negronshow.blogspot.com/p/hakknda.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-white transition-colors flex items-center gap-1.5"
+                    >
+                      <span className="text-[#71717a]">–</span>
+                      <span>Hakkında</span>
+                    </a>
+                  )}
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/Aleyulala/saved/discussions/?pli=1"
+                    target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-[#38bdf8] transition-colors flex items-center gap-1.5"
+                    className="hover:text-white transition-colors flex items-center gap-1.5"
                   >
-                    <span>Politikalar & Gizlilik</span>
-                    <ExternalLink className="w-2.5 h-2.5 opacity-50" />
+                    <span className="text-[#71717a]">–</span>
+                    <span>İstekler</span>
                   </a>
-                )}
-              </li>
-            </ul>
-          </div>
+                </li>
+                <li>
+                  <a
+                    href="https://matrix.to/#/#negronn-show:matrix.org"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-white transition-colors flex items-center gap-1.5"
+                  >
+                    <span className="text-[#71717a]">–</span>
+                    <span>Topluluk</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
 
-          {/* Kolon 3: Servis */}
-          <div className="space-y-3">
-            <h4 className="text-white font-bold uppercase tracking-wider text-xs border-b border-[#27272a] pb-2">
-              Servis
-            </h4>
-            <ul className="space-y-2 text-[#9ca3af]">
-              <li>
-                <a 
-                  href="https://aleyulala.github.io/saved/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="hover:text-[#38bdf8] transition-colors flex items-center gap-1.5"
-                >
-                  <span>Bağlantılar</span>
-                  <ExternalLink className="w-2.5 h-2.5 opacity-50" />
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="https://github.com/Aleyulala/saved" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="hover:text-[#38bdf8] transition-colors flex items-center gap-1.5"
-                >
-                  <span>GitHub Deposu</span>
-                  <ExternalLink className="w-2.5 h-2.5 opacity-50" />
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="https://asgardia.space/en/social/users/1166609" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="hover:text-[#38bdf8] transition-colors flex items-center gap-1.5"
-                >
-                  <span>Asgardia Portal</span>
-                  <ExternalLink className="w-2.5 h-2.5 opacity-50" />
-                </a>
-              </li>
-              <li>
-                <span className="text-[#64748b]">
-                  IndexedDB Local-First Engine
-                </span>
-              </li>
-            </ul>
-          </div>
+            {/* Kolon 2: Servis */}
+            <div className="space-y-3">
+              <h4 className="text-white font-bold text-sm tracking-wide">
+                Servis
+              </h4>
+              <ul className="space-y-2 text-[#9ca3af]">
+                <li>
+                  <a
+                    href="https://negronshow.blogspot.com/p/muhabbet.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-white transition-colors flex items-center gap-1.5"
+                  >
+                    <span className="text-[#71717a]">–</span>
+                    <span>Öneriler</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://negronshow.blogspot.com/search"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-white transition-colors flex items-center gap-1.5"
+                  >
+                    <span className="text-[#71717a]">–</span>
+                    <span>İçerikler</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://classroom.google.com/c/ODg5NDgxOTk3NTUx?cjc=3jmlj4w2"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-white transition-colors flex items-center gap-1.5"
+                  >
+                    <span className="text-[#71717a]">–</span>
+                    <span>Döküman</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
 
-          {/* Kolon 4: Ödeme (LinkList24) */}
-          <div className="space-y-3">
-            <h4 className="text-white font-bold uppercase tracking-wider text-xs border-b border-[#27272a] pb-2">
-              Ödeme & İletişim
-            </h4>
-            <ul className="space-y-2 text-[#9ca3af]">
-              <li>
-                <a 
-                  href="https://aleyulala.blogspot.com/p/odeme.html" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="hover:text-[#38bdf8] transition-colors flex items-center gap-1.5"
-                >
-                  <span>Bağışlar & Destek</span>
-                  <ExternalLink className="w-2.5 h-2.5 opacity-50" />
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="https://www.linkedin.com/in/ali-yildiz-5531a5285/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="hover:text-[#38bdf8] transition-colors flex items-center gap-1.5"
-                >
-                  <span>LinkedIn Profili</span>
-                  <ExternalLink className="w-2.5 h-2.5 opacity-50" />
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="https://minepi.com/?u=Aleyyulala" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="hover:text-[#38bdf8] transition-colors flex items-center gap-1.5"
-                >
-                  <span>Pi Network Cüzdan</span>
-                  <ExternalLink className="w-2.5 h-2.5 opacity-50" />
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="mailto:mrstar14155@gmail.com" 
-                  className="hover:text-[#38bdf8] transition-colors"
-                >
-                  mrstar14155@gmail.com
-                </a>
-              </li>
-            </ul>
-          </div>
+            {/* Kolon 3: Ödeme */}
+            <div className="space-y-3">
+              <h4 className="text-white font-bold text-sm tracking-wide">
+                Ödeme
+              </h4>
+              <ul className="space-y-2 text-[#9ca3af]">
+                <li>
+                  <a
+                    href="https://negronshow.blogspot.com/p/odeme.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-white transition-colors flex items-center gap-1.5"
+                  >
+                    <span className="text-[#71717a]">–</span>
+                    <span>Bağışlar</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.linkedin.com/in/ali-yildiz-5531a5285/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-white transition-colors flex items-center gap-1.5"
+                  >
+                    <span className="text-[#71717a]">–</span>
+                    <span>LinkedIn</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://minepi.com/?u=Aleyyulala"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-white transition-colors flex items-center gap-1.5"
+                  >
+                    <span className="text-[#71717a]">–</span>
+                    <span>Cüzdan</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
 
-        </div>
-
-        {/* Alt Telif & Geliştirici Barı (.cdtN / .fotCd) */}
-        <div className="border-t border-[#27272a] pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-[#71717a]">
-          
-          {/* Telif Hakkı & Doğrulanmış Rozet */}
-          <div className="flex items-center gap-1.5">
-            <span>© 2026 ·</span>
-            <span className="text-white font-semibold flex items-center gap-1">
-              <span>ALİ YILDIZ</span>
-              <Verify1Icon className="w-3.5 h-3.5 text-[#38bdf8]" />
-            </span>
-            <span>· All rights reserved.</span>
-          </div>
-
-          {/* Geliştirici & GitHub */}
-          <div className="flex items-center gap-4">
-            <span>
-              Developed by{' '}
-              <a 
-                href="https://github.com/Aleyulala/saved" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-[#38bdf8] hover:underline font-medium"
-              >
-                NEGRONN
-              </a>
-            </span>
           </div>
 
         </div>
