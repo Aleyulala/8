@@ -10,7 +10,10 @@ import {
   ExternalLink, 
   FileText, 
   CheckCircle2,
-  AlertTriangle
+  AlertTriangle,
+  Bookmark,
+  Copy,
+  Check
 } from 'lucide-react';
 import { initializeDatabase, resetDatabase } from '../db';
 
@@ -41,6 +44,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   const [confirmReset, setConfirmReset] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [copiedBookmarklet, setCopiedBookmarklet] = useState(false);
+
+  const bookmarkletCode = `javascript:(function(){var u=encodeURIComponent(window.location.href);var t=encodeURIComponent(document.title);window.open('https://aleyulala.github.io/x/?url='+u+'&title='+t,'_blank');})();`;
+
+  const handleCopyBookmarklet = () => {
+    navigator.clipboard.writeText(bookmarkletCode);
+    setCopiedBookmarklet(true);
+    setTimeout(() => setCopiedBookmarklet(false), 2000);
+  };
 
   if (!isOpen) return null;
 
@@ -187,6 +199,37 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.`}
               </div>
             )}
+          </div>
+
+          {/* Hızlı Kaydetme Yer İmi (Bookmarklet) */}
+          <div className="p-4 rounded-xl bg-purple-50/50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-900/50 space-y-2">
+            <div className="text-xs font-bold uppercase tracking-wider text-purple-700 dark:text-purple-300 flex items-center gap-1.5">
+              <Bookmark className="w-4 h-4" />
+              Tek Tıkla Kaydet (Tarayıcı Yer İmi / Bookmarklet)
+            </div>
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+              İnternette gezinirken herhangi bir makaleyi veya web sitesini anında Saved'a kaydetmek için aşağıdaki butonu tarayıcınızın yer imleri çubuğuna sürükleyip bırakın:
+            </p>
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              <a
+                href={bookmarkletCode}
+                onClick={(e) => e.preventDefault()}
+                draggable
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold shadow-xs cursor-grab active:cursor-grabbing transition-transform hover:scale-105"
+                title="Bu butonu tarayıcınızın Yer İmleri (Bookmarks) çubuğuna sürükleyin"
+              >
+                <span>📌 Saved'a Kaydet</span>
+              </a>
+
+              <button
+                type="button"
+                onClick={handleCopyBookmarklet}
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-purple-200 dark:border-purple-800 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-purple-50 dark:hover:bg-purple-950/50 transition-colors"
+              >
+                {copiedBookmarklet ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                <span>{copiedBookmarklet ? 'Kod Kopyalandı' : 'Kodu Kopyala'}</span>
+              </button>
+            </div>
           </div>
 
           {/* GitHub Pages Dağıtım Bilgisi */}

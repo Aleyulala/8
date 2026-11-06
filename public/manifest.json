@@ -1,0 +1,17 @@
+{
+  "name": "Saved - Yerel Bağlantı Yöneticisi",
+  "short_name": "Saved",
+  "description": "Giriş gerektirmeyen, IndexedDB tabanlı, GitHub Pages uyumlu açık kaynaklı bağlantı yöneticisi.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'><path d='M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z'/></svg>",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

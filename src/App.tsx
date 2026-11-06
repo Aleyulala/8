@@ -57,9 +57,31 @@ export const App: React.FC = () => {
   const [isImportExportOpen, setIsImportExportOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-  // Initialize DB on start
+  // Initialize DB on start & check URL query params (e.g. from Bookmarklet)
   useEffect(() => {
     initializeDatabase();
+
+    const params = new URLSearchParams(window.location.search);
+    const addUrl = params.get('add_url') || params.get('url');
+    if (addUrl) {
+      const addTitle = params.get('add_title') || params.get('title') || '';
+      const addDesc = params.get('add_desc') || params.get('desc') || '';
+      setEditingLink({
+        url: addUrl,
+        title: addTitle,
+        description: addDesc,
+        collectionId: null,
+        tags: [],
+        isPinned: false,
+        isArchived: false,
+        isRead: false,
+        isTrash: false,
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      });
+      setIsAddModalOpen(true);
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
   }, []);
 
   // Update storage stats
