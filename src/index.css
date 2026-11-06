@@ -190,3 +190,208 @@ body { top: 0 !important; }
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* ==========================================================================
+   Blogger XML 1:1 Universal Media Lightbox (#fsMediaModal)
+   ========================================================================== */
+#fsMediaModal {
+  position: fixed !important;
+  top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+  width: 100vw !important; height: 100vh !important;
+  background: rgba(0, 0, 0, 0.92) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  backdrop-filter: blur(14px) !important;
+  z-index: 1000000 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease !important;
+}
+#fsMediaModal.fsShow {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+#fsMediaModal .fsClose {
+  position: fixed !important;
+  top: 20px !important; right: 24px !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: #fff !important;
+  border: none !important;
+  width: 44px !important; height: 44px !important;
+  border-radius: 50% !important;
+  font-size: 26px !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 1000005 !important;
+  transition: background 0.2s, transform 0.2s !important;
+}
+#fsMediaModal .fsClose:hover {
+  background: rgba(255, 255, 255, 0.38) !important;
+  transform: scale(1.1) !important;
+}
+#fsMediaModal .fsNavBtn {
+  position: fixed !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.22) !important;
+  color: #ffffff !important;
+  border: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  z-index: 1000005 !important;
+  font-size: 26px !important;
+  line-height: 1 !important;
+  transition: background 0.2s, transform 0.2s !important;
+  user-select: none !important;
+}
+#fsMediaModal .fsNavBtn:hover {
+  background: rgba(255, 255, 255, 0.45) !important;
+  transform: translateY(-50%) scale(1.12) !important;
+}
+#fsMediaModal .fsNavBtn.fsPrev { left: 24px !important; }
+#fsMediaModal .fsNavBtn.fsNext { right: 24px !important; }
+#fsMediaModal .fsCounter {
+  position: fixed !important;
+  bottom: 24px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  background: rgba(0, 0, 0, 0.72) !important;
+  color: #ffffff !important;
+  padding: 6px 18px !important;
+  border-radius: 20px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  letter-spacing: .5px !important;
+  z-index: 1000005 !important;
+  border: none !important;
+  pointer-events: none !important;
+}
+#fsMediaModal .fsModalContent {
+  width: 90vw !important;
+  max-width: 980px !important;
+  max-height: 88vh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+}
+#fsMediaModal .fsVideoWrapper {
+  position: relative !important;
+  width: 100% !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  background: #000 !important;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
+}
+#fsMediaModal .fsVideoWrapper.is-standard {
+  padding-top: 56.25% !important;
+  max-width: 960px !important;
+  border-radius: 8px !important;
+}
+#fsMediaModal .fsVideoWrapper.is-shorts {
+  padding-top: 0 !important;
+  width: min(85vh * 9 / 16, 405px) !important;
+  height: min(85vh, 720px) !important;
+  max-height: 85vh !important;
+  aspect-ratio: 9/16 !important;
+  margin: 0 auto !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+#fsMediaModal .fsVideoWrapper.is-widescreen {
+  width: min(94vw, 1200px) !important;
+  max-width: 94vw !important;
+  height: min(82vh, 675px) !important;
+  max-height: 82vh !important;
+  aspect-ratio: 16/9 !important;
+  padding-top: 0 !important;
+  margin: 0 auto !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  background: #000000 !important;
+}
+#fsMediaModal .fsVideoWrapper iframe,
+#fsMediaModal .fsVideoWrapper video {
+  position: absolute !important;
+  top: 0 !important; left: 0 !important;
+  width: 100% !important; height: 100% !important;
+  border: 0 !important;
+}
+#fsMediaModal .fsWideBtn,
+#fsMediaModal .fsZoomBtn {
+  position: fixed !important;
+  top: 20px !important;
+  right: 76px !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: none !important;
+  color: #ffffff !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  z-index: 1000000 !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  outline: none !important;
+}
+#fsMediaModal .fsWideBtn:hover,
+#fsMediaModal .fsZoomBtn:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+  transform: scale(1.1) !important;
+  color: #60cdff !important;
+}
+#fsMediaModal .fsWideBtn.active,
+#fsMediaModal .fsZoomBtn.active {
+  background: #60cdff !important;
+  color: #000000 !important;
+}
+#fsMediaModal .fsWideBtn svg,
+#fsMediaModal .fsZoomBtn svg {
+  width: 20px !important;
+  height: 20px !important;
+  stroke: currentColor !important;
+  stroke-width: 2 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  fill: none !important;
+}
+@media screen and (max-width: 640px) {
+  #fsMediaModal .fsWideBtn,
+  #fsMediaModal .fsZoomBtn {
+    top: 14px !important;
+    right: 64px !important;
+    width: 38px !important;
+    height: 38px !important;
+  }
+}
+#fsMediaModal .fsImg {
+  max-width: 90vw !important;
+  max-height: 85vh !important;
+  border-radius: 8px !important;
+  object-fit: contain !important;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
+  cursor: zoom-in !important;
+  transition: transform 0.32s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.32s ease !important;
+  will-change: transform !important;
+  user-select: none !important;
+}
+#fsMediaModal .fsImg.is-zoomed {
+  transform: scale(1.85) !important;
+  cursor: zoom-out !important;
+  box-shadow: 0 25px 80px rgba(0,0,0,0.85) !important;
+  z-index: 10 !important;
+}

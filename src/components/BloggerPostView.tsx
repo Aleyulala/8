@@ -28,6 +28,7 @@ import {
   InstagramIcon, 
   MailIcon 
 } from './BloggerIcons';
+import { MediaItem } from './UniversalMediaModal';
 
 interface BloggerPostViewProps {
   link: LinkItem;
@@ -40,6 +41,7 @@ interface BloggerPostViewProps {
   onToggleArchive: (id: number, current: boolean) => void;
   onMoveToTrash: (id: number) => void;
   onEdit: (link: LinkItem) => void;
+  onOpenMedia?: (items: MediaItem[]) => void;
 }
 
 export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
@@ -52,11 +54,35 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
   onToggleRead,
   onToggleArchive,
   onMoveToTrash,
-  onEdit
+  onEdit,
+  onOpenMedia
 }) => {
   const [copied, setCopied] = useState(false);
   const domain = getDomain(link.url);
   const faviconUrl = getFaviconUrl(link.url);
+
+  const isYoutube = link.url.includes('youtube.com/watch') || link.url.includes('youtu.be') || link.url.includes('youtube.com/shorts');
+  const isShorts = link.url.includes('youtube.com/shorts');
+  const isDirectVideo = /\.(mp4|webm|ogg)$/i.test(link.url);
+  const hasThumbnail = Boolean(link.thumbnail);
+
+  const getYoutubeEmbed = (u: string) => {
+    try {
+      if (u.includes('youtube.com/shorts/')) {
+        const id = u.split('/shorts/')[1]?.split(/[?#&]/)[0];
+        return `https://www.youtube.com/embed/${id}`;
+      }
+      if (u.includes('watch?v=')) {
+        const id = new URL(u).searchParams.get('v');
+        return `https://www.youtube.com/embed/${id}`;
+      }
+      if (u.includes('youtu.be/')) {
+        const id = u.split('youtu.be/')[1]?.split(/[?#&]/)[0];
+        return `https://www.youtube.com/embed/${id}`;
+      }
+    } catch {}
+    return u;
+  };
 
   // Find previous and next links for pagination (.aChp)
   const activeLinks = allLinks.filter(l => !l.isTrash && !l.isArchived);
@@ -258,6 +284,71 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
           </button>
         </div>
       </div>
+
+      {/* 3.1. Blogger Medya Player Vitrini (YouTube, Shorts, Video veya Görsel) */}
+      {(isYoutube || isDirectVideo || hasThumbnail) && (
+        <div className="relative w-full rounded-2xl overflow-hidden bg-[#18181b] border border-transparent shadow-xl">
+          {isYoutube && (
+            <div className={`relative w-full ${isShorts ? 'max-w-xs mx-auto aspect-[9/16]' : 'aspect-video'} bg-black overflow-hidden`}>
+              <iframe
+                src={getYoutubeEmbed(link.url)}
+                title={link.title}
+                className="w-full h-full border-0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          )}
+
+          {isDirectVideo && (
+            <div className="relative w-full aspect-video bg-black overflow-hidden">
+              <video
+                src={link.url}
+                controls
+                className="w-full h-full object-contain"
+              />
+            </div>
+          )}
+
+          {!isYoutube && !isDirectVideo && hasThumbnail && (
+            <div 
+              className="relative w-full aspect-video bg-black overflow-hidden cursor-pointer group/thumb"
+              onClick={() => onOpenMedia && onOpenMedia([{ type: 'image', url: link.thumbnail!, title: link.title }])}
+            >
+              <img
+                src={link.thumbnail}
+                alt={link.title}
+                className="w-full h-full object-contain group-hover/thumb:scale-105 transition-transform duration-300"
+              />
+            </div>
+          )}
+
+          {onOpenMedia && (
+            <div className="p-3 bg-[#252526] flex items-center justify-between text-xs">
+              <span className="text-[#989b9f] font-medium flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#60cdff] animate-pulse" />
+                <span>Blogger Medya Player</span>
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  if (isYoutube) {
+                    onOpenMedia([{ type: isShorts ? 'shorts' : 'youtube', url: link.url, title: link.title }]);
+                  } else if (isDirectVideo) {
+                    onOpenMedia([{ type: 'video', url: link.url, title: link.title }]);
+                  } else if (hasThumbnail) {
+                    onOpenMedia([{ type: 'image', url: link.thumbnail!, title: link.title }]);
+                  }
+                }}
+                className="px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#60cdff] hover:text-white font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+              >
+                <span>Tam Ekranda Aç</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* 4. Gönderi Açıklaması ve Notlar (.post-body) */}
       <div className="rounded-2xl bg-[#252526] border border-transparent p-6 space-y-4 shadow-md">

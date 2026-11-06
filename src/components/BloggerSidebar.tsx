@@ -194,20 +194,22 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                   </button>
                 </li>
 
-                {/* 2. Politikalar (Saved Gizlilik Politikası) */}
+                {/* 2. Politikalar (Saved Gizlilik Politikası & Lisans) */}
                 <li>
-                  <a
-                    href="https://aleyulala.github.io/saved/privacy.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+                  <button
+                    onClick={() => onSelectTab('privacy')}
+                    className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs transition-colors cursor-pointer ${
+                      currentTab === 'privacy'
+                        ? 'bg-[#252526] text-[#38bdf8] font-bold'
+                        : 'text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff]'
+                    }`}
                   >
                     <div className="flex items-center gap-2">
-                      <ShieldCheck className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
+                      <ShieldCheck className="w-3.5 h-3.5 text-[#9ca3af]" />
                       <span>Politikalar</span>
                     </div>
-                    <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
-                  </a>
+                    <span className="text-[10px] text-[#9ca3af] font-mono">Yasal</span>
+                  </button>
                 </li>
 
                 {/* 3. Geri Bildirim (Saved GitHub Discussions) */}

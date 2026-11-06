@@ -21,6 +21,8 @@ import { ImportExportModal } from './components/ImportExportModal';
 import { SettingsModal } from './components/SettingsModal';
 import { BloggerFooter } from './components/BloggerFooter';
 import { BloggerPostView } from './components/BloggerPostView';
+import { BloggerPrivacyView } from './components/BloggerPrivacyView';
+import { UniversalMediaModal, MediaItem } from './components/UniversalMediaModal';
 import { getStorageUsage } from './utils/exportImport';
 import { getDomain } from './utils/favicon';
 import { initTvNavigation } from './utils/tvNavigation';
@@ -35,7 +37,8 @@ type MainViewType =
   | 'collections_list' 
   | 'tags_list' 
   | 'trash'
-  | 'post_detail';
+  | 'post_detail'
+  | 'privacy';
 
 export const App: React.FC = () => {
   // Navigation View State
@@ -43,6 +46,25 @@ export const App: React.FC = () => {
   const [selectedPost, setSelectedPost] = useState<LinkItem | null>(null);
   const [selectedCollectionId, setSelectedCollectionId] = useState<number | null>(null);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+
+  // Universal Media Modal State (#fsMediaModal)
+  const [mediaModal, setMediaModal] = useState<{
+    isOpen: boolean;
+    items: MediaItem[];
+    initialIndex: number;
+  }>({
+    isOpen: false,
+    items: [],
+    initialIndex: 0
+  });
+
+  const handleOpenMedia = (items: MediaItem[], initialIndex = 0) => {
+    setMediaModal({
+      isOpen: true,
+      items,
+      initialIndex
+    });
+  };
 
   // Search, View & Sort States
   const [searchQuery, setSearchQuery] = useState('');
@@ -510,6 +532,20 @@ export const App: React.FC = () => {
                       setEditingLink(link);
                       setIsAddModalOpen(true);
                     }}
+                    onOpenMedia={handleOpenMedia}
+                  />
+                )}
+
+                {activeView === 'privacy' && (
+                  <BloggerPrivacyView
+                    onBack={() => {
+                      setActiveView('dashboard');
+                      document.getElementById('mainScrollContainer')?.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    onGoHome={() => {
+                      setActiveView('dashboard');
+                      document.getElementById('mainScrollContainer')?.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
                   />
                 )}
 
@@ -708,7 +744,7 @@ export const App: React.FC = () => {
             </div>
 
             {/* Blogger Alt Footer Bölümü (.mainF) */}
-            <BloggerFooter />
+            <BloggerFooter onOpenPrivacy={() => setActiveView('privacy')} />
           </div>
         </div>
 
@@ -871,6 +907,14 @@ export const App: React.FC = () => {
           setSelectedPost(link);
           setActiveView('post_detail');
         }}
+      />
+
+      {/* Blogger Universal Medya Lightbox (#fsMediaModal) */}
+      <UniversalMediaModal
+        isOpen={mediaModal.isOpen}
+        onClose={() => setMediaModal(prev => ({ ...prev, isOpen: false }))}
+        items={mediaModal.items}
+        initialIndex={mediaModal.initialIndex}
       />
 
     </div>

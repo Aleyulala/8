@@ -306,19 +306,7 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
           <ArchiveIcon className="w-4 h-4" />
         </button>
 
-        {/* 4. GitHub Depo Bağlantısı */}
-        <a
-          href="https://github.com/Aleyulala/x"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden sm:flex p-2 rounded-lg text-[#989b9f] hover:text-[#60cdff] hover:bg-[#252526] transition-colors"
-          title="GitHub: Aleyulala/x"
-          aria-label="GitHub Deposu"
-        >
-          <GithubIcon className="w-4 h-4" />
-        </a>
-
-        {/* 5. Profil / Ayarlar Butonu (.isPrf - svg.profile-1 & saved pill) */}
+        {/* Profil / Ayarlar Butonu (.isPrf - svg.profile-1 & saved pill) */}
         <button
           onClick={onOpenSettings}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#252526] hover:bg-[#2f2f34] border border-transparent hover:border-[#60cdff]/50 text-[#60cdff] font-mono text-xs font-bold tracking-wider transition-all select-none shadow-sm active:scale-95 cursor-pointer ml-0.5"

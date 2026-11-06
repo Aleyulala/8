@@ -15,7 +15,13 @@ import {
   BloggerBIcon
 } from './BloggerIcons';
 
-export const BloggerFooter: React.FC = () => {
+interface BloggerFooterProps {
+  onOpenPrivacy?: () => void;
+}
+
+export const BloggerFooter: React.FC<BloggerFooterProps> = ({
+  onOpenPrivacy
+}) => {
   return (
     <footer className="w-full bg-[#18181b] border-t border-[#27272a] mt-14 pt-10 pb-20 md:pb-10 select-none text-xs text-[#a1a1aa]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -156,15 +162,25 @@ export const BloggerFooter: React.FC = () => {
                 </a>
               </li>
               <li>
-                <a 
-                  href="https://aleyulala.github.io/saved/privacy.html" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="hover:text-[#38bdf8] transition-colors flex items-center gap-1.5"
-                >
-                  <span>Politikalar & Gizlilik</span>
-                  <ExternalLink className="w-2.5 h-2.5 opacity-50" />
-                </a>
+                {onOpenPrivacy ? (
+                  <button
+                    type="button"
+                    onClick={onOpenPrivacy}
+                    className="hover:text-[#38bdf8] transition-colors flex items-center gap-1.5 cursor-pointer text-left"
+                  >
+                    <span>Politikalar & Gizlilik</span>
+                  </button>
+                ) : (
+                  <a 
+                    href="https://aleyulala.github.io/saved/privacy.html" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="hover:text-[#38bdf8] transition-colors flex items-center gap-1.5"
+                  >
+                    <span>Politikalar & Gizlilik</span>
+                    <ExternalLink className="w-2.5 h-2.5 opacity-50" />
+                  </a>
+                )}
               </li>
             </ul>
           </div>

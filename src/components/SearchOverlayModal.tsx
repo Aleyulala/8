@@ -13,6 +13,7 @@ interface SearchOverlayModalProps {
 }
 
 const SEARCH_ENGINES = [
+  { name: 'Blog Sayfasında Ara', url: 'blog' },
   { name: 'Google AI', url: 'https://www.google.com/search?udm=50&q=' },
   { name: 'Google', url: 'https://www.google.com/search?q=' },
   { name: 'GitHub', url: 'https://github.com/search?q=' },
@@ -27,6 +28,9 @@ const SEARCH_ENGINES = [
 ];
 
 const SHORTCUTS: Record<string, { label: string; url: string }> = {
+  blog: { label: 'Blog Sayfasında Ara', url: 'blog' },
+  saved: { label: 'Blog Sayfasında Ara', url: 'blog' },
+  b: { label: 'Blog Sayfasında Ara', url: 'blog' },
   yt: { label: 'YouTube', url: 'https://www.youtube.com/results?search_query=' },
   youtube: { label: 'YouTube', url: 'https://www.youtube.com/results?search_query=' },
   gh: { label: 'GitHub', url: 'https://github.com/search?q=' },
@@ -61,7 +65,7 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
   initialQuery = ''
 }) => {
   const [query, setQuery] = useState(initialQuery);
-  const [selectedEngine, setSelectedEngine] = useState('https://www.google.com/search?udm=50&q=');
+  const [selectedEngine, setSelectedEngine] = useState('blog');
   const [matchingLinks, setMatchingLinks] = useState<LinkItem[]>([]);
   const [collectionMap, setCollectionMap] = useState<Map<number, string>>(new Map());
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
@@ -161,6 +165,13 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
 
     // 2. Shortcut bang
     if (hasShortcut && shortcutTarget && shortcutPayload) {
+      if (shortcutTarget.url === 'blog') {
+        if (onApplySearchQuery) {
+          onApplySearchQuery(shortcutPayload);
+        }
+        onClose();
+        return;
+      }
       window.open(shortcutTarget.url + encodeURIComponent(shortcutPayload), '_blank', 'noopener,noreferrer');
       onClose();
       return;
@@ -176,6 +187,13 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
 
     // 4. Custom or Selected Engine
     const targetEngine = customEngineUrl || selectedEngine;
+    if (targetEngine === 'blog') {
+      if (onApplySearchQuery) {
+        onApplySearchQuery(trimmedQuery);
+      }
+      onClose();
+      return;
+    }
     window.open(targetEngine + encodeURIComponent(trimmedQuery), '_blank', 'noopener,noreferrer');
     
     // Also update in-app filter
