@@ -11,6 +11,7 @@ import { Plus, FileUp, Settings as SettingsIcon, Globe } from 'lucide-react';
 interface BloggerHeaderProps {
   onToggleSidebar: () => void;
   onOpenDrawer: () => void;
+  onOpenRightSidebar?: () => void;
   searchQuery: string;
   onSearchChange: (query: string) => void;
   onOpenNewLink: () => void;
@@ -22,6 +23,7 @@ interface BloggerHeaderProps {
 export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
   onToggleSidebar,
   onOpenDrawer,
+  onOpenRightSidebar,
   searchQuery,
   onSearchChange,
   onOpenNewLink,
@@ -158,11 +160,14 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
           <Globe className="w-4 h-4" />
         </a>
 
-        {/* Blogger Profil Avatarı (.tPrfl) */}
+        {/* Blogger Profil Avatarı (.tPrfl) - Sağ Paneli / Çekmeceyi Açar */}
         <div 
-          onClick={onOpenSettings}
+          onClick={() => {
+            if (onOpenRightSidebar) onOpenRightSidebar();
+            else onOpenSettings();
+          }}
           className="relative w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 to-rose-600 flex items-center justify-center text-white font-bold text-xs shadow-inner cursor-pointer hover:ring-2 hover:ring-[#38bdf8] transition-all ml-1"
-          title="Ali Yıldız (Online)"
+          title="Ali Yıldız (Sağ Panel & Profil)"
         >
           AY
           <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border border-[#1e1e1e]" />

@@ -18,6 +18,7 @@ import { ManageTagsModal } from './components/ManageTagsModal';
 import { LinkDetailModal } from './components/LinkDetailModal';
 import { ImportExportModal } from './components/ImportExportModal';
 import { SettingsModal } from './components/SettingsModal';
+import { BloggerFooter } from './components/BloggerFooter';
 import { getStorageUsage } from './utils/exportImport';
 import { getDomain } from './utils/favicon';
 import { Search, Plus, Home, Bookmark, Moon, Sun, FileUp, Menu } from 'lucide-react';
@@ -53,6 +54,7 @@ export const App: React.FC = () => {
   // Modals, Drawer & Sidebar
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isRightDrawerOpen, setIsRightDrawerOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingLink, setEditingLink] = useState<LinkItem | null>(null);
   const [detailLink, setDetailLink] = useState<LinkItem | null>(null);
@@ -328,6 +330,7 @@ export const App: React.FC = () => {
       <BloggerHeader
         onToggleSidebar={() => setIsSidebarOpen(prev => !prev)}
         onOpenDrawer={() => setIsDrawerOpen(true)}
+        onOpenRightSidebar={() => setIsRightDrawerOpen(true)}
         searchQuery={searchQuery}
         onSearchChange={(q) => {
           setSearchQuery(q);
@@ -595,10 +598,13 @@ export const App: React.FC = () => {
               onEmptyTrash={handleEmptyTrash}
             />
           )}
+
+            {/* Blogger Alt Footer Bölümü (.mainF) */}
+            <BloggerFooter />
           </div>
         </main>
 
-        {/* SAĞ BAR: Blogger Right Sidebar (.sideB - Desktop) */}
+        {/* SAĞ BAR: Blogger Right Sidebar (.sideB - Desktop & Mobile Drawer) */}
         <BloggerRightSidebar
           pinnedLinks={allLinks.filter(l => l.isPinned && !l.isTrash && !l.isArchived)}
           collections={collections}
@@ -616,6 +622,8 @@ export const App: React.FC = () => {
             setSearchQuery('');
           }}
           onOpenDetail={(link) => setDetailLink(link)}
+          isDrawerOpen={isRightDrawerOpen}
+          onCloseDrawer={() => setIsRightDrawerOpen(false)}
         />
 
       </div>
