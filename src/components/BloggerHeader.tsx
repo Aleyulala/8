@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Palette } from 'lucide-react';
+import { Palette, MapPin, Settings as SettingsIcon } from 'lucide-react';
 import { 
   MenuHamburgerIcon, 
   SearchNormalIcon, 
@@ -8,7 +8,12 @@ import {
   GithubIcon,
   TranslateIcon,
   ArchiveIcon,
-  Profile1Icon
+  Profile1Icon,
+  Verify1Icon,
+  BloggerBIcon,
+  TelegramIcon,
+  MatrixIcon,
+  VkIcon
 } from './BloggerIcons';
 
 const THEME_COLORS = [
@@ -77,9 +82,11 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
   const [selectedLang, setSelectedLang] = useState<string>('tr');
   const [isDark, setIsDark] = useState<boolean>(true);
   const [isThemePopupOpen, setIsThemePopupOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [currentThemeColor, setCurrentThemeColor] = useState<string>('#38bdf8');
   const translateRef = useRef<HTMLDivElement>(null);
   const themePopupRef = useRef<HTMLDivElement>(null);
+  const profileRef = useRef<HTMLDivElement>(null);
 
   const applyThemeColor = (color: string) => {
     setCurrentThemeColor(color);
@@ -122,7 +129,7 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
     }
   }, []);
 
-  // Close translate popup & theme popup on outside click
+  // Close translate popup, theme popup & profile popup on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (translateRef.current && !translateRef.current.contains(e.target as Node)) {
@@ -130,6 +137,9 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
       }
       if (themePopupRef.current && !themePopupRef.current.contains(e.target as Node)) {
         setIsThemePopupOpen(false);
+      }
+      if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
+        setIsProfileOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -383,15 +393,123 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
           <ArchiveIcon className="w-4 h-4" />
         </button>
 
-        {/* Profil / Ayarlar Butonu (.isPrf - svg.profile-1 XML 1:1) */}
-        <button
-          onClick={onOpenSettings}
-          className="p-2 rounded-lg text-[#989b9f] hover:text-[#fffdfc] hover:bg-[#252526] transition-colors cursor-pointer flex items-center justify-center"
-          title="Ayarlar & Yönetim"
-          aria-label="Ayarlar"
-        >
-          <Profile1Icon className="w-4 h-4" />
-        </button>
+        {/* Profil / Yazarlar Butonu & Kartı (.isPrf - Profile01 .wPrf XML 1:1) */}
+        <div className="relative" ref={profileRef}>
+          <button
+            onClick={() => setIsProfileOpen(prev => !prev)}
+            className={`p-2 rounded-lg transition-colors cursor-pointer flex items-center justify-center ${
+              isProfileOpen ? 'bg-[#252526] text-[#60cdff]' : 'text-[#989b9f] hover:text-[#fffdfc] hover:bg-[#252526]'
+            }`}
+            title="Yazarlar &amp; Profil"
+            aria-label="Yazarlar"
+          >
+            <Profile1Icon className="w-4 h-4" />
+          </button>
+
+          {/* Blogger XML 1:1 Profil / Yazarlar Açılır Kartı (.wPrf.fixLs) */}
+          {isProfileOpen && (
+            <div className="wPrf fixLs animate-in fade-in duration-200">
+              <div className="prfH fixH fixT">
+                <span className="text-xs font-bold text-[#d4d4d4]">Yazarlar</span>
+                <button
+                  onClick={() => setIsProfileOpen(false)}
+                  className="text-[#989b9f] hover:text-white p-0.5 rounded cursor-pointer"
+                  title="Kapat"
+                >
+                  <CloseIcon className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              <div className="prfC fixC">
+                <div className="sImg">
+                  <div className="im relative w-16 h-16 rounded-full bg-gradient-to-tr from-[#38bdf8] via-indigo-500 to-rose-500 p-0.5 shadow-md mx-auto mb-2.5">
+                    <div className="w-full h-full rounded-full bg-[#1e1e1e] flex items-center justify-center font-bold text-lg text-white">
+                      N
+                    </div>
+                    <div className="absolute -bottom-0.5 -right-0.5 bg-[#1e1e1e] rounded-full p-0.5">
+                      <Verify1Icon className="w-3.5 h-3.5 text-[#38bdf8]" />
+                    </div>
+                  </div>
+                </div>
+
+                <dl className="sInf space-y-1.5">
+                  <dt className="sDt">
+                    <a 
+                      href="https://aleyulala.blogspot.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="l extL inline-flex items-center gap-1.5 font-bold text-sm text-white hover:text-[#60cdff] transition-colors"
+                    >
+                      <bdi>NEGRONN</bdi>
+                      <Verify1Icon className="w-3.5 h-3.5 text-[#38bdf8]" />
+                    </a>
+                  </dt>
+                  <dd className="sTxt text-xs text-[#a1a1aa] leading-relaxed">
+                    Saved Startpage ve Blogger mimarı. Local-first açık kaynaklı sistemler ve dijital içerik üretimi.
+                  </dd>
+                  <dd className="lc flex items-center justify-center gap-1 text-[11px] text-[#71717a]">
+                    <MapPin className="w-3 h-3 text-rose-400" />
+                    <span>Türkiye</span>
+                  </dd>
+                </dl>
+
+                {/* Yazar Sosyal Bağlantıları */}
+                <div className="flex items-center justify-center gap-1.5 mt-3 pt-3 border-t border-[#333333]">
+                  <a
+                    href="https://aleyulala.blogspot.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#d4d4d4] hover:text-white transition-colors"
+                    title="Blogger Profil"
+                  >
+                    <BloggerBIcon className="w-3.5 h-3.5 text-amber-500" />
+                  </a>
+                  <a
+                    href="https://matrix.to/#/#negronn-show:matrix.org"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#60cdff] hover:text-white transition-colors"
+                    title="Element.io / Matrix: @negronn:matrix.org"
+                  >
+                    <MatrixIcon className="w-3.5 h-3.5 text-[#60cdff]" />
+                  </a>
+                  <a
+                    href="https://t.me/aleyyulala"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#229ed9] text-[#d4d4d4] hover:text-white transition-colors"
+                    title="Telegram"
+                  >
+                    <TelegramIcon className="w-3.5 h-3.5 text-sky-400" />
+                  </a>
+                  <a
+                    href="https://vk.com/negronn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#4680c2] text-[#d4d4d4] hover:text-white transition-colors"
+                    title="VKontakte (VK)"
+                  >
+                    <VkIcon className="w-3.5 h-3.5 text-[#4680c2]" />
+                  </a>
+                </div>
+
+                {/* Ayarlar & Yönetim Butonu */}
+                <div className="mt-3 pt-2 border-t border-[#333333]">
+                  <button
+                    onClick={() => {
+                      setIsProfileOpen(false);
+                      onOpenSettings();
+                    }}
+                    className="w-full py-1.5 px-3 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-xs font-semibold text-[#60cdff] hover:text-white flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    <SettingsIcon className="w-3.5 h-3.5" />
+                    <span>Ayarlar &amp; Depolama</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
 
       </div>
 

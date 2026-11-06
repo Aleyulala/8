@@ -240,87 +240,95 @@ export const BloggerPrivacyView: React.FC<BloggerPrivacyViewProps> = ({
       </main>
 
       {/* 5. BLOGGER YAZAR TANITIM KARTI (.admAbt - XML 1:1) */}
-      <section className="mt-12 rounded-xl bg-[#252526] border border-transparent p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start gap-5 shadow-md">
-        <div className="relative w-16 h-16 rounded-full bg-gradient-to-tr from-[#38bdf8] to-indigo-600 p-0.5 shadow-lg shrink-0">
-          <div className="w-full h-full rounded-full bg-[#1e1e1e] flex items-center justify-center font-bold text-xl text-white">
-            N
-          </div>
-          <div className="absolute -bottom-1 -right-1 bg-[#1e1e1e] rounded-full p-0.5">
-            <Verify1Icon className="w-4 h-4 text-[#38bdf8]" />
-          </div>
-        </div>
+      <section className="admAbt bX mt-12" id="author">
+        <h2 className="title dt" data-text="Yazar Hakkında">
+          <span>Yazar Hakkında</span>
+        </h2>
 
-        <div className="flex-1 space-y-3 text-center sm:text-left">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div className="flex items-center justify-center sm:justify-start gap-1.5">
-              <h3 className="text-base font-bold text-white">NEGRONN</h3>
-              <Verify1Icon className="w-4 h-4 text-[#38bdf8]" />
-              <span className="text-xs text-[#71717a]">(@aleyulala)</span>
+        <div className="admPs">
+          <div className="admIm">
+            <div className="im relative w-12 h-12 rounded-full bg-gradient-to-tr from-[#38bdf8] to-indigo-600 p-0.5 shadow-lg shrink-0">
+              <div className="w-full h-full rounded-full bg-[#1e1e1e] flex items-center justify-center font-bold text-lg text-white">
+                N
+              </div>
+              <div className="absolute -bottom-0.5 -right-0.5 bg-[#1e1e1e] rounded-full p-0.5">
+                <Verify1Icon className="w-3.5 h-3.5 text-[#38bdf8]" />
+              </div>
             </div>
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#1e1e1e] text-[11px] font-semibold text-[#60cdff]">
-              Blogger &amp; Yazılım Mimarı
-            </span>
           </div>
 
-          <p className="text-xs sm:text-sm text-[#9ca3af] leading-relaxed">
-            Saved Startpage, açık kaynak yazılım felsefesi ve gizlilik odaklı mimarisiyle 
-            geliştirilmiş yer imi ve bilgi yönetim sistemidir. Tüm kullanıcı verileri yalnızca 
-            kullanıcının yerel tarayıcısında (IndexedDB / localStorage) barındırılır.
-          </p>
+          <div className="admI">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <bdi className="admN font-bold text-sm text-white" data-write="Yazan:" data-text="NEGRONN">
+                <span className="text-xs text-[#71717a] font-normal mr-1">Yazan:</span>
+                <span>NEGRONN</span>
+                <Verify1Icon className="w-3.5 h-3.5 text-[#38bdf8]" />
+                <span className="text-[10px] px-2 py-0.5 rounded-lg bg-[#1e1e1e] text-[#60cdff] font-semibold ml-1">
+                  Blogger &amp; Yazılım Mimarı
+                </span>
+              </bdi>
+            </div>
 
-          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 pt-2 text-xs">
-            <a
-              href="https://aleyulala.blogspot.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#d4d4d4] hover:text-white transition-colors"
-              title="Blogger Profil"
-            >
-              <BloggerBIcon className="w-3.5 h-3.5 text-amber-500" />
-              <span>Blogger</span>
-            </a>
+            <p className="admA text-xs text-[#d4d4d4] leading-relaxed">
+              Saved Startpage, açık kaynak yazılım felsefesi ve gizlilik odaklı mimarisiyle 
+              geliştirilmiş yer imi ve bilgi yönetim sistemidir. Tüm kullanıcı verileri yalnızca 
+              kullanıcının yerel tarayıcısında (IndexedDB / localStorage) barındırılır.
+            </p>
 
-            <a
-              href="https://matrix.to/#/#negronn-show:matrix.org"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#60cdff] hover:text-white transition-colors"
-              title="Matrix / Element.io: @negronn:matrix.org"
-            >
-              <MatrixIcon className="w-3.5 h-3.5 text-[#60cdff]" />
-              <span>Element.io</span>
-            </a>
+            <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
+              <a
+                href="https://aleyulala.blogspot.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#d4d4d4] hover:text-white transition-colors"
+                title="Blogger Profil"
+              >
+                <BloggerBIcon className="w-3.5 h-3.5 text-amber-500" />
+                <span>Blogger</span>
+              </a>
 
-            <a
-              href="https://t.me/aleyyulala"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#229ed9] text-[#d4d4d4] hover:text-white transition-colors"
-              title="Telegram"
-            >
-              <TelegramIcon className="w-3.5 h-3.5 text-sky-400" />
-              <span>Telegram</span>
-            </a>
+              <a
+                href="https://matrix.to/#/#negronn-show:matrix.org"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#60cdff] hover:text-white transition-colors"
+                title="Matrix / Element.io: @negronn:matrix.org"
+              >
+                <MatrixIcon className="w-3.5 h-3.5 text-[#60cdff]" />
+                <span>Element.io</span>
+              </a>
 
-            <a
-              href="https://vk.com/negronn"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#4680c2] text-[#d4d4d4] hover:text-white transition-colors"
-              title="VKontakte"
-            >
-              <VkIcon className="w-3.5 h-3.5 text-[#4680c2]" />
-              <span>VK</span>
-            </a>
+              <a
+                href="https://t.me/aleyyulala"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#229ed9] text-[#d4d4d4] hover:text-white transition-colors"
+                title="Telegram"
+              >
+                <TelegramIcon className="w-3.5 h-3.5 text-sky-400" />
+                <span>Telegram</span>
+              </a>
 
-            <a
-              href="mailto:mrstar14155@gmail.com"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#ea4335] text-[#d4d4d4] hover:text-white transition-colors"
-              title="E-posta İletişim"
-            >
-              <MailIcon className="w-3.5 h-3.5 text-rose-400" />
-              <span>E-posta</span>
-            </a>
+              <a
+                href="https://vk.com/negronn"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#4680c2] text-[#d4d4d4] hover:text-white transition-colors"
+                title="VKontakte"
+              >
+                <VkIcon className="w-3.5 h-3.5 text-[#4680c2]" />
+                <span>VK</span>
+              </a>
+
+              <a
+                href="mailto:mrstar14155@gmail.com"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#ea4335] text-[#d4d4d4] hover:text-white transition-colors"
+                title="E-posta İletişim"
+              >
+                <MailIcon className="w-3.5 h-3.5 text-rose-400" />
+                <span>E-posta</span>
+              </a>
+            </div>
           </div>
         </div>
       </section>

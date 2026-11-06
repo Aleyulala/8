@@ -16,6 +16,7 @@ export interface LinkItem {
   commentsCount?: number;
   authorName?: string;
   isFeatured?: boolean;
+  rss?: string; // RSS / Atom Feed URL
   createdAt: number;
   updatedAt: number;
 }

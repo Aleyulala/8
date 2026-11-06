@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Rss } from 'lucide-react';
 import { CollectionItem, LinkItem } from '../types';
 import { formatDate, getDomain, getFaviconUrl } from '../utils/favicon';
 import { 
@@ -140,6 +141,23 @@ export const LinkCard: React.FC<LinkCardProps> = ({
             <Verify1Icon className="w-3 h-3 text-[#60cdff]" />
           </div>
         </div>
+
+        {/* Sağ Alt: RSS Akış Rozeti (Varsa) */}
+        {link.rss && (
+          <div className="absolute bottom-2 right-2 z-10">
+            <a
+              href={link.rss}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-amber-500/85 hover:bg-amber-500 backdrop-blur-md text-white text-[10px] font-bold shadow-sm transition-all hover:scale-105"
+              title={`RSS Akışı: ${link.rss}`}
+            >
+              <Rss className="w-3 h-3" />
+              <span>RSS</span>
+            </a>
+          </div>
+        )}
 
       </div>
 

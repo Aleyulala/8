@@ -10,7 +10,8 @@ import {
   FileText, 
   Star, 
   Trash2, 
-  Save 
+  Save,
+  Rss
 } from 'lucide-react';
 import { CollectionItem, LinkItem } from '../types';
 import { formatDate, getDomain, getFaviconUrl } from '../utils/favicon';
@@ -120,6 +121,27 @@ export const LinkDetailModal: React.FC<LinkDetailModalProps> = ({
               </a>
             </div>
           </div>
+
+          {/* RSS Akış Satırı */}
+          {link.rss && (
+            <div className="flex items-center justify-between p-3 rounded-xl bg-[#171717] border border-amber-500/20 gap-3">
+              <div className="flex items-center gap-2 min-w-0">
+                <Rss className="w-4 h-4 text-amber-500 shrink-0" />
+                <span className="text-xs font-mono text-[#fbbf24] truncate select-all">
+                  {link.rss}
+                </span>
+              </div>
+              <a
+                href={link.rss}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-xs font-medium transition-colors shrink-0"
+              >
+                <ExternalLink className="w-3 h-3" />
+                <span>RSS Akışı</span>
+              </a>
+            </div>
+          )}
 
           {/* Metadata Grid */}
           <div className="grid grid-cols-2 gap-3 text-xs">

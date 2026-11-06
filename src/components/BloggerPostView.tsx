@@ -16,7 +16,8 @@ import {
   ChevronLeft, 
   ChevronRight,
   ShieldCheck,
-  FileText
+  FileText,
+  Rss
 } from 'lucide-react';
 import { CollectionItem, LinkItem } from '../types';
 import { formatDate, getDomain, getFaviconUrl } from '../utils/favicon';
@@ -232,10 +233,10 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
         {/* Yazar & Tarih Meta Bilgisi (.pInf) */}
         <div className="flex flex-wrap items-center gap-4 text-xs text-[#a1a1aa] pt-1">
           <div className="flex items-center gap-1.5">
-            <span className="w-5 h-5 rounded-full bg-gradient-to-tr from-amber-500 to-rose-600 flex items-center justify-center text-[10px] text-white font-bold">
-              AY
+            <span className="w-5 h-5 rounded-full bg-gradient-to-tr from-[#38bdf8] to-indigo-600 flex items-center justify-center text-[10px] text-white font-bold">
+              N
             </span>
-            <span className="text-white font-semibold">Ali Yıldız</span>
+            <span className="text-white font-semibold">{link.authorName || 'NEGRONN'}</span>
             <Verify1Icon className="w-3.5 h-3.5 text-[#38bdf8]" />
           </div>
 
@@ -248,6 +249,19 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
             <Globe className="w-3.5 h-3.5 text-emerald-400" />
             <span>{domain}</span>
           </div>
+
+          {link.rss && (
+            <a
+              href={link.rss}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 text-amber-400 text-xs font-semibold transition-colors"
+              title={`RSS Akışı: ${link.rss}`}
+            >
+              <Rss className="w-3.5 h-3.5" />
+              <span>RSS Akışı</span>
+            </a>
+          )}
         </div>
       </div>
 
@@ -413,37 +427,39 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
       )}
 
       {/* 6. Blogger Yazar Tanıtım Kartı (.admAbt - XML 1:1) */}
-      <div className="admAbt rounded-lg bg-[#252526] border border-transparent p-5 space-y-3 shadow-md" id="author">
-        <h2 className="title dt text-xs font-bold uppercase tracking-wider text-[#989b9f] border-b border-[#333333] pb-2 flex items-center gap-2">
+      <div className="admAbt bX" id="author">
+        <h2 className="title dt" data-text="Yazar Hakkında">
           <span>Yazar Hakkında</span>
         </h2>
 
-        <div className="admPs flex flex-col sm:flex-row items-center sm:items-start gap-4">
-          <div className="admIm relative w-14 h-14 rounded-full bg-gradient-to-tr from-[#38bdf8] via-indigo-500 to-rose-500 p-0.5 shadow-md shrink-0">
-            <div className="w-full h-full rounded-full bg-[#1e1e1e] flex items-center justify-center font-bold text-base text-white">
-              N
-            </div>
-            <div className="absolute -bottom-1 -right-1 bg-[#1e1e1e] rounded-full p-0.5">
-              <Verify1Icon className="w-3.5 h-3.5 text-[#38bdf8]" />
+        <div className="admPs">
+          <div className="admIm">
+            <div className="im relative w-11 h-11 rounded-full bg-gradient-to-tr from-[#38bdf8] via-indigo-500 to-rose-500 p-0.5 shadow-md shrink-0">
+              <div className="w-full h-full rounded-full bg-[#1e1e1e] flex items-center justify-center font-bold text-base text-white">
+                N
+              </div>
+              <div className="absolute -bottom-0.5 -right-0.5 bg-[#1e1e1e] rounded-full p-0.5">
+                <Verify1Icon className="w-3.5 h-3.5 text-[#38bdf8]" />
+              </div>
             </div>
           </div>
 
-          <div className="admI flex-1 space-y-2 text-center sm:text-left">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-              <div className="flex items-center justify-center sm:justify-start gap-1.5">
-                <span className="text-xs text-[#71717a]">Yazan:</span>
-                <bdi className="admN font-extrabold text-sm text-white tracking-wide">NEGRONN</bdi>
+          <div className="admI">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <bdi className="admN font-bold text-sm text-white" data-write="Yazan:" data-text="NEGRONN">
+                <span className="text-xs text-[#71717a] font-normal mr-1">Yazan:</span>
+                <span>NEGRONN</span>
                 <Verify1Icon className="w-3.5 h-3.5 text-[#38bdf8]" />
-                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[#ff5722]/20 text-[#ff5722] font-semibold">BLOGGER</span>
-              </div>
-              <span className="text-[11px] text-[#71717a]">Yazar & Yazılım Mimarı</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[#ff5722]/20 text-[#ff5722] font-semibold ml-1">BLOGGER</span>
+              </bdi>
+              <span className="text-[11px] text-[#71717a]">Yazar &amp; Yazılım Mimarı</span>
             </div>
 
-            <div className="admA text-xs text-[#989b9f] leading-relaxed">
+            <div className="admA text-xs text-[#d4d4d4] leading-relaxed">
               Saved Startpage ve Blogger ağının mimarı. Local-first açık kaynaklı sistemler, gizlilik odaklı web teknolojileri ve dijital içerik üretimi.
             </div>
 
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1 text-xs">
+            <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
               <a
                 href="https://aleyulala.blogspot.com/"
                 target="_blank"

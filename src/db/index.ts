@@ -1,6 +1,7 @@
 import Dexie, { type Table } from 'dexie';
 import { CollectionItem, LinkItem, TagItem } from '../types';
 import { SEED_COLLECTIONS, SEED_TAGS, SEED_LINKS } from './seedData';
+import { resolveRss } from '../utils/rssResolver';
 
 export interface AppSetting {
   key: string;
@@ -77,6 +78,7 @@ export async function seedSavedMainData(force = false) {
             views: item.views,
             commentsCount: item.commentsCount,
             authorName: item.authorName,
+            rss: resolveRss(item.url) || undefined,
             notes: item.color ? `Özgün Renk: ${item.color}` : '',
             isPinned: item.isPinned,
             isArchived: false,
@@ -98,6 +100,29 @@ export async function seedSavedMainData(force = false) {
 
 export async function initializeDatabase() {
   await seedSavedMainData();
+
+  // Otomatik RSS Akış Çözücü Göçü (Eski veya RSS'i boş siteleri otomatik tarar)
+  try {
+    const rssMigration = await db.settings.get('rss_migration_v1');
+    if (!rssMigration) {
+      const allLinks = await db.links.toArray();
+      const updates: Promise<number>[] = [];
+      for (const link of allLinks) {
+        if (!link.rss && link.id) {
+          const autoRss = resolveRss(link.url);
+          if (autoRss) {
+            updates.push(db.links.update(link.id, { rss: autoRss }));
+          }
+        }
+      }
+      if (updates.length > 0) {
+        await Promise.all(updates);
+      }
+      await db.settings.put({ key: 'rss_migration_v1', value: true });
+    }
+  } catch {
+    // ignore
+  }
 }
 
 export async function resetDatabase() {
