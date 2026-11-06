@@ -8,7 +8,7 @@ export const BloggerNotificationBar: React.FC = () => {
   const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
 
-  const totalSlides = 3;
+  const totalSlides = 2;
 
   useEffect(() => {
     if (isPaused) return;
@@ -72,7 +72,7 @@ export const BloggerNotificationBar: React.FC = () => {
               </a>
               <a
                 href="https://aleyulala.github.io/saved/"
-                className="ali-nsone-amp font-bold text-[15px] sm:text-[16px] text-[#989b9f] hover:text-white px-2 py-0.5 rounded-md hover:bg-white/10 transition-all cursor-pointer"
+                className="ali-nsone-amp font-bold text-[15px] sm:text-[16px] text-[#60cdff] px-2 py-0.5 rounded-md hover:bg-white/10 transition-all cursor-pointer"
                 title="ALİ &amp; NSONE"
               >
                 &amp;
@@ -89,16 +89,8 @@ export const BloggerNotificationBar: React.FC = () => {
             </div>
           )}
 
-          {/* SLAYT 1: Bildiri / Duyuru Metni */}
+          {/* SLAYT 1: Element.io / Matrix & Topluluk Bağlantısı */}
           {activeSlide === 1 && (
-            <p className="text-xs text-[#d4d4d4] truncate leading-normal animate-in fade-in duration-300">
-              <span className="text-[#60cdff] font-bold">Duyuru: </span>
-              Tüm yer imleriniz, kategorileriniz ve etiketleriniz Local-First mimarisiyle tarayıcınızda saklanmaktadır.
-            </p>
-          )}
-
-          {/* SLAYT 2: Element.io / Matrix & Topluluk Bağlantısı */}
-          {activeSlide === 2 && (
             <div className="flex items-center justify-center gap-2 text-xs animate-in fade-in duration-300">
               <a
                 href="https://matrix.to/#/#negronn-show:matrix.org"
@@ -116,9 +108,9 @@ export const BloggerNotificationBar: React.FC = () => {
 
         </div>
 
-        {/* Sağ Çizgi Butonlar (.panel-slider-dots) */}
+        {/* Sağ 2 Çizgi Buton (.panel-slider-dots) */}
         <div className="flex items-center gap-1.5 shrink-0">
-          {[0, 1, 2].map((idx) => (
+          {[0, 1].map((idx) => (
             <button
               key={idx}
               onClick={() => setActiveSlide(idx)}

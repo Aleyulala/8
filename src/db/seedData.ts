@@ -3295,6 +3295,23 @@ export const SEED_LINKS: RawSeedLink[] = [
     "description": "Flathub - Programlama"
   },
   {
+    "title": "JobStep",
+    "url": "https://www.jobstep.io/",
+    "categoryName": "AI",
+    "tags": [
+      "ai",
+      "kariyer",
+      "cv",
+      "araçlar"
+    ],
+    "color": "#0ea5e9",
+    "isPinned": false,
+    "description": "JobStep - Yapay zeka destekli CV hazırlama, ATS uyumluluk analizi ve iş başvuru takip platformu.",
+    "views": 182,
+    "commentsCount": 4,
+    "authorName": "NEGRONN"
+  },
+  {
     "title": "Google AI Studio",
     "url": "https://aistudio.google.com/",
     "categoryName": "AI",

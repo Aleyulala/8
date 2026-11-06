@@ -33,8 +33,8 @@ export async function seedSavedMainData(force = false) {
   const seedSetting = await db.settings.get('seed_version');
 
   // Trigger migration if empty, if it still contains dummy collection, if force is requested, or if seed version not recorded
-  if (collectionsCount === 0 || dummyCol || force || !seedSetting || seedSetting.value !== 'saved-main-352-clean-v4') {
-    if (collectionsCount === 0 || dummyCol || force || collectionsCount < 14 || !seedSetting || seedSetting.value !== 'saved-main-352-clean-v4') {
+  if (collectionsCount === 0 || dummyCol || force || !seedSetting || seedSetting.value !== 'saved-main-353-jobstep-v5') {
+    if (collectionsCount === 0 || dummyCol || force || collectionsCount < 14 || !seedSetting || seedSetting.value !== 'saved-main-353-jobstep-v5') {
       await db.transaction('rw', db.links, db.collections, db.tags, db.settings, async () => {
         // Clear previous dummy data
         await db.links.clear();
@@ -65,7 +65,7 @@ export async function seedSavedMainData(force = false) {
           }))
         );
 
-        // 3. Insert 352 Links
+        // 3. Insert 353 Links
         const linksToAdd: LinkItem[] = SEED_LINKS.map((item, index) => {
           const collectionId = colMap.get(item.categoryName) || null;
           return {
@@ -90,16 +90,43 @@ export async function seedSavedMainData(force = false) {
         });
 
         await db.links.bulkAdd(linksToAdd);
-        await db.settings.put({ key: 'seed_version', value: 'saved-main-352-clean-v4' });
+        await db.settings.put({ key: 'seed_version', value: 'saved-main-353-jobstep-v5' });
       });
     } else {
-      await db.settings.put({ key: 'seed_version', value: 'saved-main-352-clean-v4' });
+      await db.settings.put({ key: 'seed_version', value: 'saved-main-353-jobstep-v5' });
     }
   }
 }
 
 export async function initializeDatabase() {
   await seedSavedMainData();
+
+  // JobStep.io kontrolü ve eklenmesi (Mevcut kullanıcı verilerini koruyarak garanti ekleme)
+  try {
+    const existingJobstep = await db.links.where('url').equals('https://www.jobstep.io/').or('url').equals('https://www.jobstep.io').first();
+    if (!existingJobstep) {
+      const aiCol = await db.collections.where('name').equals('AI').first();
+      await db.links.add({
+        url: 'https://www.jobstep.io/',
+        title: 'JobStep',
+        description: 'JobStep - Yapay zeka destekli CV hazırlama, ATS uyumluluk analizi ve iş başvuru takip platformu.',
+        collectionId: aiCol ? aiCol.id! : null,
+        tags: ['ai', 'kariyer', 'cv', 'araçlar'],
+        views: 182,
+        commentsCount: 4,
+        authorName: 'NEGRONN',
+        notes: 'Özgün Renk: #0ea5e9',
+        isPinned: false,
+        isArchived: false,
+        isRead: false,
+        isTrash: false,
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      });
+    }
+  } catch {
+    // ignore
+  }
 
   // Otomatik RSS Akış Çözücü Göçü (Eski veya RSS'i boş siteleri otomatik tarar)
   try {
