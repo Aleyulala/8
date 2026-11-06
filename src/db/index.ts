@@ -27,21 +27,23 @@ export class SavedDatabase extends Dexie {
 
 export const db = new SavedDatabase();
 
+const CURRENT_SEED_VERSION = 'saved-main-360-sites-v7';
+
 export async function seedSavedMainData(force = false) {
   const collectionsCount = await db.collections.count();
   const dummyCol = await db.collections.where('name').equals('Research and Studies').first();
   const seedSetting = await db.settings.get('seed_version');
 
-  // Trigger migration if empty, if it still contains dummy collection, if force is requested, or if seed version not recorded
-  if (collectionsCount === 0 || dummyCol || force || !seedSetting || seedSetting.value !== 'saved-main-353-jobstep-v5') {
-    if (collectionsCount === 0 || dummyCol || force || collectionsCount < 14 || !seedSetting || seedSetting.value !== 'saved-main-353-jobstep-v5') {
+  // Trigger migration if empty, if it still contains dummy collection, if force is requested, or if seed version not current
+  if (collectionsCount === 0 || dummyCol || force || !seedSetting || seedSetting.value !== CURRENT_SEED_VERSION) {
+    if (collectionsCount === 0 || dummyCol || force || collectionsCount < 14) {
       await db.transaction('rw', db.links, db.collections, db.tags, db.settings, async () => {
         // Clear previous dummy data
         await db.links.clear();
         await db.collections.clear();
         await db.tags.clear();
 
-        // 1. Insert 14 Collections
+        // 1. Insert Collections
         const colMap = new Map<string, number>();
         const now = Date.now();
 
@@ -65,7 +67,7 @@ export async function seedSavedMainData(force = false) {
           }))
         );
 
-        // 3. Insert 353 Links
+        // 3. Insert All Links
         const linksToAdd: LinkItem[] = SEED_LINKS.map((item, index) => {
           const collectionId = colMap.get(item.categoryName) || null;
           return {
@@ -90,10 +92,45 @@ export async function seedSavedMainData(force = false) {
         });
 
         await db.links.bulkAdd(linksToAdd);
-        await db.settings.put({ key: 'seed_version', value: 'saved-main-353-jobstep-v5' });
+        await db.settings.put({ key: 'seed_version', value: CURRENT_SEED_VERSION });
       });
     } else {
-      await db.settings.put({ key: 'seed_version', value: 'saved-main-353-jobstep-v5' });
+      // Incremental Sync: Add missing links without touching existing records
+      await db.transaction('rw', db.links, db.collections, db.settings, async () => {
+        const allCols = await db.collections.toArray();
+        const colMap = new Map<string, number>();
+        allCols.forEach(c => {
+          if (c.id) colMap.set(c.name, c.id);
+        });
+
+        const now = Date.now();
+        for (const item of SEED_LINKS) {
+          const existing = await db.links.where('url').equals(item.url).first();
+          if (!existing) {
+            const collectionId = colMap.get(item.categoryName) || null;
+            await db.links.add({
+              url: item.url,
+              title: item.title,
+              description: item.description,
+              collectionId: collectionId,
+              tags: item.tags,
+              thumbnail: item.thumbnail,
+              views: item.views || 150,
+              commentsCount: item.commentsCount || 0,
+              authorName: item.authorName || 'NEGRONN',
+              rss: resolveRss(item.url) || undefined,
+              notes: item.color ? `Özgün Renk: ${item.color}` : '',
+              isPinned: item.isPinned || false,
+              isArchived: false,
+              isRead: false,
+              isTrash: false,
+              createdAt: now,
+              updatedAt: now
+            });
+          }
+        }
+        await db.settings.put({ key: 'seed_version', value: CURRENT_SEED_VERSION });
+      });
     }
   }
 }

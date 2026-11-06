@@ -89,18 +89,18 @@ export const BloggerNotificationBar: React.FC = () => {
             </div>
           )}
 
-          {/* SLAYT 1: Element.io / Matrix & Topluluk Bağlantısı */}
+          {/* SLAYT 1: Element.io */}
           {activeSlide === 1 && (
-            <div className="flex items-center justify-center gap-2 text-xs animate-in fade-in duration-300">
+            <div className="flex items-center justify-center gap-2 text-xs sm:text-sm animate-in fade-in duration-300">
               <a
                 href="https://matrix.to/#/#negronn-show:matrix.org"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-[#60cdff] hover:underline font-semibold"
-                title="Matrix / Element.io Topluluğu: #negronn-show:matrix.org"
+                className="inline-flex items-center gap-1.5 text-[#60cdff] hover:text-white hover:underline transition-colors font-semibold"
+                title="Element.io"
               >
                 <MatrixIcon className="w-3.5 h-3.5 text-[#60cdff]" />
-                <span>Element.io Topluluğu: @negronn:matrix.org</span>
+                <span className="font-bold">Element.io</span>
                 <ExternalLink className="w-3 h-3 ml-0.5 opacity-70" />
               </a>
             </div>

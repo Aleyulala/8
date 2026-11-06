@@ -268,7 +268,7 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
         <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 z-20">
           <button
             onClick={(e) => handleCategoryClick(e, activeSlide)}
-            className="group/badge inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/70 hover:bg-black/90 backdrop-blur-md text-white text-xs sm:text-sm font-medium transition-all duration-200 active:scale-95 shadow-lg cursor-pointer border border-white/10"
+            className="group/badge inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/70 hover:bg-black/90 backdrop-blur-md text-white text-xs sm:text-sm font-medium transition-all duration-200 active:scale-95 shadow-lg cursor-pointer"
             title={`${activeSlide.category} kategorisine git`}
           >
             <TagBloggerIcon className="w-3.5 h-3.5 text-[#60cdff]" />

@@ -3312,6 +3312,130 @@ export const SEED_LINKS: RawSeedLink[] = [
     "authorName": "NEGRONN"
   },
   {
+    "title": "Qoder",
+    "url": "https://qoder.com/",
+    "categoryName": "AI",
+    "tags": [
+      "ai",
+      "programlama",
+      "kodlama",
+      "agent"
+    ],
+    "color": "#6366f1",
+    "isPinned": false,
+    "description": "Qoder - Yapay zeka destekli otonom kodlama, hata ayıklama ve geliştirici ajan platformu.",
+    "views": 245,
+    "commentsCount": 6,
+    "authorName": "QODER"
+  },
+  {
+    "title": "OpenChamber",
+    "url": "https://openchamber.dev/tr/",
+    "categoryName": "AI",
+    "tags": [
+      "ai",
+      "open-source",
+      "llm",
+      "web"
+    ],
+    "color": "#38bdf8",
+    "isPinned": false,
+    "description": "OpenChamber - Yerel ve açık kaynaklı yapay zeka modelleri için gizlilik odaklı, hafif web arayüzü.",
+    "views": 198,
+    "commentsCount": 5,
+    "authorName": "OPENCHAMBER"
+  },
+  {
+    "title": "LiberNT",
+    "url": "https://github.com/LiberNT/LiberNT",
+    "categoryName": "Programlama",
+    "tags": [
+      "github",
+      "operating-system",
+      "kernel",
+      "c",
+      "programlama"
+    ],
+    "color": "#10b981",
+    "isPinned": false,
+    "description": "LiberNT - Windows NT mimarisi ve çekirdek prensipleri üzerine inşa edilen açık kaynaklı işletim sistemi projesi.",
+    "views": 312,
+    "commentsCount": 8,
+    "authorName": "LIBERNT"
+  },
+  {
+    "title": "Aleyulala Stars",
+    "url": "https://github.com/Aleyulala?tab=stars",
+    "categoryName": "Programlama",
+    "tags": [
+      "github",
+      "stars",
+      "açık-kaynak",
+      "favoriler",
+      "yazılım"
+    ],
+    "color": "#f59e0b",
+    "isPinned": false,
+    "description": "Aleyulala GitHub Stars - Favorilere eklenen ve yıldızlanan seçkin açık kaynaklı yazılım depoları.",
+    "views": 285,
+    "commentsCount": 7,
+    "authorName": "ALEYULALA"
+  },
+  {
+    "title": "PixVerse AI",
+    "url": "https://app.pixverse.ai/",
+    "categoryName": "AI",
+    "tags": [
+      "ai",
+      "video",
+      "generative-ai",
+      "medya",
+      "sinema"
+    ],
+    "color": "#ec4899",
+    "isPinned": false,
+    "description": "PixVerse AI - Metin ve görsellerden yüksek kaliteli sinematik yapay zeka videoları üreten stüdyo.",
+    "views": 420,
+    "commentsCount": 11,
+    "authorName": "PIXVERSE"
+  },
+  {
+    "title": "Google Labs",
+    "url": "https://labs.google/",
+    "categoryName": "AI",
+    "tags": [
+      "google",
+      "ai",
+      "experiments",
+      "teknoloji",
+      "inovasyon"
+    ],
+    "color": "#4285f4",
+    "isPinned": false,
+    "description": "Google Labs - Google tarafından geliştirilen en yeni deneysel yapay zeka araçları ve yenilikçi projeler.",
+    "views": 512,
+    "commentsCount": 14,
+    "authorName": "GOOGLE"
+  },
+  {
+    "title": "Tiny Lesson",
+    "url": "https://labs.google/lll/en/experiments/tiny-lesson",
+    "categoryName": "Eğitim",
+    "tags": [
+      "google",
+      "eğitim",
+      "ai",
+      "tiny-lesson",
+      "öğrenim"
+    ],
+    "color": "#ea4335",
+    "isPinned": false,
+    "description": "Tiny Lesson - Google Labs tarafından geliştirilen, konuları hızlı mikro derslere dönüştüren etkileşimli yapay zeka deneyi.",
+    "views": 367,
+    "commentsCount": 8,
+    "authorName": "GOOGLE LABS"
+  },
+  {
     "title": "Google AI Studio",
     "url": "https://aistudio.google.com/",
     "categoryName": "AI",
