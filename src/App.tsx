@@ -41,8 +41,26 @@ type MainViewType =
   | 'privacy';
 
 export const App: React.FC = () => {
-  // Navigation View State
-  const [activeView, setActiveView] = useState<MainViewType>('dashboard');
+  // Navigation View State (URL Query ?view=privacy ve Hash #privacy Desteğiyle Başlat)
+  const [activeView, setActiveView] = useState<MainViewType>(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const viewParam = params.get('view') || params.get('tab') || params.get('page');
+      const hash = window.location.hash.replace(/^#/, '').toLowerCase();
+
+      if (viewParam === 'privacy' || hash === 'privacy' || hash === 'politikalar') {
+        return 'privacy';
+      }
+      if (viewParam === 'links' || hash === 'links') return 'links';
+      if (viewParam === 'pinned' || hash === 'pinned') return 'pinned';
+      if (viewParam === 'collections' || viewParam === 'collections_list' || hash === 'collections') return 'collections_list';
+      if (viewParam === 'tags' || viewParam === 'tags_list' || hash === 'tags') return 'tags_list';
+      if (viewParam === 'trash' || hash === 'trash') return 'trash';
+    } catch {
+      // ignore
+    }
+    return 'dashboard';
+  });
   const [selectedPost, setSelectedPost] = useState<LinkItem | null>(null);
   const [selectedCollectionId, setSelectedCollectionId] = useState<number | null>(null);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
@@ -151,6 +169,70 @@ export const App: React.FC = () => {
   useEffect(() => {
     updateStorage();
   }, []);
+
+  // URL Query & Hash Değişikliklerini Dinle (Blogger Deep-Linking & Browser History)
+  useEffect(() => {
+    const handleUrlChange = () => {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const viewParam = params.get('view') || params.get('tab') || params.get('page');
+        const hash = window.location.hash.replace(/^#/, '').toLowerCase();
+
+        if (viewParam === 'privacy' || hash === 'privacy' || hash === 'politikalar') {
+          setActiveView('privacy');
+        } else if (viewParam === 'links' || hash === 'links') {
+          setActiveView('links');
+        } else if (viewParam === 'pinned' || hash === 'pinned') {
+          setActiveView('pinned');
+        } else if (viewParam === 'collections' || viewParam === 'collections_list' || hash === 'collections') {
+          setActiveView('collections_list');
+        } else if (viewParam === 'tags' || viewParam === 'tags_list' || hash === 'tags') {
+          setActiveView('tags_list');
+        } else if (viewParam === 'trash' || hash === 'trash') {
+          setActiveView('trash');
+        } else if (!viewParam && !hash) {
+          setActiveView('dashboard');
+        }
+      } catch {
+        // ignore
+      }
+    };
+
+    window.addEventListener('popstate', handleUrlChange);
+    window.addEventListener('hashchange', handleUrlChange);
+    return () => {
+      window.removeEventListener('popstate', handleUrlChange);
+      window.removeEventListener('hashchange', handleUrlChange);
+    };
+  }, []);
+
+  // activeView Değiştiğinde URL Query Parametresini Güncelle (?view=privacy vb.)
+  useEffect(() => {
+    try {
+      const url = new URL(window.location.href);
+      if (activeView === 'privacy') {
+        if (url.searchParams.get('view') !== 'privacy') {
+          url.searchParams.set('view', 'privacy');
+          window.history.replaceState({}, '', url.toString());
+        }
+      } else if (activeView === 'dashboard') {
+        if (url.searchParams.has('view') || url.searchParams.has('tab') || url.searchParams.has('page')) {
+          url.searchParams.delete('view');
+          url.searchParams.delete('tab');
+          url.searchParams.delete('page');
+          const cleanPath = url.pathname + (url.search ? url.search : '') + (url.hash ? url.hash : '');
+          window.history.replaceState({}, '', cleanPath);
+        }
+      } else if (['links', 'pinned', 'collections_list', 'tags_list', 'trash'].includes(activeView)) {
+        if (url.searchParams.get('view') !== activeView) {
+          url.searchParams.set('view', activeView);
+          window.history.replaceState({}, '', url.toString());
+        }
+      }
+    } catch {
+      // ignore
+    }
+  }, [activeView]);
 
   // Reactive IndexedDB data via Dexie
   const allLinks = useLiveQuery(() => db.links.toArray(), []) || [];

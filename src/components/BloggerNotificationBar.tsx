@@ -69,7 +69,7 @@ export const BloggerNotificationBar: React.FC = () => {
               <a
                 href="https://aleyulala.github.io/saved/"
                 className="ali-nsone-amp font-bold text-[15px] text-[#60cdff] px-2 py-0.5 rounded-md hover:bg-white/10 hover:scale-125 transition-all cursor-pointer"
-                title="SAVED"
+                title="ALİ &amp; NSONE"
               >
                 &amp;
               </a>
@@ -88,7 +88,7 @@ export const BloggerNotificationBar: React.FC = () => {
           {/* SLAYT 1: Bildiri / Duyuru Metni */}
           {activeSlide === 1 && (
             <p className="text-xs text-[#d4d4d4] truncate leading-normal animate-in fade-in duration-300">
-              <span className="text-[#60cdff] font-bold">SAVED: </span>
+              <span className="text-[#60cdff] font-bold">Duyuru: </span>
               Tüm yer imleriniz, kategorileriniz ve etiketleriniz Local-First mimarisiyle tarayıcınızda saklanmaktadır.
             </p>
           )}

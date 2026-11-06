@@ -111,18 +111,15 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
       <aside 
         className="relative w-[85vw] max-w-[480px] bg-[#1e1e1e] border-r border-[#252526] h-full flex flex-col justify-between shadow-2xl z-10 overflow-hidden transform transition-transform duration-300 ease-out"
       >
-        {/* Drawer Header: SAVED Brand & Close button */}
-        <div className="p-4 border-b border-[#252526] flex items-center justify-between bg-[#1e1e1e]">
-          <div className="flex items-center gap-2">
-            <span className="font-extrabold text-base tracking-wider text-white uppercase">
-              SAVED
-            </span>
-          </div>
+        {/* Drawer Header (.mnH - XML 1:1) */}
+        <div className="h-[60px] px-4 border-b border-[#252526] flex items-center justify-between bg-[#1e1e1e]">
+          <span className="text-sm font-medium text-[#989b9f]">Menü</span>
 
           <button
             onClick={onClose}
             className="w-8 h-8 rounded-lg bg-[#252526] hover:bg-[#333333] text-[#a3a3a3] hover:text-white flex items-center justify-center transition-colors cursor-pointer"
             title="Kapat"
+            aria-label="Kapat"
           >
             <CloseIcon className="w-4 h-4" />
           </button>

@@ -208,26 +208,16 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
   return (
     <header className="sticky top-0 z-40 w-full h-[60px] bg-[#1e1e1e] border-b border-[#252526] px-3 sm:px-6 flex items-center justify-between select-none shadow-sm">
       
-      {/* Sol Bölüm: Hamburger + SAVED Marka Başlığı */}
-      <div className="flex items-center gap-3 shrink-0">
+      {/* Sol Bölüm: Hamburger Menü Butonu */}
+      <div className="flex items-center gap-2 shrink-0">
         <button
           onClick={onToggleSidebar}
-          className="p-1.5 rounded-lg text-[#989b9f] hover:text-[#fffdfc] hover:bg-[#252526] transition-colors cursor-pointer"
+          className="p-2 rounded-lg text-[#989b9f] hover:text-[#fffdfc] hover:bg-[#252526] transition-colors cursor-pointer flex items-center justify-center"
           aria-label="Menüyü Aç/Kapat"
           title="Menüyü Aç/Kapat"
         >
           <MenuHamburgerIcon className="w-5 h-5" />
         </button>
-
-        <div 
-          onClick={onGoHome}
-          className="cursor-pointer flex items-center gap-2 group"
-          title="Ana Sayfaya Git"
-        >
-          <span className="font-extrabold text-base sm:text-lg tracking-wider text-white group-hover:text-[#60cdff] transition-colors uppercase">
-            SAVED
-          </span>
-        </div>
       </div>
 
       {/* Orta Bölüm: Blogger Hap Tasarımlı Arama Çubuğu (Bul...) */}
@@ -393,15 +383,14 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
           <ArchiveIcon className="w-4 h-4" />
         </button>
 
-        {/* Profil / Ayarlar Butonu (.isPrf - svg.profile-1 & saved pill) */}
+        {/* Profil / Ayarlar Butonu (.isPrf - svg.profile-1 XML 1:1) */}
         <button
           onClick={onOpenSettings}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#252526] hover:bg-[#2f2f34] border border-transparent hover:border-[#60cdff]/50 text-[#60cdff] font-mono text-xs font-bold tracking-wider transition-all select-none shadow-sm active:scale-95 cursor-pointer ml-0.5"
-          title="Saved Ayarları & Yönetim"
+          className="p-2 rounded-lg text-[#989b9f] hover:text-[#fffdfc] hover:bg-[#252526] transition-colors cursor-pointer flex items-center justify-center"
+          title="Ayarlar & Yönetim"
           aria-label="Ayarlar"
         >
-          <Profile1Icon className="w-3.5 h-3.5 text-[#60cdff]" />
-          <span>saved</span>
+          <Profile1Icon className="w-4 h-4" />
         </button>
 
       </div>

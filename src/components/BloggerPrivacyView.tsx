@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   ArrowLeft, 
   ShieldCheck, 
@@ -12,10 +12,18 @@ import {
   BookOpen,
   Award,
   Lock,
-  Layers
+  Layers,
+  Link as LinkIcon
 } from 'lucide-react';
 import { PRIVACY_SECTIONS, PrivacySection } from '../data/privacyContent';
-import { Verify1Icon, BloggerBIcon, TelegramIcon, MailIcon } from './BloggerIcons';
+import { 
+  Verify1Icon, 
+  BloggerBIcon, 
+  TelegramIcon, 
+  MailIcon,
+  VkIcon,
+  MatrixIcon
+} from './BloggerIcons';
 
 interface BloggerPrivacyViewProps {
   onBack: () => void;
@@ -26,31 +34,58 @@ export const BloggerPrivacyView: React.FC<BloggerPrivacyViewProps> = ({
   onBack,
   onGoHome
 }) => {
-  const [activeSectionId, setActiveSectionId] = useState<string>('all');
-  const [copied, setCopied] = useState(false);
+  const [activeSectionId, setActiveSectionId] = useState<string>('');
+  const [copiedLink, setCopiedLink] = useState(false);
+
+  // Generate direct canonical policy link for Blogger embedding
+  const privacyDirectUrl = `${window.location.origin}${window.location.pathname}?view=privacy`;
+
+  useEffect(() => {
+    // If a hash or section is in URL, scroll to it smoothly
+    const hash = window.location.hash.replace(/^#/, '');
+    if (hash) {
+      setActiveSectionId(hash);
+      setTimeout(() => {
+        const el = document.getElementById(hash);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 150);
+    }
+  }, []);
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    navigator.clipboard.writeText(privacyDirectUrl);
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 2000);
+  };
+
+  const handlePillClick = (sectionId: string) => {
+    setActiveSectionId(sectionId);
+    const el = document.getElementById(sectionId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    // Update URL hash without full reload
+    const url = new URL(window.location.href);
+    url.searchParams.set('view', 'privacy');
+    url.hash = sectionId;
+    window.history.replaceState({}, '', url.toString());
   };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('mainScrollContainer')?.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
-  const displayedSections = activeSectionId === 'all' 
-    ? PRIVACY_SECTIONS 
-    : PRIVACY_SECTIONS.filter(s => s.id === activeSectionId);
 
   return (
     <div className="w-full min-h-full pb-20 select-text">
       
       {/* 1. ÜST NAVİGASYON ÇUBUĞU */}
-      <div className="flex items-center justify-between py-3 mb-6 border-b border-[#252526]">
+      <div className="flex items-center justify-between py-3 mb-5 border-b border-[#252526]">
         <button
           onClick={onBack}
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#252526] hover:bg-[#333333] text-sm text-[#d4d4d4] hover:text-white transition-all active:scale-95 cursor-pointer"
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#252526] hover:bg-[#333333] text-xs sm:text-sm text-[#d4d4d4] hover:text-white transition-all active:scale-95 cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4 text-[#38bdf8]" />
           <span>Ana Sayfaya Dön</span>
@@ -60,18 +95,18 @@ export const BloggerPrivacyView: React.FC<BloggerPrivacyViewProps> = ({
           <button
             onClick={handleCopyLink}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#252526] hover:bg-[#333333] text-xs text-[#d4d4d4] hover:text-white transition-colors cursor-pointer"
-            title="Politika Bağlantısını Kopyala"
+            title="Blogger İçin Doğrudan Politika Bağlantısını Kopyala"
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Share2 className="w-3.5 h-3.5" />}
-            <span className="hidden sm:inline">{copied ? 'Kopyalandı' : 'Paylaş'}</span>
+            {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Share2 className="w-3.5 h-3.5" />}
+            <span className="hidden sm:inline">{copiedLink ? 'Kopyalandı' : 'Paylaş'}</span>
           </button>
         </div>
       </div>
 
       {/* 2. BLOGGER GÖNDERİ BAŞLIK BLOĞU (.pHead / .pIn) */}
-      <header className="mb-8 space-y-4">
+      <header className="mb-6 space-y-4">
         {/* Kategori Rozeti */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1e293b] text-[#38bdf8] text-xs font-semibold">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#1e293b] text-[#38bdf8] text-xs font-semibold">
           <ShieldCheck className="w-3.5 h-3.5" />
           <span>Yasal İlkeler & Blogger Politikaları</span>
         </div>
@@ -81,7 +116,7 @@ export const BloggerPrivacyView: React.FC<BloggerPrivacyViewProps> = ({
           Gizlilik Politikası, Blogger Yayın İlkeleri ve GNU GPLv3 Lisansı
         </h1>
 
-        <p className="text-sm sm:text-base text-[#a1a1aa] leading-relaxed max-w-3xl">
+        <p className="text-xs sm:text-sm text-[#a1a1aa] leading-relaxed max-w-3xl">
           Saved Startpage ve Blogger ağımızın şeffaf veri egemenliği manifestosu: Sıfır veri toplama, 
           istemci taraflı yerel depolama, 5651 Sayılı Kanun sorumluluk sınırları, 6698 Sayılı KVKK uyumu 
           ve GNU Genel Kamu Lisansı v3.0 şartları.
@@ -110,50 +145,69 @@ export const BloggerPrivacyView: React.FC<BloggerPrivacyViewProps> = ({
             <span>12 dk okuma süresi</span>
           </div>
 
-          <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-950/70 text-emerald-400 font-semibold text-[11px]">
+          <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-emerald-950/70 text-emerald-400 font-semibold text-[11px]">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             <span>Güncel & Yayında</span>
           </div>
         </div>
       </header>
 
-      {/* 3. HIZLI BÖLÜM GEÇİŞİ HAPLARI (TOC / Pills) */}
-      <nav className="mb-8 select-none">
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-          <button
-            onClick={() => setActiveSectionId('all')}
-            className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
-              activeSectionId === 'all'
-                ? 'bg-[#38bdf8] text-[#0f172a] shadow-md shadow-sky-500/20 font-bold'
-                : 'bg-[#252526] hover:bg-[#333333] text-[#d4d4d4]'
-            }`}
-          >
-            Tüm Bölümler ({PRIVACY_SECTIONS.length})
-          </button>
+      {/* 2.1 BLOG ENTEGRASYON URL'İ KUTUSU (Blogger Sayfaları İçin Doğrudan URL Eki) */}
+      <div className="p-3.5 rounded-xl bg-[#252526] border border-white/5 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-sm">
+        <div className="space-y-0.5">
+          <div className="flex items-center gap-1.5 text-white font-bold">
+            <LinkIcon className="w-3.5 h-3.5 text-[#60cdff]" />
+            <span>Blogger Sayfaları Doğrudan Bağlantı URL'i:</span>
+          </div>
+          <p className="text-[11px] text-[#9ca3af]">
+            Blog şablonunuza, alt menüye veya yazılarınıza doğrudan bu bağlantıyı ekleyebilirsiniz.
+          </p>
+        </div>
 
-          {PRIVACY_SECTIONS.map((sec) => (
+        <div className="flex items-center gap-2">
+          <code className="px-2.5 py-1.5 rounded-lg bg-[#1e1e1e] text-[#60cdff] font-mono text-[11px] select-all truncate max-w-[260px] sm:max-w-[320px]">
+            {privacyDirectUrl}
+          </code>
+          <button
+            type="button"
+            onClick={handleCopyLink}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#38bdf8] hover:bg-[#7dd3fc] text-[#0f172a] font-bold text-xs transition-all active:scale-95 cursor-pointer shrink-0 shadow-md shadow-sky-500/20"
+            title="URL Bağlantısını Kopyala"
+          >
+            {copiedLink ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+            <span>{copiedLink ? 'Kopyalandı!' : 'Kopyala'}</span>
+          </button>
+        </div>
+      </div>
+
+      {/* 3. BÖLÜMLERE HIZLI ATLAMA HAPLARI (TOC / İçindekiler - "Tüm Bölümler" BUTONU YOK) */}
+      <nav className="mb-8 select-none">
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none touch-pan-x">
+          {PRIVACY_SECTIONS.map((sec, idx) => (
             <button
               key={sec.id}
-              onClick={() => setActiveSectionId(sec.id)}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
+              onClick={() => handlePillClick(sec.id)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
                 activeSectionId === sec.id
                   ? 'bg-[#38bdf8] text-[#0f172a] shadow-md shadow-sky-500/20 font-bold'
-                  : 'bg-[#252526] hover:bg-[#333333] text-[#a1a1aa] hover:text-white'
+                  : 'bg-[#252526] hover:bg-[#333333] text-[#d4d4d4] hover:text-white'
               }`}
             >
-              {sec.title}
+              <span>{idx + 1}. {sec.title}</span>
             </button>
           ))}
         </div>
       </nav>
 
-      {/* 4. POLİTİKA BÖLÜMLERİ LİSTESİ (.pCntn / Post Body) */}
+      {/* 4. TÜM POLİTİKA BÖLÜMLERİ (.pCntn / Post Body - Kesintisiz Tam Liste) */}
       <main className="space-y-6">
-        {displayedSections.map((sec, idx) => (
+        {PRIVACY_SECTIONS.map((sec) => (
           <article
             key={sec.id}
             id={sec.id}
-            className="rounded-lg bg-[#252526] border border-transparent p-6 sm:p-8 space-y-4 shadow-md transition-all duration-200"
+            className={`rounded-xl bg-[#252526] border p-6 sm:p-8 space-y-4 shadow-md transition-all duration-300 ${
+              activeSectionId === sec.id ? 'border-[#38bdf8]/40 ring-1 ring-[#38bdf8]/20' : 'border-transparent'
+            }`}
           >
             {/* Bölüm Başlık Alanı */}
             <div className="space-y-1 border-b border-[#333333] pb-3">
@@ -170,7 +224,7 @@ export const BloggerPrivacyView: React.FC<BloggerPrivacyViewProps> = ({
 
             {/* Rozet */}
             {sec.badge && (
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1e1e1e] border border-transparent text-xs text-[#38bdf8] font-medium">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-[#1e1e1e] border border-transparent text-xs text-[#38bdf8] font-medium">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 <span>{sec.badge}</span>
               </div>
@@ -185,11 +239,14 @@ export const BloggerPrivacyView: React.FC<BloggerPrivacyViewProps> = ({
         ))}
       </main>
 
-      {/* 5. BLOGGER YAZAR TANITIM KARTI (.admAbt) */}
-      <section className="mt-12 rounded-lg bg-[#252526] border border-transparent p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start gap-5 shadow-md">
+      {/* 5. BLOGGER YAZAR TANITIM KARTI (.admAbt - XML 1:1) */}
+      <section className="mt-12 rounded-xl bg-[#252526] border border-transparent p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start gap-5 shadow-md">
         <div className="relative w-16 h-16 rounded-full bg-gradient-to-tr from-[#38bdf8] to-indigo-600 p-0.5 shadow-lg shrink-0">
           <div className="w-full h-full rounded-full bg-[#1e1e1e] flex items-center justify-center font-bold text-xl text-white">
             N
+          </div>
+          <div className="absolute -bottom-1 -right-1 bg-[#1e1e1e] rounded-full p-0.5">
+            <Verify1Icon className="w-4 h-4 text-[#38bdf8]" />
           </div>
         </div>
 
@@ -200,8 +257,8 @@ export const BloggerPrivacyView: React.FC<BloggerPrivacyViewProps> = ({
               <Verify1Icon className="w-4 h-4 text-[#38bdf8]" />
               <span className="text-xs text-[#71717a]">(@aleyulala)</span>
             </div>
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#1e1e1e] text-[11px] font-semibold text-[#60cdff]">
-              Blogger & Yazılım Mimarı
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#1e1e1e] text-[11px] font-semibold text-[#60cdff]">
+              Blogger &amp; Yazılım Mimarı
             </span>
           </div>
 
@@ -217,27 +274,52 @@ export const BloggerPrivacyView: React.FC<BloggerPrivacyViewProps> = ({
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#d4d4d4] hover:text-white transition-colors"
+              title="Blogger Profil"
             >
               <BloggerBIcon className="w-3.5 h-3.5 text-amber-500" />
               <span>Blogger</span>
             </a>
 
             <a
-              href="https://t.me/aleyulala"
+              href="https://matrix.to/#/#negronn-show:matrix.org"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#d4d4d4] hover:text-white transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#60cdff] hover:text-white transition-colors"
+              title="Matrix / Element.io: @negronn:matrix.org"
+            >
+              <MatrixIcon className="w-3.5 h-3.5 text-[#60cdff]" />
+              <span>Element.io</span>
+            </a>
+
+            <a
+              href="https://t.me/aleyyulala"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#229ed9] text-[#d4d4d4] hover:text-white transition-colors"
+              title="Telegram"
             >
               <TelegramIcon className="w-3.5 h-3.5 text-sky-400" />
               <span>Telegram</span>
             </a>
 
             <a
-              href="mailto:contact@saved.local"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#d4d4d4] hover:text-white transition-colors"
+              href="https://vk.com/negronn"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#4680c2] text-[#d4d4d4] hover:text-white transition-colors"
+              title="VKontakte"
+            >
+              <VkIcon className="w-3.5 h-3.5 text-[#4680c2]" />
+              <span>VK</span>
+            </a>
+
+            <a
+              href="mailto:mrstar14155@gmail.com"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#ea4335] text-[#d4d4d4] hover:text-white transition-colors"
+              title="E-posta İletişim"
             >
               <MailIcon className="w-3.5 h-3.5 text-rose-400" />
-              <span>İletişim & Destek</span>
+              <span>E-posta</span>
             </a>
           </div>
         </div>
