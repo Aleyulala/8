@@ -5,7 +5,9 @@ import {
   Verify1Icon, 
   EyeIcon, 
   MessageNotif1Icon, 
-  ArchiveIcon 
+  ArchiveIcon,
+  ArchiveAddIcon,
+  ArchiveTickIcon
 } from './BloggerIcons';
 
 interface LinkCardProps {
@@ -101,22 +103,31 @@ export const LinkCard: React.FC<LinkCardProps> = ({
             <span>{comments}</span>
           </div>
 
-          <div 
+          {/* Blogger XML 1:1 Yer İmleri / Kaydet Butonu (.bm-button) */}
+          <button
+            type="button"
             onClick={(e) => {
               if (onTogglePin && link.id) {
                 e.stopPropagation();
                 onTogglePin(link.id, link.isPinned);
               }
             }}
-            className={`p-1 rounded-lg backdrop-blur-md text-[10px] shadow-sm transition-colors ${
+            className={`tIc bm-button p-1.5 rounded-lg backdrop-blur-md shadow-sm transition-all duration-200 active:scale-90 cursor-pointer ${
               link.isPinned 
-                ? 'bg-amber-500/30 text-amber-300' 
-                : 'bg-black/65 text-white/80 hover:text-white'
+                ? 'added bg-amber-500/25 text-amber-300 shadow-[0_0_8px_rgba(251,191,36,0.3)]' 
+                : 'bg-black/65 text-white/80 hover:text-[#60cdff] hover:bg-black/85'
             }`}
-            title={link.isPinned ? 'Sabitlendi' : 'Sabitle'}
+            data-save="Kaydet"
+            data-saved="Kaydedildi"
+            title={link.isPinned ? 'Kaydedildi' : 'Kaydet'}
+            aria-label={link.isPinned ? 'Kaydedildi' : 'Kaydet'}
           >
-            <ArchiveIcon className={`w-3.5 h-3.5 ${link.isPinned ? 'text-amber-300' : 'text-white/80'}`} />
-          </div>
+            {link.isPinned ? (
+              <ArchiveTickIcon className="w-3.5 h-3.5 text-amber-300" />
+            ) : (
+              <ArchiveAddIcon className="w-3.5 h-3.5 text-white/90" />
+            )}
+          </button>
         </div>
 
         {/* Sol Alt: Yazar / Marka Rozeti (AI ✔ / NEGRONN ✔) */}

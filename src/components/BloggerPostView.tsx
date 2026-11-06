@@ -26,7 +26,11 @@ import {
   BloggerBIcon, 
   TelegramIcon, 
   InstagramIcon, 
-  MailIcon 
+  MailIcon,
+  ArchiveAddIcon,
+  ArchiveTickIcon,
+  VkIcon,
+  MatrixIcon
 } from './BloggerIcons';
 import { MediaItem } from './UniversalMediaModal';
 
@@ -135,16 +139,26 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
 
         {/* Aksiyon Butonları */}
         <div className="flex items-center gap-1.5">
+          {/* Blogger XML 1:1 Yer İmleri / Kaydet Butonu (.bm-button) */}
           <button
+            type="button"
             onClick={() => link.id && onTogglePin(link.id, link.isPinned)}
-            className={`p-2 rounded-lg transition-all ${
+            className={`tIc bm-button flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all active:scale-95 cursor-pointer ${
               link.isPinned
-                ? 'bg-amber-500/20 text-amber-300'
-                : 'bg-[#252526] text-[#a1a1aa] hover:text-white'
+                ? 'added bg-amber-500/25 text-amber-300 shadow-[0_0_8px_rgba(251,191,36,0.3)]'
+                : 'bg-[#252526] hover:bg-[#333333] text-[#d4d4d4] hover:text-[#60cdff]'
             }`}
-            title={link.isPinned ? 'Sabitlemeyi kaldır' : 'Sabitle'}
+            data-save="Kaydet"
+            data-saved="Kaydedildi"
+            title={link.isPinned ? 'Kaydedildi' : 'Kaydet'}
+            aria-label={link.isPinned ? 'Kaydedildi' : 'Kaydet'}
           >
-            <Star className={`w-4 h-4 ${link.isPinned ? 'fill-current' : ''}`} />
+            {link.isPinned ? (
+              <ArchiveTickIcon className="w-4 h-4 text-amber-300" />
+            ) : (
+              <ArchiveAddIcon className="w-4 h-4" />
+            )}
+            <span className="hidden sm:inline">{link.isPinned ? 'Kaydedildi' : 'Kaydet'}</span>
           </button>
 
           <button
@@ -398,53 +412,91 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
         </div>
       )}
 
-      {/* 6. Blogger Yazar Tanıtım Kartı (.admAbt) */}
-      <div className="rounded-lg bg-[#252526] border border-transparent p-5 flex flex-col sm:flex-row items-center sm:items-start gap-4 shadow-md text-center sm:text-left">
-        <div className="relative w-14 h-14 rounded-lg bg-gradient-to-tr from-amber-500 via-rose-500 to-indigo-600 p-0.5 shadow-md shrink-0">
-          <div className="w-full h-full rounded-md bg-[#1e1e1e] flex items-center justify-center font-bold text-base text-[#fffdfc]">
-            AY
-          </div>
-        </div>
+      {/* 6. Blogger Yazar Tanıtım Kartı (.admAbt - XML 1:1) */}
+      <div className="admAbt rounded-lg bg-[#252526] border border-transparent p-5 space-y-3 shadow-md" id="author">
+        <h2 className="title dt text-xs font-bold uppercase tracking-wider text-[#989b9f] border-b border-[#333333] pb-2 flex items-center gap-2">
+          <span>Yazar Hakkında</span>
+        </h2>
 
-        <div className="flex-1 space-y-2">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-            <div className="flex items-center justify-center sm:justify-start gap-1.5">
-              <h4 className="font-bold text-sm text-white">Ali Yıldız</h4>
-              <Verify1Icon className="w-3.5 h-3.5 text-[#38bdf8]" />
-              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-[#ff5722]/20 text-[#ff5722] font-semibold">BLOGGER</span>
+        <div className="admPs flex flex-col sm:flex-row items-center sm:items-start gap-4">
+          <div className="admIm relative w-14 h-14 rounded-full bg-gradient-to-tr from-[#38bdf8] via-indigo-500 to-rose-500 p-0.5 shadow-md shrink-0">
+            <div className="w-full h-full rounded-full bg-[#1e1e1e] flex items-center justify-center font-bold text-base text-white">
+              N
             </div>
-            <span className="text-[11px] text-[#71717a]">Yazar & Geliştirici</span>
+            <div className="absolute -bottom-1 -right-1 bg-[#1e1e1e] rounded-full p-0.5">
+              <Verify1Icon className="w-3.5 h-3.5 text-[#38bdf8]" />
+            </div>
           </div>
 
-          <p className="text-xs text-[#989b9f] leading-relaxed">
-            Local-First Linkwarden yöneticisi. 352 bağlantı ve 14 kategoriyle tüm web akışınız çevrimdışı elinizin altında.
-          </p>
+          <div className="admI flex-1 space-y-2 text-center sm:text-left">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+              <div className="flex items-center justify-center sm:justify-start gap-1.5">
+                <span className="text-xs text-[#71717a]">Yazan:</span>
+                <bdi className="admN font-extrabold text-sm text-white tracking-wide">NEGRONN</bdi>
+                <Verify1Icon className="w-3.5 h-3.5 text-[#38bdf8]" />
+                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[#ff5722]/20 text-[#ff5722] font-semibold">BLOGGER</span>
+              </div>
+              <span className="text-[11px] text-[#71717a]">Yazar & Yazılım Mimarı</span>
+            </div>
 
-          <div className="flex items-center justify-center sm:justify-start gap-2 pt-1 text-xs">
-            <a
-              href="https://github.com/Aleyulala/saved"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-2.5 py-1 rounded-lg bg-[#1e1e1e] hover:bg-white hover:text-black text-[#d4d4d4] border border-transparent transition-colors"
-            >
-              GitHub
-            </a>
-            <a
-              href="https://t.me/aleyyulala"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-2.5 py-1 rounded-lg bg-[#1e1e1e] hover:bg-[#229ed9] text-[#d4d4d4] hover:text-white border border-transparent transition-colors"
-            >
-              Telegram
-            </a>
-            <a
-              href="https://www.instagram.com/aleyul.ala/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-2.5 py-1 rounded-lg bg-[#1e1e1e] hover:bg-[#e1306c] text-[#d4d4d4] hover:text-white border border-transparent transition-colors"
-            >
-              Instagram
-            </a>
+            <div className="admA text-xs text-[#989b9f] leading-relaxed">
+              Saved Startpage ve Blogger ağının mimarı. Local-first açık kaynaklı sistemler, gizlilik odaklı web teknolojileri ve dijital içerik üretimi.
+            </div>
+
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1 text-xs">
+              <a
+                href="https://aleyulala.blogspot.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#d4d4d4] hover:text-white transition-colors"
+                title="Blogger Profil"
+              >
+                <BloggerBIcon className="w-3.5 h-3.5 text-amber-500" />
+                <span>Blogger</span>
+              </a>
+
+              <a
+                href="https://matrix.to/#/#negronn-show:matrix.org"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#60cdff] hover:text-white transition-colors"
+                title="Topluluk: Matrix / Element.io (@negronn:matrix.org)"
+              >
+                <MatrixIcon className="w-3.5 h-3.5 text-[#60cdff]" />
+                <span>Element.io</span>
+              </a>
+
+              <a
+                href="https://t.me/aleyyulala"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#1e1e1e] hover:bg-[#229ed9] text-[#d4d4d4] hover:text-white transition-colors"
+                title="Telegram"
+              >
+                <TelegramIcon className="w-3.5 h-3.5 text-sky-400" />
+                <span>Telegram</span>
+              </a>
+
+              <a
+                href="https://vk.com/negronn"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#1e1e1e] hover:bg-[#4680c2] text-[#d4d4d4] hover:text-white transition-colors"
+                title="VKontakte (VK)"
+              >
+                <VkIcon className="w-3.5 h-3.5 text-[#4680c2]" />
+                <span>VK</span>
+              </a>
+
+              <a
+                href="mailto:mrstar14155@gmail.com"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#1e1e1e] hover:bg-[#ea4335] text-[#d4d4d4] hover:text-white transition-colors"
+                title="E-posta"
+              >
+                <MailIcon className="w-3.5 h-3.5 text-rose-400" />
+                <span>E-posta</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>

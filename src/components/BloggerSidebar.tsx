@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { 
   Plus, 
-  ChevronDown, 
-  ChevronRight, 
   ExternalLink,
   Layers,
   Zap,
@@ -12,7 +10,9 @@ import {
   Eye,
   ShieldCheck,
   Send,
-  Code2
+  Code2,
+  BookOpen,
+  Phone
 } from 'lucide-react';
 import { 
   HomeIcon,
@@ -23,7 +23,9 @@ import {
   InstagramIcon, 
   TelegramIcon, 
   MailIcon, 
-  GithubIcon 
+  GithubIcon,
+  VkIcon,
+  MatrixIcon
 } from './BloggerIcons';
 import { CollectionItem, TagItem } from '../types';
 
@@ -59,6 +61,8 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
   const [hizmetlerOpen, setHizmetlerOpen] = useState(true);
   const [klasorOpen, setKlasorOpen] = useState(true);
   const [gelistiriciOpen, setGelistiriciOpen] = useState(true);
+  const [plusUiOpen, setPlusUiOpen] = useState(false);
+  const [socialExpanded, setSocialExpanded] = useState(false);
 
   return (
     <aside className="w-[230px] bg-[#1e1e1e] border-r border-[#252526] flex flex-col justify-between h-[calc(100vh-60px)] shrink-0 text-xs select-none shadow-xs">
@@ -69,7 +73,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
         {/* Blogger Gezinme Menüsü (.mnMn) */}
         <ul className="space-y-1">
           
-          {/* 1. KÖK BUTON: Ana Sayfa (Hiçbir klasörün içinde değil, Blogger'daki gibi bağımsız) */}
+          {/* 1. KÖK BUTON: Ana Sayfa */}
           <li>
             <button
               onClick={() => onSelectTab('dashboard')}
@@ -86,7 +90,27 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
             </button>
           </li>
 
-          {/* 2. KLASÖR 1: Hizmetler (3 Buton) */}
+          {/* 2. TOPLULUK: Element.io / Matrix Grubu */}
+          <li>
+            <a
+              href="https://matrix.to/#/#negronn-show:matrix.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full flex items-center justify-between px-3 py-2 rounded-lg font-medium bg-[#1e293b]/40 hover:bg-[#1e293b] text-[#38bdf8] transition-colors group cursor-pointer border border-transparent"
+              title="Element.io Matrix Topluluğu (Oda: !CYfB8T6Ikr-o54o-gK1nOkET7s1pxixgZ-GJEGIFIT0)"
+            >
+              <div className="flex items-center gap-2">
+                <MatrixIcon className="w-4 h-4 text-[#38bdf8]" />
+                <div className="flex flex-col text-left">
+                  <span className="font-bold text-xs text-white group-hover:text-[#38bdf8]">Topluluk</span>
+                  <span className="text-[9px] text-[#9ca3af] font-mono">@negronn:matrix.org</span>
+                </div>
+              </div>
+              <ExternalLink className="w-3 h-3 text-[#38bdf8] opacity-70 group-hover:opacity-100" />
+            </a>
+          </li>
+
+          {/* 3. KLASÖR 1: Hizmetler (+ / − Genişletilebilir) */}
           <li className="pt-1">
             <div 
               onClick={() => setHizmetlerOpen(!hizmetlerOpen)}
@@ -96,9 +120,17 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                 <Layers className="w-4 h-4 text-[#60cdff]" />
                 <span>Hizmetler</span>
               </div>
-              <div className="flex items-center gap-1 text-[#989b9f]">
-                {hizmetlerOpen ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
-              </div>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setHizmetlerOpen(!hizmetlerOpen);
+                }}
+                className="w-5 h-5 rounded-full bg-[#1e1e1e] hover:bg-[#333333] border border-white/10 flex items-center justify-center text-xs font-bold text-[#60cdff] transition-all cursor-pointer"
+                aria-label={hizmetlerOpen ? "Daralt" : "Genişlet"}
+              >
+                {hizmetlerOpen ? '−' : '+'}
+              </button>
             </div>
 
             {hizmetlerOpen && (
@@ -156,7 +188,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
             )}
           </li>
 
-          {/* 3. KLASÖR 2: Klasör (New! Rozeti + 3 Buton) */}
+          {/* 4. KLASÖR 2: Klasör (+ / − Genişletilebilir) */}
           <li className="pt-1">
             <div 
               onClick={() => setKlasorOpen(!klasorOpen)}
@@ -169,9 +201,17 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                   New!
                 </span>
               </div>
-              <div className="flex items-center gap-1 text-[#989b9f]">
-                {klasorOpen ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
-              </div>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setKlasorOpen(!klasorOpen);
+                }}
+                className="w-5 h-5 rounded-full bg-[#1e1e1e] hover:bg-[#333333] border border-white/10 flex items-center justify-center text-xs font-bold text-[#60cdff] transition-all cursor-pointer"
+                aria-label={klasorOpen ? "Daralt" : "Genişlet"}
+              >
+                {klasorOpen ? '−' : '+'}
+              </button>
             </div>
 
             {klasorOpen && (
@@ -215,7 +255,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                 {/* 3. Geri Bildirim (Saved GitHub Discussions) */}
                 <li>
                   <a
-                    href="https://github.com/Aleyulala/saved/discussions/?pli=1"
+                    href="https://github.com/Aleyulala/saved/discussions"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
@@ -231,7 +271,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
             )}
           </li>
 
-          {/* 4. KLASÖR 3: Geliştirici (theme-1915278968279215939.xml: 3 Buton) */}
+          {/* 5. KLASÖR 3: Geliştirici (+ / − Genişletilebilir) */}
           <li className="pt-1">
             <div 
               onClick={() => setGelistiriciOpen(!gelistiriciOpen)}
@@ -241,9 +281,17 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                 <Code2 className="w-4 h-4 text-[#60cdff]" />
                 <span>Geliştirici</span>
               </div>
-              <div className="flex items-center gap-1 text-[#989b9f]">
-                {gelistiriciOpen ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
-              </div>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setGelistiriciOpen(!gelistiriciOpen);
+                }}
+                className="w-5 h-5 rounded-full bg-[#1e1e1e] hover:bg-[#333333] border border-white/10 flex items-center justify-center text-xs font-bold text-[#60cdff] transition-all cursor-pointer"
+                aria-label={gelistiriciOpen ? "Daralt" : "Genişlet"}
+              >
+                {gelistiriciOpen ? '−' : '+'}
+              </button>
             </div>
 
             {gelistiriciOpen && (
@@ -304,12 +352,144 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
             )}
           </li>
 
+          {/* 6. KLASÖR 4: Plus UI Dokümantasyon & Bileşenler (+ / − Genişletilebilir) */}
+          <li className="pt-1">
+            <div 
+              onClick={() => setPlusUiOpen(!plusUiOpen)}
+              className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-[#d4d4d4] hover:bg-[#252526] hover:text-white cursor-pointer transition-colors"
+            >
+              <div className="flex items-center gap-2.5">
+                <BookOpen className="w-4 h-4 text-emerald-400" />
+                <span>Plus UI Dokümanlar</span>
+                <span className="px-1.5 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 text-[9px] font-bold">
+                  3.0
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setPlusUiOpen(!plusUiOpen);
+                }}
+                className="w-5 h-5 rounded-full bg-[#1e1e1e] hover:bg-[#333333] border border-white/10 flex items-center justify-center text-xs font-bold text-[#60cdff] transition-all cursor-pointer"
+                aria-label={plusUiOpen ? "Daralt" : "Genişlet"}
+              >
+                {plusUiOpen ? '−' : '+'}
+              </button>
+            </div>
+
+            {plusUiOpen && (
+              <ul className="space-y-0.5 pl-3 border-l border-white/10 ml-4 mt-1">
+                <li>
+                  <a
+                    href="https://plus-ui.fineshop.app/2024/10/menu.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+                  >
+                    <span>1. Menü & Gezinme</span>
+                    <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://plus-ui.fineshop.app/2024/10/components.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+                  >
+                    <span>2. Bileşenler</span>
+                    <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://plus-ui.fineshop.app/2024/10/plugins.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+                  >
+                    <span>3. Eklentiler (Plugins)</span>
+                    <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://plus-ui.fineshop.app/2024/10/tabs.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+                  >
+                    <span>4. Sekmeler & Tab</span>
+                    <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://plus-ui.fineshop.app/2024/10/split.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+                  >
+                    <span>5. Bölünmüş Sayfa</span>
+                    <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://plus-ui.fineshop.app/2024/10/fullpage.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+                  >
+                    <span>6. Tam Sayfa</span>
+                    <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://plus-ui.fineshop.app/2024/10/comments.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+                  >
+                    <span>7. Yorum Sistemi</span>
+                    <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://plus-ui.fineshop.app/2024/10/appearance.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+                  >
+                    <span>8. Tema & Görünüm</span>
+                    <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://plus-ui.fineshop.app/2024/10/installation.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+                  >
+                    <span>9. Kurulum Rehberi</span>
+                    <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
+                  </a>
+                </li>
+              </ul>
+            )}
+          </li>
+
         </ul>
       </div>
 
-      {/* Alt Bölüm (.mnBrs Footer): Sosyal Ağlar (.mSoc) */}
+      {/* Alt Bölüm (.mnBrs Footer): Sosyal Ağlar (.mSoc + Genişletme) */}
       <div className="p-3 border-t border-[#252526] bg-[#1e1e1e] space-y-2">
         <div className="flex items-center justify-around text-[#a3a3a3]">
+          {/* Instagram */}
           <a
             href="https://www.instagram.com/aleyul.ala/"
             target="_blank"
@@ -320,6 +500,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
             <InstagramIcon className="w-3.5 h-3.5" />
           </a>
 
+          {/* Telegram */}
           <a
             href="https://t.me/aleyyulala"
             target="_blank"
@@ -330,16 +511,29 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
             <TelegramIcon className="w-3.5 h-3.5" />
           </a>
 
+          {/* Element.io / Matrix */}
           <a
-            href="https://github.com/Aleyulala/saved"
+            href="https://matrix.to/#/#negronn-show:matrix.org"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-7 h-7 rounded-full bg-[#252526] hover:bg-white hover:text-black flex items-center justify-center transition-all duration-200"
-            title="GitHub Deposu"
+            className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[#38bdf8] hover:text-black flex items-center justify-center transition-all duration-200"
+            title="Element.io / Matrix: @negronn:matrix.org"
           >
-            <GithubIcon className="w-3.5 h-3.5" />
+            <MatrixIcon className="w-3.5 h-3.5" />
           </a>
 
+          {/* VKontakte */}
+          <a
+            href="https://vk.com/negronn"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[#4680c2] hover:text-white flex items-center justify-center transition-all duration-200"
+            title="VK (VKontakte)"
+          >
+            <VkIcon className="w-3.5 h-3.5" />
+          </a>
+
+          {/* E-posta */}
           <a
             href="mailto:mrstar14155@gmail.com"
             className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[#ea4335] hover:text-white flex items-center justify-center transition-all duration-200"
@@ -347,11 +541,45 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
           >
             <MailIcon className="w-3.5 h-3.5" />
           </a>
+
+          {/* Genişlet Butonu (.mSocT) */}
+          <button
+            type="button"
+            onClick={() => setSocialExpanded(!socialExpanded)}
+            className="w-6 h-6 rounded-full border border-white/20 hover:border-[#60cdff] text-white hover:text-[#60cdff] flex items-center justify-center font-bold text-xs transition-all cursor-pointer"
+            title={socialExpanded ? "Sosyal Medyayı Daralt" : "Daha Fazla Sosyal Bağlantı"}
+          >
+            {socialExpanded ? '−' : '+'}
+          </button>
         </div>
+
+        {/* Genişletilmiş İletişim / Sosyal Menü */}
+        {socialExpanded && (
+          <div className="pt-2 border-t border-white/5 flex items-center justify-center gap-3 text-[11px] animate-in fade-in duration-200">
+            <a
+              href="tel:05446412904"
+              className="inline-flex items-center gap-1 text-[#9ca3af] hover:text-[#60cdff] transition-colors"
+              title="Telefon ile İletişim"
+            >
+              <Phone className="w-3 h-3" />
+              <span>0544 641 29 04</span>
+            </a>
+            <span className="text-[#52525b]">•</span>
+            <a
+              href="https://github.com/Aleyulala/saved"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-[#9ca3af] hover:text-white transition-colors"
+            >
+              <GithubIcon className="w-3 h-3" />
+              <span>GitHub</span>
+            </a>
+          </div>
+        )}
 
         <div className="flex items-center justify-between text-[10px] text-[#989b9f] font-mono px-1">
           <span>GNU GPL v3.0</span>
-          <span>saved v1.0</span>
+          <span>saved v1.0 • Plus UI</span>
         </div>
       </div>
 
