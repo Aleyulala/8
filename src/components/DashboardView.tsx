@@ -1,13 +1,9 @@
 import React from 'react';
 import { 
   Home, 
-  Link as LinkIcon, 
-  Folder, 
   Hash, 
-  Pin, 
   Clock, 
   ChevronRight, 
-  LayoutGrid, 
   SlidersHorizontal,
   Plus
 } from 'lucide-react';
@@ -15,6 +11,12 @@ import { CollectionItem, LinkItem } from '../types';
 import { DashboardItem } from './DashboardItem';
 import { LinkCard } from './LinkCard';
 import { MobileLinkItem } from './MobileLinkItem';
+import { BloggerHeroSlider } from './BloggerHeroSlider';
+import { 
+  Link21Icon, 
+  Folder2Icon, 
+  FolderFavoriteIcon 
+} from './BloggerIcons';
 
 interface DashboardViewProps {
   links: LinkItem[];
@@ -24,6 +26,8 @@ interface DashboardViewProps {
   collectionMap: Map<number, CollectionItem>;
   onViewAllRecent: () => void;
   onViewCollection: (id: number) => void;
+  onNavigateTab?: (tab: 'links' | 'pinned' | 'collections_list' | 'tags_list') => void;
+  onSelectTag?: (tag: string) => void;
   onOpenNewLink: () => void;
   onOpenDetail: (link: LinkItem) => void;
   onTogglePin: (id: number, current: boolean) => void;
@@ -41,6 +45,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   collectionMap,
   onViewAllRecent,
   onViewCollection,
+  onNavigateTab,
+  onSelectTag,
   onOpenNewLink,
   onOpenDetail,
   onTogglePin,
@@ -64,65 +70,55 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   return (
     <div className="space-y-6 pb-24 md:pb-12">
       
-      {/* Top Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <Home className="w-6 h-6 text-[#38bdf8]" />
-          <h1 className="text-xl sm:text-2xl font-light tracking-tight text-white">
-            Dashboard
-          </h1>
+      {/* 1. Blogger Plus UI Hero Showcase Carousel (.sldW) */}
+      <section aria-label="Hero Carousel" className="w-full">
+        <BloggerHeroSlider
+          collections={collections}
+          onSelectCollection={onViewCollection}
+          onFilterTag={onSelectTag}
+        />
+      </section>
+
+      {/* 2. 4 Stat Cards: Links (352), Collections (14), Tags (26), Pinned (38) */}
+      <section aria-label="Statistics Cards">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <DashboardItem
+            name="Links"
+            value={activeLinks.length}
+            icon={Link21Icon}
+            color="#38bdf8"
+            subtitle="Tüm Bağlantılar"
+            onClick={() => onNavigateTab ? onNavigateTab('links') : onViewAllRecent()}
+          />
+          <DashboardItem
+            name="Collections"
+            value={collections.length}
+            icon={Folder2Icon}
+            color="#fbbf24"
+            subtitle="Kategoriler"
+            onClick={() => onNavigateTab ? onNavigateTab('collections_list') : undefined}
+          />
+          <DashboardItem
+            name="Tags"
+            value={tagsCount}
+            icon={Hash}
+            color="#34d399"
+            subtitle="Etiketler"
+            onClick={() => onNavigateTab ? onNavigateTab('tags_list') : undefined}
+          />
+          <DashboardItem
+            name="Pinned"
+            value={pinnedCount}
+            icon={FolderFavoriteIcon}
+            color="#f472b6"
+            subtitle="Sabitlenenler"
+            onClick={() => onNavigateTab ? onNavigateTab('pinned') : undefined}
+          />
         </div>
+      </section>
 
-        {/* Right Action Icons (Edit Layout & Mobile + button) */}
-        <div className="flex items-center gap-2">
-          {/* Mobile + Add Button */}
-          <button
-            onClick={onOpenNewLink}
-            className="md:hidden w-8 h-8 rounded-full bg-[#7dd3fc] text-[#0f172a] flex items-center justify-center font-bold shadow-md shadow-sky-500/20 active:scale-95 transition-all"
-            title="Yeni Bağlantı Ekle"
-          >
-            <Plus className="w-5 h-5 stroke-[2.5]" />
-          </button>
-
-          {/* Desktop Edit Layout button */}
-          <button className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#404040] bg-[#262626] hover:bg-[#333333] text-xs font-medium text-[#a3a3a3] hover:text-white transition-colors">
-            <SlidersHorizontal className="w-3.5 h-3.5" />
-            <span>Edit Layout</span>
-          </button>
-        </div>
-      </div>
-
-      {/* 4 Stats Cards */}
-      {/* Desktop: 4 in a row. Mobile: 2x2 grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-        <DashboardItem
-          name="Links"
-          value={activeLinks.length}
-          icon={LinkIcon}
-          color="#38bdf8"
-        />
-        <DashboardItem
-          name="Collections"
-          value={collections.length}
-          icon={Folder}
-          color="#fbbf24"
-        />
-        <DashboardItem
-          name="Tags"
-          value={tagsCount}
-          icon={Hash}
-          color="#34d399"
-        />
-        <DashboardItem
-          name="Pinned"
-          value={pinnedCount}
-          icon={Pin}
-          color="#f472b6"
-        />
-      </div>
-
-      {/* Section 1: Recent Links */}
-      <div className="space-y-3 pt-2">
+      {/* 3. Section: Recent Links */}
+      <section aria-label="Recent Links" className="space-y-3 pt-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Clock className="w-4 h-4 text-[#38bdf8]" />
@@ -173,15 +169,15 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             />
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* Sections by Collection */}
+      {/* 4. Sections by Collection */}
       {collections.map((col) => {
         const colLinks = (col.id && linksByCollection[col.id]) || [];
         if (colLinks.length === 0) return null;
 
         return (
-          <div key={col.id} className="space-y-3 pt-3">
+          <section key={col.id} aria-label={col.name} className="space-y-3 pt-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span 
@@ -230,7 +226,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 />
               ))}
             </div>
-          </div>
+          </section>
         );
       })}
 

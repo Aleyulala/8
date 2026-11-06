@@ -396,6 +396,15 @@ export const App: React.FC = () => {
               tagsCount={tags.length}
               pinnedCount={counts.pinned}
               collectionMap={collectionMap}
+              onNavigateTab={(tab) => {
+                setActiveView(tab);
+                setSearchQuery('');
+              }}
+              onSelectTag={(tag) => {
+                setSelectedTag(tag);
+                setActiveView('tag');
+                setSearchQuery('');
+              }}
               onViewAllRecent={() => {
                 setActiveView('links');
                 setSearchQuery('');
