@@ -11,6 +11,11 @@ export interface LinkItem {
   isRead: boolean;
   isTrash: boolean;
   favicon?: string;
+  thumbnail?: string;
+  views?: number;
+  commentsCount?: number;
+  authorName?: string;
+  isFeatured?: boolean;
   createdAt: number;
   updatedAt: number;
 }

@@ -19,6 +19,7 @@ import { LinkDetailModal } from './components/LinkDetailModal';
 import { ImportExportModal } from './components/ImportExportModal';
 import { SettingsModal } from './components/SettingsModal';
 import { BloggerFooter } from './components/BloggerFooter';
+import { BloggerPostView } from './components/BloggerPostView';
 import { getStorageUsage } from './utils/exportImport';
 import { getDomain } from './utils/favicon';
 import { Search, Plus, Home, Bookmark, Moon, Sun, FileUp, Menu } from 'lucide-react';
@@ -31,11 +32,13 @@ type MainViewType =
   | 'tag' 
   | 'collections_list' 
   | 'tags_list' 
-  | 'trash';
+  | 'trash'
+  | 'post_detail';
 
 export const App: React.FC = () => {
   // Navigation View State
   const [activeView, setActiveView] = useState<MainViewType>('dashboard');
+  const [selectedPost, setSelectedPost] = useState<LinkItem | null>(null);
   const [selectedCollectionId, setSelectedCollectionId] = useState<number | null>(null);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
@@ -51,8 +54,8 @@ export const App: React.FC = () => {
     percentage: 0
   });
 
-  // Modals, Drawer & Sidebar
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  // Modals, Drawer & Sidebar (Sol çekmece başlangıçta kapalı!)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isRightDrawerOpen, setIsRightDrawerOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -238,6 +241,17 @@ export const App: React.FC = () => {
     updateStorage();
   };
 
+  const handleOpenPostPage = (link: LinkItem) => {
+    setSelectedPost(link);
+    setActiveView('post_detail');
+    if (window.innerWidth < 768) {
+      setIsDrawerOpen(true);
+    } else {
+      setIsSidebarOpen(true);
+    }
+    document.getElementById('mainScrollContainer')?.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleTogglePin = async (id: number, current: boolean) => {
     await db.links.update(id, { isPinned: !current, updatedAt: Date.now() });
   };
@@ -328,7 +342,13 @@ export const App: React.FC = () => {
       
       {/* 1. ÜST BAR: Blogger Header (.mainH - Fixed at Top) */}
       <BloggerHeader
-        onToggleSidebar={() => setIsSidebarOpen(prev => !prev)}
+        onToggleSidebar={() => {
+          if (window.innerWidth < 768) {
+            setIsDrawerOpen(prev => !prev);
+          } else {
+            setIsSidebarOpen(prev => !prev);
+          }
+        }}
         onOpenDrawer={() => setIsDrawerOpen(true)}
         onOpenRightSidebar={() => setIsRightDrawerOpen(true)}
         searchQuery={searchQuery}
@@ -357,7 +377,7 @@ export const App: React.FC = () => {
         {isSidebarOpen && (
           <div className="hidden md:flex shrink-0">
             <BloggerSidebar
-              currentTab={activeView}
+              currentTab={activeView === 'post_detail' ? 'dashboard' : activeView}
               activeCollectionId={selectedCollectionId}
               activeTag={selectedTag}
               onSelectTab={(tab) => {
@@ -389,49 +409,81 @@ export const App: React.FC = () => {
           </div>
         )}
 
-        {/* ORTA BÖLÜM: Ana İçerik Alanı (.mainC) */}
-        <main className="flex-1 h-[calc(100vh-60px)] overflow-y-auto p-3 sm:p-5 lg:p-6 min-w-0">
-          <div className="max-w-6xl mx-auto pb-24 md:pb-12">
-          {activeView === 'dashboard' && (
-            <DashboardView
-              links={allLinks}
-              collections={collections}
-              tagsCount={tags.length}
-              pinnedCount={counts.pinned}
-              collectionMap={collectionMap}
-              onNavigateTab={(tab) => {
-                setActiveView(tab);
-                setSearchQuery('');
-              }}
-              onSelectTag={(tag) => {
-                setSelectedTag(tag);
-                setActiveView('tag');
-                setSearchQuery('');
-              }}
-              onViewAllRecent={() => {
-                setActiveView('links');
-                setSearchQuery('');
-              }}
-              onViewCollection={(id) => {
-                setSelectedCollectionId(id);
-                setActiveView('collection');
-                setSearchQuery('');
-              }}
-              onOpenNewLink={() => {
-                setEditingLink(null);
-                setIsAddModalOpen(true);
-              }}
-              onOpenDetail={(link) => setDetailLink(link)}
-              onTogglePin={handleTogglePin}
-              onToggleRead={handleToggleRead}
-              onToggleArchive={handleToggleArchive}
-              onMoveToTrash={handleMoveToTrash}
-              onEditLink={(link) => {
-                setEditingLink(link);
-                setIsAddModalOpen(true);
-              }}
-            />
-          )}
+        {/* BİRLEŞİK KAYDIRMA ALANI: Orta İçerik ve Sağ Bar BİRLİKTE Kayar (.mainW) */}
+        <div 
+          id="mainScrollContainer"
+          className="flex-1 h-[calc(100vh-56px)] overflow-y-auto overflow-x-hidden min-w-0 bg-[#1e1e1e]"
+        >
+          <div className="max-w-[1360px] mx-auto p-3 sm:p-5 lg:p-6 pb-20">
+            <div className="flex flex-col lg:flex-row gap-6 items-start">
+              
+              {/* ORTA BÖLÜM: Ana İçerik Alanı (.mainC) */}
+              <main className="flex-1 min-w-0 w-full">
+                {activeView === 'dashboard' && (
+                  <DashboardView
+                    links={allLinks}
+                    collections={collections}
+                    tagsCount={tags.length}
+                    pinnedCount={counts.pinned}
+                    collectionMap={collectionMap}
+                    onNavigateTab={(tab) => {
+                      setActiveView(tab);
+                      setSearchQuery('');
+                    }}
+                    onSelectTag={(tag) => {
+                      setSelectedTag(tag);
+                      setActiveView('tag');
+                      setSearchQuery('');
+                    }}
+                    onViewAllRecent={() => {
+                      setActiveView('links');
+                      setSearchQuery('');
+                    }}
+                    onViewCollection={(id) => {
+                      setSelectedCollectionId(id);
+                      setActiveView('collection');
+                      setSearchQuery('');
+                    }}
+                    onOpenNewLink={() => {
+                      setEditingLink(null);
+                      setIsAddModalOpen(true);
+                    }}
+                    onOpenDetail={(link) => setDetailLink(link)}
+                    onOpenPostPage={handleOpenPostPage}
+                    onTogglePin={handleTogglePin}
+                    onToggleRead={handleToggleRead}
+                    onToggleArchive={handleToggleArchive}
+                    onMoveToTrash={handleMoveToTrash}
+                    onEditLink={(link) => {
+                      setEditingLink(link);
+                      setIsAddModalOpen(true);
+                    }}
+                  />
+                )}
+
+                {activeView === 'post_detail' && selectedPost && (
+                  <BloggerPostView
+                    link={selectedPost}
+                    allLinks={allLinks}
+                    collection={selectedPost.collectionId ? collectionMap.get(selectedPost.collectionId) : undefined}
+                    onBack={() => {
+                      setActiveView('dashboard');
+                      document.getElementById('mainScrollContainer')?.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    onNavigatePost={(nextPost) => {
+                      setSelectedPost(nextPost);
+                      document.getElementById('mainScrollContainer')?.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    onTogglePin={handleTogglePin}
+                    onToggleRead={handleToggleRead}
+                    onToggleArchive={handleToggleArchive}
+                    onMoveToTrash={handleMoveToTrash}
+                    onEdit={(link) => {
+                      setEditingLink(link);
+                      setIsAddModalOpen(true);
+                    }}
+                  />
+                )}
 
           {activeView === 'links' && (
             <LinksView
@@ -599,32 +651,38 @@ export const App: React.FC = () => {
             />
           )}
 
+              </main>
+
+              {/* SAĞ BAR: Popüler Post, Etiketler, Bize Ulaşın (.sideB) */}
+              <aside className="w-full lg:w-80 shrink-0">
+                <BloggerRightSidebar
+                  pinnedLinks={allLinks.filter(l => l.isPinned && !l.isTrash && !l.isArchived)}
+                  allLinks={allLinks}
+                  collections={collections}
+                  tags={tags}
+                  counts={counts}
+                  onSelectCollection={(id) => {
+                    setSelectedCollectionId(id);
+                    setActiveView('collection');
+                    setSearchQuery('');
+                  }}
+                  onSelectTag={(tag) => {
+                    setSelectedTag(tag);
+                    setActiveView('tag');
+                    setSearchQuery('');
+                  }}
+                  onOpenPostPage={handleOpenPostPage}
+                  isDrawerOpen={isRightDrawerOpen}
+                  onCloseDrawer={() => setIsRightDrawerOpen(false)}
+                />
+              </aside>
+
+            </div>
+
             {/* Blogger Alt Footer Bölümü (.mainF) */}
             <BloggerFooter />
           </div>
-        </main>
-
-        {/* SAĞ BAR: Blogger Right Sidebar (.sideB - Desktop & Mobile Drawer) */}
-        <BloggerRightSidebar
-          pinnedLinks={allLinks.filter(l => l.isPinned && !l.isTrash && !l.isArchived)}
-          collections={collections}
-          tags={tags}
-          counts={counts}
-          storageInfo={storageInfo}
-          onSelectCollection={(id) => {
-            setSelectedCollectionId(id);
-            setActiveView('collection');
-            setSearchQuery('');
-          }}
-          onSelectTag={(tag) => {
-            setSelectedTag(tag);
-            setActiveView('tag');
-            setSearchQuery('');
-          }}
-          onOpenDetail={(link) => setDetailLink(link)}
-          isDrawerOpen={isRightDrawerOpen}
-          onCloseDrawer={() => setIsRightDrawerOpen(false)}
-        />
+        </div>
 
       </div>
 

@@ -5,17 +5,23 @@ import {
   Clock, 
   ChevronRight, 
   SlidersHorizontal,
-  Plus
+  Plus,
+  Eye,
+  MessageSquare,
+  Bookmark,
+  Calendar,
+  Newspaper
 } from 'lucide-react';
 import { CollectionItem, LinkItem } from '../types';
 import { DashboardItem } from './DashboardItem';
 import { LinkCard } from './LinkCard';
-import { MobileLinkItem } from './MobileLinkItem';
 import { BloggerHeroSlider } from './BloggerHeroSlider';
+import { BloggerNotificationBar } from './BloggerNotificationBar';
 import { 
   Link21Icon, 
   Folder2Icon, 
-  FolderFavoriteIcon 
+  FolderFavoriteIcon,
+  Verify1Icon
 } from './BloggerIcons';
 
 interface DashboardViewProps {
@@ -30,6 +36,7 @@ interface DashboardViewProps {
   onSelectTag?: (tag: string) => void;
   onOpenNewLink: () => void;
   onOpenDetail: (link: LinkItem) => void;
+  onOpenPostPage: (link: LinkItem) => void;
   onTogglePin: (id: number, current: boolean) => void;
   onToggleRead: (id: number, current: boolean) => void;
   onToggleArchive: (id: number, current: boolean) => void;
@@ -43,21 +50,13 @@ const CategoryShowcaseSection: React.FC<{
   links: LinkItem[];
   onViewCollection: (id: number) => void;
   onTogglePin: (id: number, current: boolean) => void;
-  onToggleRead: (id: number, current: boolean) => void;
-  onToggleArchive: (id: number, current: boolean) => void;
-  onMoveToTrash: (id: number) => void;
-  onEditLink: (link: LinkItem) => void;
-  onOpenDetail: (link: LinkItem) => void;
+  onOpenPostPage: (link: LinkItem) => void;
 }> = ({
   col,
   links,
   onViewCollection,
   onTogglePin,
-  onToggleRead,
-  onToggleArchive,
-  onMoveToTrash,
-  onEditLink,
-  onOpenDetail
+  onOpenPostPage
 }) => {
   const trackRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -98,20 +97,20 @@ const CategoryShowcaseSection: React.FC<{
           <div className="hidden sm:flex items-center gap-1.5">
             <button
               onClick={() => scroll('left')}
-              className={`h-2 rounded-full transition-all duration-200 ${
+              className={`h-1.5 rounded-full transition-all duration-200 ${
                 canScrollLeft 
-                  ? 'w-7 bg-[#60cdff] shadow-[0_0_8px_rgba(96,205,255,0.6)] cursor-pointer' 
-                  : 'w-4 bg-white/20 opacity-40 cursor-default'
+                  ? 'w-6 bg-[#60cdff] shadow-[0_0_8px_rgba(96,205,255,0.6)] cursor-pointer' 
+                  : 'w-3.5 bg-white/20 opacity-40 cursor-default'
               }`}
               title="Önceki Kartlar"
               aria-label="Önceki Kartlar"
             />
             <button
               onClick={() => scroll('right')}
-              className={`h-2 rounded-full transition-all duration-200 ${
+              className={`h-1.5 rounded-full transition-all duration-200 ${
                 canScrollRight 
-                  ? 'w-7 bg-[#60cdff] shadow-[0_0_8px_rgba(96,205,255,0.6)] cursor-pointer' 
-                  : 'w-4 bg-white/20 opacity-40 cursor-default'
+                  ? 'w-6 bg-[#60cdff] shadow-[0_0_8px_rgba(96,205,255,0.6)] cursor-pointer' 
+                  : 'w-3.5 bg-white/20 opacity-40 cursor-default'
               }`}
               title="Sonraki Kartlar"
               aria-label="Sonraki Kartlar"
@@ -120,7 +119,7 @@ const CategoryShowcaseSection: React.FC<{
 
           <button
             onClick={() => col.id && onViewCollection(col.id)}
-            className="flex items-center gap-1 text-xs text-[#a3a3a3] hover:text-[#38bdf8] font-medium transition-colors"
+            className="flex items-center gap-1 text-xs text-[#a3a3a3] hover:text-[#38bdf8] font-medium transition-colors cursor-pointer"
           >
             <span>Tümünü Gör</span>
             <ChevronRight className="w-3.5 h-3.5" />
@@ -128,37 +127,21 @@ const CategoryShowcaseSection: React.FC<{
         </div>
       </div>
 
-      {/* Desktop Horizontal Scroll Track with Cards */}
+      {/* Horizontal Scroll Track with Cards */}
       <div 
         ref={trackRef}
         onScroll={checkScroll}
-        className="hidden md:flex gap-4 overflow-x-auto pb-3 pt-1 hide-scrollbar scroll-smooth"
+        className="flex gap-4 overflow-x-auto pb-3 pt-1 hide-scrollbar scroll-smooth"
       >
         {links.map((link) => (
-          <div key={link.id} className="min-w-[270px] w-[270px] max-w-[290px] shrink-0">
+          <div key={link.id} className="min-w-[260px] w-[270px] max-w-[290px] shrink-0">
             <LinkCard
               link={link}
               collection={col}
               onTogglePin={onTogglePin}
-              onToggleRead={onToggleRead}
-              onToggleArchive={onToggleArchive}
-              onMoveToTrash={onMoveToTrash}
-              onEdit={onEditLink}
-              onOpenDetail={onOpenDetail}
+              onOpenPostPage={onOpenPostPage}
             />
           </div>
-        ))}
-      </div>
-
-      {/* Mobile Vertical List */}
-      <div className="md:hidden space-y-2">
-        {links.slice(0, 3).map((link) => (
-          <MobileLinkItem
-            key={link.id}
-            link={link}
-            collection={col}
-            onOpenDetail={onOpenDetail}
-          />
         ))}
       </div>
     </section>
@@ -177,6 +160,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onSelectTag,
   onOpenNewLink,
   onOpenDetail,
+  onOpenPostPage,
   onTogglePin,
   onToggleRead,
   onToggleArchive,
@@ -184,7 +168,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onEditLink
 }) => {
   const activeLinks = links.filter(l => !l.isTrash && !l.isArchived);
-  const recentLinks = [...activeLinks].sort((a, b) => b.createdAt - a.createdAt).slice(0, 10);
+  
+  // Featured Pinned Post (e.g. Notbook Lm Projelerim Hakkında)
+  const pinnedPost = activeLinks.find(l => l.isPinned && l.thumbnail) || activeLinks.find(l => l.isPinned) || activeLinks[0];
+
+  // Latest Posts (En Son Yayınlar: excluding the pinned post if possible, taking next 6)
+  const latestPosts = activeLinks
+    .filter(l => pinnedPost ? l.id !== pinnedPost.id : true)
+    .slice(0, 6);
 
   // Group links by collection
   const linksByCollection: Record<number, LinkItem[]> = {};
@@ -195,29 +186,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
     }
   });
 
-  // Recent links horizontal scroll ref
-  const recentTrackRef = useRef<HTMLDivElement>(null);
-  const [recentCanScrollLeft, setRecentCanScrollLeft] = useState(false);
-  const [recentCanScrollRight, setRecentCanScrollRight] = useState(true);
-
-  const checkRecentScroll = () => {
-    if (!recentTrackRef.current) return;
-    const { scrollLeft, scrollWidth, clientWidth } = recentTrackRef.current;
-    setRecentCanScrollLeft(scrollLeft > 4);
-    setRecentCanScrollRight(scrollLeft < scrollWidth - clientWidth - 4);
-  };
-
-  const scrollRecent = (direction: 'left' | 'right') => {
-    if (!recentTrackRef.current) return;
-    const offset = direction === 'left' ? -280 : 280;
-    recentTrackRef.current.scrollBy({ left: offset, behavior: 'smooth' });
-    setTimeout(checkRecentScroll, 300);
-  };
-
   return (
-    <div className="space-y-6 pb-24 md:pb-12">
+    <div className="space-y-6 pb-12">
       
-      {/* 1. Blogger Plus UI Hero Showcase Carousel (.sldW) */}
+      {/* 1. Blogger Üst Bildiri Çubuğu (.ntcW) */}
+      <BloggerNotificationBar />
+
+      {/* 2. Blogger Plus UI Hero Showcase Carousel (.sldW) */}
       <section aria-label="Hero Carousel" className="w-full">
         <BloggerHeroSlider
           collections={collections}
@@ -226,9 +201,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         />
       </section>
 
-      {/* 2. 4 Stat Cards: Links (352), Collections (14), Tags (26), Pinned (38) */}
+      {/* 3. 4 Stat Cards: Links (352), Collections (14), Tags (26), Pinned (38) */}
       <section aria-label="Statistics Cards">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
           <DashboardItem
             name="Links"
             value={activeLinks.length}
@@ -264,92 +239,139 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
       </section>
 
-      {/* 3. Section: Recent Links with Blogger .car-nav Slider */}
-      <section aria-label="Recent Links" className="space-y-3 pt-2">
-        <div className="flex items-center justify-between">
+      {/* 4. Sabitlenmiş Gönderi (Pinned Post - 1:1 Blogger Stili) */}
+      {pinnedPost && (
+        <section aria-label="Sabitlenmiş Gönderi" className="space-y-3 pt-1">
           <div className="flex items-center gap-2">
-            <Clock className="w-4 h-4 text-[#38bdf8]" />
-            <h2 className="text-sm sm:text-base font-semibold text-white tracking-tight">
-              Son Eklenen Bağlantılar
+            <span className="text-sm font-bold text-white leading-none">📌</span>
+            <h2 className="text-sm sm:text-base font-bold text-white tracking-wide">
+              Sabitlenmiş Gönderi
             </h2>
           </div>
 
-          <div className="flex items-center gap-3">
-            {/* Blogger Çizgi Butonlar */}
-            <div className="hidden sm:flex items-center gap-1.5">
-              <button
-                onClick={() => scrollRecent('left')}
-                className={`h-2 rounded-full transition-all duration-200 ${
-                  recentCanScrollLeft 
-                    ? 'w-7 bg-[#60cdff] shadow-[0_0_8px_rgba(96,205,255,0.6)] cursor-pointer' 
-                    : 'w-4 bg-white/20 opacity-40 cursor-default'
-                }`}
-                title="Önceki Bağlantılar"
-                aria-label="Önceki Bağlantılar"
-              />
-              <button
-                onClick={() => scrollRecent('right')}
-                className={`h-2 rounded-full transition-all duration-200 ${
-                  recentCanScrollRight 
-                    ? 'w-7 bg-[#60cdff] shadow-[0_0_8px_rgba(96,205,255,0.6)] cursor-pointer' 
-                    : 'w-4 bg-white/20 opacity-40 cursor-default'
-                }`}
-                title="Sonraki Bağlantılar"
-                aria-label="Sonraki Bağlantılar"
-              />
+          <article 
+            onClick={() => onOpenPostPage(pinnedPost)}
+            className="group relative rounded-xl bg-[#252526] hover:bg-[#28282b] border border-[#383838] hover:border-[#60cdff]/60 transition-all duration-200 overflow-hidden cursor-pointer shadow-md hover:shadow-xl hover:shadow-black/60 flex flex-col md:flex-row select-none"
+          >
+            {/* Sol Görsel / Thumbnail */}
+            <div className="relative md:w-1/2 aspect-[16/9] md:aspect-auto bg-[#1e1e1e] overflow-hidden shrink-0">
+              {pinnedPost.thumbnail ? (
+                <img
+                  src={pinnedPost.thumbnail}
+                  alt={pinnedPost.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                  loading="lazy"
+                />
+              ) : (
+                <div className="w-full h-full min-h-[220px] flex items-center justify-center bg-gradient-to-tr from-sky-950 via-[#1c2430] to-[#252526]">
+                  <span className="text-4xl">💻</span>
+                </div>
+              )}
+
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/60 pointer-events-none" />
+
+              {/* Sol Üst: 👁 74 */}
+              <div className="absolute top-2.5 left-2.5 z-10">
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md text-white text-[10px] font-medium border border-white/10 shadow-sm">
+                  <Eye className="w-3 h-3 text-[#60cdff]" />
+                  <span>{pinnedPost.views || 74}</span>
+                </div>
+              </div>
+
+              {/* Sağ Üst: 💬 6 ve 🔖 */}
+              <div className="absolute top-2.5 right-2.5 z-10 flex items-center gap-1.5">
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md text-white text-[10px] font-medium border border-white/10 shadow-sm">
+                  <MessageSquare className="w-2.5 h-2.5 text-white/90" />
+                  <span>{pinnedPost.commentsCount !== undefined ? pinnedPost.commentsCount : 6}</span>
+                </div>
+                <div className="p-1 rounded-md bg-amber-500/30 text-amber-300 border border-amber-500/50 shadow-sm">
+                  <Bookmark className="w-3 h-3 fill-current text-amber-300" />
+                </div>
+              </div>
+
+              {/* Sol Alt: AI ✔ */}
+              <div className="absolute bottom-2.5 left-2.5 z-10">
+                <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md text-white text-[10px] font-bold border border-white/15 shadow-sm">
+                  <span className="w-3.5 h-3.5 rounded-full bg-[#1e1e1e] flex items-center justify-center text-[7px] text-[#60cdff] font-extrabold border border-white/20">
+                    A
+                  </span>
+                  <span>{pinnedPost.authorName || 'AI'}</span>
+                  <Verify1Icon className="w-3 h-3 text-[#60cdff]" />
+                </div>
+              </div>
             </div>
 
-            <button
-              onClick={onViewAllRecent}
-              className="flex items-center gap-1 text-xs text-[#a3a3a3] hover:text-[#38bdf8] font-medium transition-colors"
-            >
-              <span>Tümünü Gör</span>
-              <ChevronRight className="w-3.5 h-3.5" />
-            </button>
+            {/* Sağ Metin İçeriği */}
+            <div className="p-4 sm:p-5 flex flex-col justify-between flex-1 gap-3">
+              <div className="space-y-2">
+                <div className="text-[11px] text-[#9ca3af] lowercase font-medium">
+                  {pinnedPost.tags[0] || 'videolar'}
+                </div>
+
+                <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-[#60cdff] leading-snug transition-colors">
+                  {pinnedPost.title}
+                </h3>
+
+                {pinnedPost.description && (
+                  <p className="text-xs text-[#989b9f] leading-relaxed line-clamp-3">
+                    {pinnedPost.description}
+                  </p>
+                )}
+              </div>
+
+              {/* Alt Satır: Yayınlandı! + Tarih + Daha */}
+              <div className="pt-3 border-t border-[#333333] flex items-center justify-between text-xs text-[#9ca3af]">
+                <div className="flex items-center gap-2.5">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 text-[10px] font-semibold">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    Yayınlandı!
+                  </span>
+                  <span className="text-[11px] text-[#71717a]">Eki 29, 2026</span>
+                </div>
+
+                <span className="text-xs text-[#60cdff] group-hover:underline font-medium">
+                  Daha →
+                </span>
+              </div>
+            </div>
+          </article>
+        </section>
+      )}
+
+      {/* 5. En Son Yayınlar (Latest Posts - 3 Sütunlu Blogger Grid) */}
+      <section aria-label="En Son Yayınlar" className="space-y-3 pt-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="text-base text-white">📰</span>
+            <h2 className="text-sm sm:text-base font-bold text-white tracking-wide">
+              En Son Yayınlar
+            </h2>
           </div>
+
+          <button
+            onClick={onViewAllRecent}
+            className="flex items-center gap-1 text-xs text-[#a3a3a3] hover:text-[#38bdf8] font-medium transition-colors cursor-pointer"
+          >
+            <span>Tümünü Gör</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </button>
         </div>
 
-        {/* Desktop View: Horizontal Card Scroll / Row with Blogger Cards */}
-        <div 
-          ref={recentTrackRef}
-          onScroll={checkRecentScroll}
-          className="hidden md:flex gap-4 overflow-x-auto pb-3 pt-1 hide-scrollbar scroll-smooth"
-        >
-          {recentLinks.map((link) => (
-            <div key={link.id} className="min-w-[270px] w-[270px] max-w-[290px] shrink-0">
-              <LinkCard
-                link={link}
-                collection={link.collectionId ? collectionMap.get(link.collectionId) : undefined}
-                onTogglePin={onTogglePin}
-                onToggleRead={onToggleRead}
-                onToggleArchive={onToggleArchive}
-                onMoveToTrash={onMoveToTrash}
-                onEdit={onEditLink}
-                onOpenDetail={onOpenDetail}
-              />
-            </div>
-          ))}
-          {recentLinks.length === 0 && (
-            <div className="w-full text-center py-8 text-xs text-[#737373] border border-dashed border-[#383838] rounded-xl">
-              Henüz kayıtlı bağlantı bulunamadı.
-            </div>
-          )}
-        </div>
-
-        {/* Mobile View: Vertical List with square thumbnail on right */}
-        <div className="md:hidden space-y-2">
-          {recentLinks.slice(0, 4).map((link) => (
-            <MobileLinkItem
-              key={link.id}
-              link={link}
-              collection={link.collectionId ? collectionMap.get(link.collectionId) : undefined}
-              onOpenDetail={onOpenDetail}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {latestPosts.map((post) => (
+            <LinkCard
+              key={post.id}
+              link={post}
+              collection={post.collectionId ? collectionMap.get(post.collectionId) : undefined}
+              onOpenPostPage={onOpenPostPage}
+              onTogglePin={onTogglePin}
             />
           ))}
         </div>
       </section>
 
-      {/* 4. Sections by Collection (Categorized Showcase Slider) */}
+      {/* 6. Kategorilere Göre Vitrin Kaydırıcıları (.cat-showcase-carousel) */}
       {collections.map((col) => {
         const colLinks = (col.id && linksByCollection[col.id]) || [];
         if (colLinks.length === 0) return null;
@@ -361,11 +383,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             links={colLinks}
             onViewCollection={onViewCollection}
             onTogglePin={onTogglePin}
-            onToggleRead={onToggleRead}
-            onToggleArchive={onToggleArchive}
-            onMoveToTrash={onMoveToTrash}
-            onEditLink={onEditLink}
-            onOpenDetail={onOpenDetail}
+            onOpenPostPage={onOpenPostPage}
           />
         );
       })}
