@@ -24,6 +24,18 @@
     --menuW: 230px;
     --pageW: 780px;
     --headerH: 60px;
+    --tv-nav-ring: #60cdff;
+  }
+
+  /* Light mode (lgT) */
+  :root.lgT {
+    --bg-base-100: #ffffff;
+    --bg-base-200: #f4f4f5;
+    --bg-base-300: #e4e4e7;
+    --border-color: #e4e4e7;
+    --text-base: #18181b;
+    --text-muted: #71717a;
+    --contentL: rgba(0, 0, 0, 0.08);
   }
 
   body {
@@ -33,7 +45,82 @@
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
+
+  :root.lgT body {
+    background-color: #f8fafc;
+    color: #0f172a;
+  }
 }
+
+/* Tarayıcı varsayılan ekstra outline'ını sıfırla - Tek odak göstergesi: #tv-focus-dot */
+:focus, :focus-visible, a:focus, button:focus, input:focus, select:focus, textarea:focus, [tabindex]:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Global En Üst Katman Odak Seçim Noktası (Google Dot / TV Nav) */
+#tv-focus-dot {
+  position: fixed !important;
+  width: 14px !important;
+  height: 14px !important;
+  border-radius: 50% !important;
+  background: var(--tv-nav-ring, #60cdff) !important;
+  border: 2px solid #ffffff !important;
+  box-shadow: 0 0 0 2px var(--tv-nav-ring, #60cdff), 0 2px 8px rgba(0,0,0,0.45) !important;
+  z-index: 2147483647 !important;
+  pointer-events: none !important;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.6);
+  transition: opacity .18s ease, transform .15s ease, left .12s cubic-bezier(0.2, 0, 0, 1), top .12s cubic-bezier(0.2, 0, 0, 1) !important;
+  will-change: left, top, opacity, transform;
+}
+#tv-focus-dot.on {
+  opacity: 1 !important;
+  transform: translate(-50%, -50%) scale(1) !important;
+}
+
+/* Google Dot Sanal Fare İmleci (Gamepad / Virtual Cursor) */
+#tv-virtual-cursor {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 22px !important;
+  height: 22px !important;
+  margin-top: -11px !important;
+  margin-left: -11px !important;
+  border-radius: 50% !important;
+  background: var(--tv-nav-ring, #60cdff) !important;
+  border: 3px solid #ffffff !important;
+  box-shadow: 0 0 0 1.5px rgba(0,0,0,0.35), 0 4px 16px rgba(0,0,0,0.45) !important;
+  z-index: 2147483647 !important;
+  pointer-events: none !important;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity .2s ease, transform .12s ease, background-color .15s ease;
+  will-change: transform, left, top;
+}
+#tv-virtual-cursor.active {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+}
+#tv-virtual-cursor.hovering-link {
+  transform: scale(1.35) !important;
+  background: #ff4757 !important;
+  box-shadow: 0 0 0 2px #ffffff, 0 0 16px rgba(255, 71, 87, 0.85) !important;
+}
+#tv-virtual-cursor.clicking {
+  transform: scale(0.8) !important;
+  background: #2ed573 !important;
+}
+
+/* Hide Google Translate top banner & elements */
+body[style*='position'] { position: relative !important; }
+body[style*='top'] { top: unset !important; }
+.skiptranslate, #goog-gt-tt, .goog-te-banner-frame { display: none !important; }
+body { top: 0 !important; }
+.goog-tooltip { display: none !important; }
+.goog-tooltip:hover { display: none !important; }
+.goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
 
 /* Popüler Post (#PopularPosts01) - Blogger XML 1:1 Dikişsiz Sıfır Kutu */
 #PopularPosts01,
@@ -72,7 +159,7 @@
 .itemPp .mostP .iThmb,
 .PopularPosts .mostP .iThmb {
   position: relative !important;
-  border-radius: 14px !important;
+  border-radius: 8px !important;
   overflow: hidden !important;
   margin: 0 0 16px 0 !important;
 }

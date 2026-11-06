@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
-import { 
-  Eye, 
-  MessageSquare, 
-  Bookmark, 
-  Calendar, 
-  Star, 
-  ExternalLink 
-} from 'lucide-react';
 import { CollectionItem, LinkItem } from '../types';
 import { formatDate, getDomain, getFaviconUrl } from '../utils/favicon';
-import { Verify1Icon, PulseIcon } from './BloggerIcons';
+import { 
+  Verify1Icon, 
+  EyeIcon, 
+  MessageNotif1Icon, 
+  ArchiveIcon 
+} from './BloggerIcons';
 
 interface LinkCardProps {
   link: LinkItem;
@@ -57,7 +54,7 @@ export const LinkCard: React.FC<LinkCardProps> = ({
   return (
     <article 
       onClick={handleCardClick}
-      className="group relative rounded-xl bg-[#252526] hover:bg-[#28282b] border border-transparent hover:border-[#60cdff]/30 transition-all duration-200 hover:-translate-y-1 shadow-md hover:shadow-xl hover:shadow-black/60 flex flex-col justify-between overflow-hidden cursor-pointer select-none"
+      className="group relative rounded-lg bg-[#252526] hover:bg-[#28282b] border border-transparent hover:border-[#60cdff]/30 transition-all duration-200 hover:-translate-y-1 shadow-md hover:shadow-xl hover:shadow-black/60 flex flex-col justify-between overflow-hidden cursor-pointer select-none"
     >
       
       {/* 1. Blogger Post Thumbnail (.pThmb) */}
@@ -73,7 +70,7 @@ export const LinkCard: React.FC<LinkCardProps> = ({
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-tr from-sky-950 via-[#1c2430] to-[#252526] p-4 relative">
             <div className="absolute inset-0 bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] [background-size:12px_12px]" />
-            <div className="w-12 h-12 rounded-2xl bg-black/60 backdrop-blur-md flex items-center justify-center p-2.5 shadow-lg group-hover:scale-110 transition-transform">
+            <div className="w-12 h-12 rounded-lg bg-black/60 backdrop-blur-md flex items-center justify-center p-2.5 shadow-lg group-hover:scale-110 transition-transform">
               <img
                 src={faviconUrl}
                 alt={domain}
@@ -91,16 +88,16 @@ export const LinkCard: React.FC<LinkCardProps> = ({
 
         {/* Sol Üst: Görüntülenme Sayısı (👁 74) */}
         <div className="absolute top-2 left-2 z-10">
-          <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md text-white text-[10px] font-medium shadow-sm">
-            <Eye className="w-3 h-3 text-[#60cdff]" />
+          <div className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-black/65 backdrop-blur-md text-white text-[10px] font-medium shadow-sm">
+            <EyeIcon className="w-3.5 h-3.5 text-[#60cdff]" />
             <span>{views}</span>
           </div>
         </div>
 
         {/* Sağ Üst: Yorum Sayısı (💬 6) & Sabitleme/Yer İmi (🔖) */}
         <div className="absolute top-2 right-2 z-10 flex items-center gap-1.5">
-          <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md text-white text-[10px] font-medium shadow-sm">
-            <MessageSquare className="w-2.5 h-2.5 text-white/90" />
+          <div className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-black/65 backdrop-blur-md text-white text-[10px] font-medium shadow-sm">
+            <MessageNotif1Icon className="w-3 h-3 text-white/90" />
             <span>{comments}</span>
           </div>
 
@@ -111,20 +108,20 @@ export const LinkCard: React.FC<LinkCardProps> = ({
                 onTogglePin(link.id, link.isPinned);
               }
             }}
-            className={`p-1 rounded-md backdrop-blur-md text-[10px] shadow-sm transition-colors ${
+            className={`p-1 rounded-lg backdrop-blur-md text-[10px] shadow-sm transition-colors ${
               link.isPinned 
                 ? 'bg-amber-500/30 text-amber-300' 
                 : 'bg-black/65 text-white/80 hover:text-white'
             }`}
             title={link.isPinned ? 'Sabitlendi' : 'Sabitle'}
           >
-            <Bookmark className={`w-3 h-3 ${link.isPinned ? 'fill-current text-amber-300' : ''}`} />
+            <ArchiveIcon className={`w-3.5 h-3.5 ${link.isPinned ? 'text-amber-300' : 'text-white/80'}`} />
           </div>
         </div>
 
         {/* Sol Alt: Yazar / Marka Rozeti (AI ✔ / NEGRONN ✔) */}
         <div className="absolute bottom-2 left-2 z-10">
-          <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md text-white text-[10px] font-bold shadow-sm tracking-wide">
+          <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-black/75 backdrop-blur-md text-white text-[10px] font-bold shadow-sm tracking-wide">
             <span className="w-3.5 h-3.5 rounded-full bg-[#1e1e1e] flex items-center justify-center text-[7px] text-[#60cdff] font-extrabold">
               {author.charAt(0)}
             </span>

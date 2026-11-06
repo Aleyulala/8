@@ -189,7 +189,7 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
     <>
       {/* Plus UI 3.0.0 Main Carousel Container (.sldW) */}
       <div 
-        className="relative w-full rounded-2xl overflow-hidden bg-[#18181b] border border-[#27272a] shadow-xl group select-none transition-all duration-300"
+        className="relative w-full rounded-lg overflow-hidden bg-[#18181b] border border-transparent shadow-xl group select-none transition-all duration-300"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
         onTouchStart={handleTouchStart}

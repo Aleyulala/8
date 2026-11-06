@@ -2,12 +2,12 @@ import React, { useRef, useState, useEffect } from 'react';
 import { 
   PulseIcon, 
   CloseIcon,
-  Verify1Icon
+  Verify1Icon,
+  EyeIcon,
+  MessageNotif1Icon,
+  ArchiveIcon
 } from './BloggerIcons';
 import { 
-  Eye, 
-  MessageSquare, 
-  Bookmark, 
   Calendar, 
   Send,
   MessageCircle
@@ -161,24 +161,24 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
 
               {/* Badges (.tfxM .tfxC - Beyaz Bordersız) */}
               <div className="absolute top-2 left-2 z-10">
-                <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md text-white text-[10px] font-medium shadow-sm">
-                  <Eye className="w-3 h-3 text-[#60cdff]" />
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-black/65 backdrop-blur-md text-white text-[10px] font-medium shadow-sm">
+                  <EyeIcon className="w-3.5 h-3.5 text-[#60cdff]" />
                   <span>{featuredFirst.views || 74}</span>
                 </div>
               </div>
 
               <div className="absolute top-2 right-2 z-10 flex items-center gap-1.5">
-                <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md text-white text-[10px] font-medium shadow-sm">
-                  <MessageSquare className="w-2.5 h-2.5 text-white/90" />
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-black/65 backdrop-blur-md text-white text-[10px] font-medium shadow-sm">
+                  <MessageNotif1Icon className="w-3 h-3 text-white/90" />
                   <span>{featuredFirst.commentsCount !== undefined ? featuredFirst.commentsCount : 0}</span>
                 </div>
-                <div className="p-1 rounded-md bg-black/65 backdrop-blur-md text-white/80 shadow-sm">
-                  <Bookmark className="w-3 h-3 fill-current text-amber-300" />
+                <div className="p-1 rounded-lg bg-black/65 backdrop-blur-md text-white/80 shadow-sm">
+                  <ArchiveIcon className="w-3.5 h-3.5 text-amber-300" />
                 </div>
               </div>
 
               <div className="absolute bottom-2 left-2 z-10">
-                <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md text-white text-[10px] font-bold shadow-sm">
+                <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-black/75 backdrop-blur-md text-white text-[10px] font-bold shadow-sm">
                   <span className="w-3.5 h-3.5 rounded-full bg-[#1e1e1e] flex items-center justify-center text-[7px] text-[#60cdff] font-extrabold">
                     S
                   </span>
@@ -325,7 +325,7 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
                 placeholder="İsim"
                 value={contactName}
                 onChange={(e) => setContactName(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-[#1e1e1e] border border-transparent focus:border-[#60cdff]/50 text-white text-xs outline-none transition-colors"
+                className="w-full px-3 py-2 rounded-lg bg-[#1e1e1e] border border-transparent focus:border-[#60cdff]/50 text-white text-xs outline-none transition-colors"
                 required
               />
             </div>
@@ -335,7 +335,7 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
                 placeholder="E-posta *"
                 value={contactEmail}
                 onChange={(e) => setContactEmail(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-[#1e1e1e] border border-transparent focus:border-[#60cdff]/50 text-white text-xs outline-none transition-colors"
+                className="w-full px-3 py-2 rounded-lg bg-[#1e1e1e] border border-transparent focus:border-[#60cdff]/50 text-white text-xs outline-none transition-colors"
                 required
               />
             </div>
@@ -345,13 +345,13 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
                 value={contactMessage}
                 onChange={(e) => setContactMessage(e.target.value)}
                 rows={3}
-                className="w-full px-3 py-2 rounded-xl bg-[#1e1e1e] border border-transparent focus:border-[#60cdff]/50 text-white text-xs outline-none transition-colors resize-none"
+                className="w-full px-3 py-2 rounded-lg bg-[#1e1e1e] border border-transparent focus:border-[#60cdff]/50 text-white text-xs outline-none transition-colors resize-none"
                 required
               />
             </div>
             <button
               type="submit"
-              className="w-full flex items-center justify-center gap-1.5 py-2 px-4 rounded-xl bg-gradient-to-r from-[#38bdf8] to-[#0ea5e9] hover:from-[#7dd3fc] hover:to-[#38bdf8] text-[#0f172a] font-bold text-xs shadow-md shadow-sky-500/20 active:scale-98 transition-all cursor-pointer"
+              className="w-full flex items-center justify-center gap-1.5 py-2 px-4 rounded-lg bg-gradient-to-r from-[#38bdf8] to-[#0ea5e9] hover:from-[#7dd3fc] hover:to-[#38bdf8] text-[#0f172a] font-bold text-xs shadow-md shadow-sky-500/20 active:scale-98 transition-all cursor-pointer"
             >
               <Send className="w-3.5 h-3.5" />
               <span>Gönder</span>
@@ -377,7 +377,7 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
             className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
             onClick={onCloseDrawer}
           />
-          <div className="relative w-80 max-w-[85vw] h-full bg-[#1e1e1e] border-l border-[#383838] shadow-2xl p-4 overflow-y-auto z-10 animate-in slide-in-from-right duration-300">
+          <div className="relative w-80 max-w-[85vw] h-full bg-[#1e1e1e] border-l border-[#252526] shadow-2xl p-4 overflow-y-auto z-10 animate-in slide-in-from-right duration-300">
             {content}
           </div>
         </div>

@@ -21,14 +21,14 @@ export const CollectionsView: React.FC<CollectionsViewProps> = ({
         <div className="flex items-center gap-2">
           <Folder className="w-5 h-5 text-[#38bdf8]" />
           <h1 className="text-xl font-light text-white tracking-tight">Collections</h1>
-          <span className="text-xs px-2 py-0.5 rounded-full bg-[#262626] border border-[#383838] text-[#a3a3a3] font-mono">
+          <span className="text-xs px-2 py-0.5 rounded-full bg-[#262626] border border-transparent text-[#a3a3a3] font-mono">
             {collections.length}
           </span>
         </div>
 
         <button
           onClick={onOpenManageCollections}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#7dd3fc] hover:bg-[#38bdf8] text-[#0f172a] font-bold text-xs shadow-sm transition-all"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#7dd3fc] hover:bg-[#38bdf8] text-[#0f172a] font-bold text-xs shadow-sm transition-all"
         >
           <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
           <span>New Collection</span>
@@ -42,11 +42,11 @@ export const CollectionsView: React.FC<CollectionsViewProps> = ({
             <div
               key={col.id}
               onClick={() => col.id && onSelectCollection(col.id)}
-              className="p-4 rounded-xl bg-[#252526] hover:bg-[#28282b] border border-transparent cursor-pointer transition-all flex items-center justify-between group shadow-sm"
+              className="p-4 rounded-lg bg-[#252526] hover:bg-[#28282b] border border-transparent cursor-pointer transition-all flex items-center justify-between group shadow-sm"
             >
               <div className="flex items-center gap-3 min-w-0">
                 <div 
-                  className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-inner"
+                  className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 shadow-inner"
                   style={{ backgroundColor: `${col.color || '#38bdf8'}22` }}
                 >
                   <Folder className="w-5 h-5" style={{ color: col.color || '#38bdf8' }} />

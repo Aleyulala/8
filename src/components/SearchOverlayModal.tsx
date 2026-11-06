@@ -231,7 +231,7 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
       {/* Kapat Butonu */}
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 sm:top-6 sm:right-6 w-9 h-9 rounded-full bg-[#252526] hover:bg-[#333333] border border-[#404045] flex items-center justify-center text-[#989b9f] hover:text-white transition-all shadow-lg cursor-pointer"
+        className="absolute top-4 right-4 sm:top-6 sm:right-6 w-9 h-9 rounded-lg bg-[#252526] hover:bg-[#333333] border border-transparent flex items-center justify-center text-[#989b9f] hover:text-white transition-all shadow-lg cursor-pointer"
         aria-label="Aramayı Kapat (Esc)"
         title="Kapat (Esc)"
       >
@@ -241,13 +241,13 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
       <div className="w-full max-w-2xl flex flex-col gap-3">
         
         {/* Arama Kutusu ve Motor Seçici (Search Wrap) */}
-        <div className="flex items-center gap-2 p-1.5 sm:p-2 rounded-2xl bg-[#252526] border border-[#404045] shadow-2xl focus-within:border-[#60cdff] transition-all">
+        <div className="flex items-center gap-2 p-1.5 sm:p-2 rounded-lg bg-[#252526] border border-transparent shadow-2xl focus-within:border-[#60cdff]/50 transition-all">
           
           {/* Arama Motoru Dropdown */}
           <select
             value={selectedEngine}
             onChange={(e) => setSelectedEngine(e.target.value)}
-            className="bg-[#1e1e1e] hover:bg-[#28282b] text-[#d4d4d4] text-xs font-semibold py-2 px-2.5 rounded-xl border border-transparent outline-none cursor-pointer shrink-0 max-w-[110px] sm:max-w-[130px] truncate"
+            className="bg-[#1e1e1e] hover:bg-[#28282b] text-[#d4d4d4] text-xs font-semibold py-2 px-2.5 rounded-lg border border-transparent outline-none cursor-pointer shrink-0 max-w-[110px] sm:max-w-[130px] truncate"
             title="Arama Motoru Seçin"
           >
             {SEARCH_ENGINES.map(eng => (
@@ -288,7 +288,7 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
           <button
             type="button"
             onClick={() => handleExecuteSearch()}
-            className="w-9 h-9 rounded-xl bg-gradient-to-r from-[#38bdf8] to-[#0ea5e9] hover:from-[#7dd3fc] hover:to-[#38bdf8] text-[#0f172a] flex items-center justify-center font-bold text-base shadow-md active:scale-95 transition-all cursor-pointer shrink-0"
+            className="w-9 h-9 rounded-lg bg-gradient-to-r from-[#38bdf8] to-[#0ea5e9] hover:from-[#7dd3fc] hover:to-[#38bdf8] text-[#0f172a] flex items-center justify-center font-bold text-base shadow-md active:scale-95 transition-all cursor-pointer shrink-0"
             title="Ara veya Git (Enter)"
           >
             <SearchNormalIcon className="w-4 h-4 stroke-[2.5]" />
@@ -350,7 +350,7 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
 
         {/* Eşleşen Kayıtlı Linkler Paneli */}
         {matchingLinks.length > 0 && (
-          <div className="max-h-72 overflow-y-auto rounded-xl bg-[#1e1e1e] border border-white/5 p-1.5 space-y-1 shadow-2xl">
+          <div className="max-h-72 overflow-y-auto rounded-lg bg-[#1e1e1e] border border-transparent p-1.5 space-y-1 shadow-2xl">
             <div className="px-2.5 py-1 text-[11px] font-semibold text-[#989b9f] uppercase tracking-wider flex items-center justify-between">
               <span>Kayıtlı Bağlantılarınız ({matchingLinks.length})</span>
               <span className="text-[10px] font-normal text-[#71717a]">Gezinmek için ↑ ↓</span>

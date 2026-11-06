@@ -23,6 +23,7 @@ import { BloggerFooter } from './components/BloggerFooter';
 import { BloggerPostView } from './components/BloggerPostView';
 import { getStorageUsage } from './utils/exportImport';
 import { getDomain } from './utils/favicon';
+import { initTvNavigation } from './utils/tvNavigation';
 import { Search, Plus, Home, Bookmark, Moon, Sun, FileUp, Menu } from 'lucide-react';
 
 type MainViewType = 
@@ -86,6 +87,7 @@ export const App: React.FC = () => {
   // Initialize DB on start & check Bookmarklet query params
   useEffect(() => {
     initializeDatabase();
+    const cleanupTv = initTvNavigation();
 
     const params = new URLSearchParams(window.location.search);
     const addUrl = params.get('add_url') || params.get('url');
@@ -108,6 +110,10 @@ export const App: React.FC = () => {
       setIsAddModalOpen(true);
       window.history.replaceState({}, document.title, window.location.pathname);
     }
+
+    return () => {
+      cleanupTv();
+    };
   }, []);
 
   const updateStorage = async () => {
@@ -383,6 +389,10 @@ export const App: React.FC = () => {
         onOpenSettings={() => setIsSettingsOpen(true)}
         onGoHome={() => {
           setActiveView('dashboard');
+          setSearchQuery('');
+        }}
+        onOpenPinned={() => {
+          setActiveView('pinned');
           setSearchQuery('');
         }}
         onOpenSearchModal={() => setIsSearchOverlayOpen(true)}

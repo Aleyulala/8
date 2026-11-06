@@ -101,7 +101,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
 
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-xl bg-[#252526] hover:bg-[#333333] text-[#a3a3a3] hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-lg bg-[#252526] hover:bg-[#333333] text-[#a3a3a3] hover:text-white flex items-center justify-center transition-colors cursor-pointer"
             title="Kapat"
           >
             <CloseIcon className="w-4 h-4" />
@@ -127,22 +127,10 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               value={localSearch}
               readOnly
               placeholder="Bul... (Ctrl+K)"
-              className="w-full bg-[#252526] group-hover:bg-[#28282b] border border-transparent group-hover:border-[#60cdff]/30 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-[#737373] outline-none transition-colors cursor-pointer"
+              className="w-full bg-[#252526] group-hover:bg-[#28282b] border border-transparent group-hover:border-[#60cdff]/30 rounded-lg pl-9 pr-3 py-2 text-xs text-white placeholder-[#737373] outline-none transition-colors cursor-pointer"
             />
             <SearchNormalIcon className="w-4 h-4 text-[#737373] group-hover:text-[#60cdff] transition-colors absolute left-2.5 top-2.5 pointer-events-none" />
           </div>
-
-          {/* + Yeni Bağlantı Ekle Butonu */}
-          <button
-            onClick={() => {
-              onClose();
-              onOpenNewLink();
-            }}
-            className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-gradient-to-r from-[#38bdf8] to-[#0ea5e9] hover:from-[#7dd3fc] hover:to-[#38bdf8] text-[#0f172a] font-bold text-xs shadow-md shadow-sky-500/20 active:scale-98 transition-all cursor-pointer"
-          >
-            <Plus className="w-4 h-4 stroke-[2.8]" />
-            <span>Yeni Bağlantı</span>
-          </button>
 
           {/* Blogger Gezinme Menüsü (.mnMn) */}
           <ul className="space-y-1">
@@ -154,7 +142,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
                   onClose();
                   onSelectTab('dashboard');
                 }}
-                className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl font-medium transition-colors cursor-pointer ${
+                className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium transition-colors cursor-pointer ${
                   currentTab === 'dashboard'
                     ? 'bg-[#252526] text-[#38bdf8]'
                     : 'text-[#d4d4d4] hover:bg-[#252526]/70 hover:text-white'
@@ -171,7 +159,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
             <li className="pt-1">
               <div 
                 onClick={() => setHizmetlerOpen(!hizmetlerOpen)}
-                className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold text-[#d4d4d4] hover:bg-[#252526] hover:text-white cursor-pointer transition-colors"
+                className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-[#d4d4d4] hover:bg-[#252526] hover:text-white cursor-pointer transition-colors"
               >
                 <div className="flex items-center gap-2.5">
                   <Layers className="w-4 h-4 text-[#60cdff]" />
@@ -244,7 +232,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
             <li className="pt-1">
               <div 
                 onClick={() => setKlasorOpen(!klasorOpen)}
-                className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold text-[#d4d4d4] hover:bg-[#252526] hover:text-white cursor-pointer transition-colors"
+                className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-[#d4d4d4] hover:bg-[#252526] hover:text-white cursor-pointer transition-colors"
               >
                 <div className="flex items-center gap-2.5">
                   <Zap className="w-4 h-4 text-amber-400" />
@@ -320,7 +308,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
             <li className="pt-1">
               <div 
                 onClick={() => setGelistiriciOpen(!gelistiriciOpen)}
-                className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold text-[#d4d4d4] hover:bg-[#252526] hover:text-white cursor-pointer transition-colors"
+                className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-[#d4d4d4] hover:bg-[#252526] hover:text-white cursor-pointer transition-colors"
               >
                 <div className="flex items-center gap-2.5">
                   <Code2 className="w-4 h-4 text-[#60cdff]" />
