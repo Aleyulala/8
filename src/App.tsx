@@ -705,7 +705,7 @@ export const App: React.FC = () => {
         }}
       />
 
-      {/* Modern CTA Floating Action Buttons (.cta-container) */}
+      {/* Blogger Float Sistemi: Hızlı İşlemler (.qeF) & Başa Dön / İlerleme (.tTb) */}
       <FloatingMenu
         onOpenNewLink={() => {
           setEditingLink(null);
@@ -716,6 +716,18 @@ export const App: React.FC = () => {
         }}
         onOpenCollections={() => {
           setActiveView('collections_list');
+        }}
+        onOpenSettings={() => {
+          setIsSettingsOpen(true);
+        }}
+        onOpenImportExport={() => {
+          setIsImportExportOpen(true);
+        }}
+        onOpenTags={() => {
+          setActiveView('tags_list');
+        }}
+        onOpenAllLinks={() => {
+          setActiveView('links');
         }}
       />
 
