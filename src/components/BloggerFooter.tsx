@@ -116,42 +116,42 @@ export const BloggerFooter: React.FC = () => {
             </div>
           </div>
 
-          {/* Kolon 2: Forum (LinkList22) */}
+          {/* Kolon 2: Destek & İletişim */}
           <div className="space-y-3">
             <h4 className="text-white font-bold uppercase tracking-wider text-xs border-b border-[#27272a] pb-2">
-              Forum
+              Destek
             </h4>
             <ul className="space-y-2 text-[#9ca3af]">
               <li>
                 <a 
-                  href="https://aleyulala.blogspot.com/p/istekler.html" 
+                  href="https://github.com/Aleyulala/saved/discussions/?pli=1" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="hover:text-[#38bdf8] transition-colors flex items-center gap-1.5"
                 >
-                  <span>İstekler</span>
+                  <span>Geri Bildirim</span>
                   <ExternalLink className="w-2.5 h-2.5 opacity-50" />
                 </a>
               </li>
               <li>
                 <a 
-                  href="https://classroom.google.com/c/ODg5NDgxOTk3NTUx?cjc=3jmlj4w2" 
+                  href="https://notebooklm.google.com/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="hover:text-[#38bdf8] transition-colors flex items-center gap-1.5"
                 >
-                  <span>Soru & Cevap Sınıfı</span>
+                  <span>Notlarınız (NotebookLM)</span>
                   <ExternalLink className="w-2.5 h-2.5 opacity-50" />
                 </a>
               </li>
               <li>
                 <a 
-                  href="https://aleyulala.blogspot.com/p/muhabbet.html" 
+                  href="https://docs.google.com/forms/u/0/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="hover:text-[#38bdf8] transition-colors flex items-center gap-1.5"
                 >
-                  <span>Muhabbet Odası</span>
+                  <span>Forum & İletişim</span>
                   <ExternalLink className="w-2.5 h-2.5 opacity-50" />
                 </a>
               </li>
@@ -169,7 +169,7 @@ export const BloggerFooter: React.FC = () => {
             </ul>
           </div>
 
-          {/* Kolon 3: Servis (LinkList23) */}
+          {/* Kolon 3: Servis */}
           <div className="space-y-3">
             <h4 className="text-white font-bold uppercase tracking-wider text-xs border-b border-[#27272a] pb-2">
               Servis
@@ -177,23 +177,23 @@ export const BloggerFooter: React.FC = () => {
             <ul className="space-y-2 text-[#9ca3af]">
               <li>
                 <a 
-                  href="https://negronshow.blogspot.com/" 
+                  href="https://aleyulala.github.io/saved/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="hover:text-[#38bdf8] transition-colors flex items-center gap-1.5"
                 >
-                  <span>NSONE Blog</span>
+                  <span>SAVED App</span>
                   <ExternalLink className="w-2.5 h-2.5 opacity-50" />
                 </a>
               </li>
               <li>
                 <a 
-                  href="https://aleyulala.blogspot.com/search/label/videolar" 
+                  href="https://github.com/Aleyulala/saved" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="hover:text-[#38bdf8] transition-colors flex items-center gap-1.5"
                 >
-                  <span>Video Arşivi</span>
+                  <span>GitHub Deposu</span>
                   <ExternalLink className="w-2.5 h-2.5 opacity-50" />
                 </a>
               </li>
@@ -274,42 +274,26 @@ export const BloggerFooter: React.FC = () => {
           {/* Telif Hakkı & Doğrulanmış Rozet */}
           <div className="flex items-center gap-1.5">
             <span>© 2026 ·</span>
-            <a 
-              href="https://aleyulala.blogspot.com/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-white hover:text-[#38bdf8] font-semibold flex items-center gap-1 transition-colors"
-            >
+            <span className="text-white font-semibold flex items-center gap-1">
               <span>ALİ YILDIZ</span>
               <Verify1Icon className="w-3.5 h-3.5 text-[#38bdf8]" />
-            </a>
+            </span>
             <span>· All rights reserved.</span>
           </div>
 
-          {/* Geliştirici & RSS Feed */}
+          {/* Geliştirici & GitHub */}
           <div className="flex items-center gap-4">
             <span>
               Developed by{' '}
               <a 
-                href="https://niadzgn.blogspot.com" 
+                href="https://github.com/Aleyulala/saved" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-[#38bdf8] hover:underline font-medium"
               >
-                nsone
+                SAVED
               </a>
             </span>
-
-            <a
-              href="https://negronshow.blogspot.com/feeds/posts/default?alt=rss"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-[#f59e0b] hover:text-amber-300 font-medium transition-colors"
-              title="RSS Feed"
-            >
-              <Rss className="w-3 h-3" />
-              <span>Feed</span>
-            </a>
           </div>
 
         </div>

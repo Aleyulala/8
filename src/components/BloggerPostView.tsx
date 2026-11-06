@@ -331,12 +331,12 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
 
           <div className="flex items-center justify-center sm:justify-start gap-2 pt-1 text-xs">
             <a
-              href="https://aleyulala.blogspot.com/"
+              href="https://github.com/Aleyulala/saved"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-2.5 py-1 rounded-lg bg-[#1e1e1e] hover:bg-[#ff5722] text-[#d4d4d4] hover:text-white border border-[#383838] transition-colors"
+              className="px-2.5 py-1 rounded-lg bg-[#1e1e1e] hover:bg-white hover:text-black text-[#d4d4d4] border border-[#383838] transition-colors"
             >
-              Blog
+              GitHub
             </a>
             <a
               href="https://t.me/aleyyulala"

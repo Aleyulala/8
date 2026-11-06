@@ -6,8 +6,8 @@ export const BloggerNotificationBar: React.FC = () => {
   const [activeSlide, setActiveSlide] = useState(0);
 
   const notifications = [
-    'Blog sayfasını takip etmek için author (yazar) kısmındaki kullanıcı adına basınız.',
-    'Local-First mimarisiyle 352 bağlantı çevrimdışı belleğinizde güvenle saklanıyor.'
+    'SAVED: Tüm yer imleriniz, kategorileriniz ve etiketleriniz Local-First olarak tarayıcınızda saklanmaktadır.',
+    'Local-First mimarisiyle 352 bağlantı çevrimdışı belleğinizde tam gizlilikle çalışır.'
   ];
 
   if (!isVisible) return null;

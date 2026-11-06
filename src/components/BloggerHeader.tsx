@@ -119,15 +119,15 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
           <SunMoonIcon className="w-4 h-4" />
         </button>
 
-        {/* Blog Dış Bağlantı */}
+        {/* GitHub Depo Bağlantısı */}
         <a
-          href="https://negronshow.blogspot.com/"
+          href="https://github.com/Aleyulala/saved"
           target="_blank"
           rel="noopener noreferrer"
           className="hidden sm:flex p-1.5 rounded-lg text-[#989b9f] hover:text-[#60cdff] hover:bg-[#252526] transition-colors"
-          title="negronshow.blogspot.com"
+          title="GitHub: Aleyulala/saved"
         >
-          <Globe className="w-4 h-4" />
+          <GithubIcon className="w-4 h-4" />
         </a>
 
         {/* SAĞ ÜST: LOGO YOK, SADECE 'saved' YAZISI */}
