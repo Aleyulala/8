@@ -7,8 +7,7 @@ import {
   FileCode, 
   CheckCircle2, 
   AlertCircle, 
-  ShieldCheck, 
-  RefreshCw 
+  ShieldCheck 
 } from 'lucide-react';
 import { db } from '../db';
 import { CollectionItem, LinkItem } from '../types';
@@ -33,22 +32,20 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
 
   if (!isOpen) return null;
 
-  // JSON Export
   const handleExportJson = async () => {
     try {
       setIsProcessing(true);
       const jsonStr = await exportDatabaseToJson();
       const dateStr = new Date().toISOString().split('T')[0];
       downloadFile(jsonStr, `saved-backup-${dateStr}.json`, 'application/json');
-      setStatusMessage({ type: 'success', text: 'JSON yedeği başarıyla indirildi!' });
+      setStatusMessage({ type: 'success', text: 'JSON backup downloaded successfully!' });
     } catch (err: any) {
-      setStatusMessage({ type: 'error', text: 'Dışa aktarma hatası: ' + err.message });
+      setStatusMessage({ type: 'error', text: 'Export error: ' + err.message });
     } finally {
       setIsProcessing(false);
     }
   };
 
-  // JSON Import
   const handleImportJsonFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -61,11 +58,11 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
         const result = await importDatabaseFromJson(content, overwrite);
         setStatusMessage({
           type: 'success',
-          text: `Yedek yüklendi: ${result.linksCount} bağlantı ve ${result.collectionsCount} koleksiyon eklendi.`
+          text: `Backup restored: ${result.linksCount} links and ${result.collectionsCount} collections imported.`
         });
         onDataChanged();
       } catch (err: any) {
-        setStatusMessage({ type: 'error', text: 'İçe aktarma hatası: ' + err.message });
+        setStatusMessage({ type: 'error', text: 'Import error: ' + err.message });
       } finally {
         setIsProcessing(false);
       }
@@ -74,7 +71,6 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
     e.target.value = '';
   };
 
-  // HTML Export (Netscape)
   const handleExportHtml = async () => {
     try {
       setIsProcessing(true);
@@ -83,15 +79,14 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
       const html = generateNetscapeBookmarks(links, collections);
       const dateStr = new Date().toISOString().split('T')[0];
       downloadFile(html, `saved-bookmarks-${dateStr}.html`, 'text/html');
-      setStatusMessage({ type: 'success', text: 'HTML yer imleri dosyası indirildi (Chrome, Firefox uyumlu).' });
+      setStatusMessage({ type: 'success', text: 'HTML Bookmarks exported (Chrome, Firefox, Linkwarden compatible).' });
     } catch (err: any) {
-      setStatusMessage({ type: 'error', text: 'Dışa aktarma hatası: ' + err.message });
+      setStatusMessage({ type: 'error', text: 'Export error: ' + err.message });
     } finally {
       setIsProcessing(false);
     }
   };
 
-  // HTML Import (Netscape Bookmarks)
   const handleImportHtmlFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -104,10 +99,9 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
         const bookmarks = parseNetscapeBookmarks(html);
 
         if (bookmarks.length === 0) {
-          throw new Error('Dosyada geçerli bağlantı bulunamadı.');
+          throw new Error('No valid bookmarks found in file.');
         }
 
-        // Group by collectionName to create missing collections
         await db.transaction('rw', db.links, db.collections, db.tags, async () => {
           const colNameMap = new Map<string, number>();
           const existingCols = await db.collections.toArray();
@@ -125,7 +119,7 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
               } else {
                 const newColId = await db.collections.add({
                   name: bm.collectionName,
-                  color: '#3b82f6',
+                  color: '#38bdf8',
                   createdAt: Date.now()
                 });
                 colNameMap.set(lowerName, newColId as number);
@@ -133,7 +127,6 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
               }
             }
 
-            // Add tags to db if present
             if (bm.tags && bm.tags.length > 0) {
               for (const tag of bm.tags) {
                 const existing = await db.tags.where('name').equalsIgnoreCase(tag).first();
@@ -161,13 +154,13 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
 
           setStatusMessage({
             type: 'success',
-            text: `HTML yer imleri içe aktarıldı: ${importedLinks} bağlantı başarıyla eklendi!`
+            text: `Imported ${importedLinks} bookmarks successfully!`
           });
         });
 
         onDataChanged();
       } catch (err: any) {
-        setStatusMessage({ type: 'error', text: 'HTML içe aktarma hatası: ' + err.message });
+        setStatusMessage({ type: 'error', text: 'HTML import error: ' + err.message });
       } finally {
         setIsProcessing(false);
       }
@@ -177,36 +170,34 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs overflow-y-auto">
       <div 
-        className="w-full max-w-xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-8"
+        className="w-full max-w-xl bg-[#212121] rounded-2xl shadow-2xl border border-[#3e3e3e] overflow-hidden my-8 text-neutral-200"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#333333]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-[#38bdf8]/15 text-[#38bdf8] flex items-center justify-center">
               <Download className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-                İçe ve Dışa Aktar
+              <h2 className="text-base font-bold text-white">
+                Import & Export
               </h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Verilerinizi yedekleyin, taşıyın veya tarayıcı yer imlerinizi aktarın
+              <p className="text-xs text-[#8e8e8e]">
+                Backup, restore, or transfer bookmarks from Chrome, Firefox or Linkwarden
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-[#333333] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Tab Selection */}
-        <div className="flex border-b border-slate-200 dark:border-slate-800 px-6 pt-3 gap-4">
+        <div className="flex border-b border-[#333333] px-6 pt-3 gap-4">
           <button
             onClick={() => {
               setActiveTab('json');
@@ -214,12 +205,12 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
             }}
             className={`pb-3 text-xs font-semibold flex items-center gap-2 border-b-2 transition-all ${
               activeTab === 'json'
-                ? 'border-blue-600 text-blue-600 dark:text-blue-400'
-                : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                ? 'border-[#38bdf8] text-[#38bdf8]'
+                : 'border-transparent text-neutral-400 hover:text-white'
             }`}
           >
             <FileJson className="w-4 h-4" />
-            <span>Tam JSON Yedek (Önerilen)</span>
+            <span>JSON Backup</span>
           </button>
 
           <button
@@ -229,23 +220,21 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
             }}
             className={`pb-3 text-xs font-semibold flex items-center gap-2 border-b-2 transition-all ${
               activeTab === 'html'
-                ? 'border-blue-600 text-blue-600 dark:text-blue-400'
-                : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                ? 'border-[#38bdf8] text-[#38bdf8]'
+                : 'border-transparent text-neutral-400 hover:text-white'
             }`}
           >
             <FileCode className="w-4 h-4" />
-            <span>HTML Yer İmleri (Chrome/Firefox/Linkwarden)</span>
+            <span>HTML Bookmarks (Linkwarden/Chrome)</span>
           </button>
         </div>
 
-        {/* Content */}
-        <div className="p-6 space-y-6">
-          {/* Status Alert */}
+        <div className="p-6 space-y-5">
           {statusMessage && (
             <div className={`p-3 rounded-xl flex items-center gap-2 text-xs font-medium ${
               statusMessage.type === 'success'
-                ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800'
-                : 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800'
+                ? 'bg-emerald-950/40 text-emerald-300 border border-emerald-800'
+                : 'bg-rose-950/40 text-rose-300 border border-rose-800'
             }`}>
               {statusMessage.type === 'success' ? (
                 <CheckCircle2 className="w-4 h-4 shrink-0" />
@@ -258,47 +247,47 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
 
           {activeTab === 'json' ? (
             <div className="space-y-4">
-              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-2">
-                <div className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                  Tam Yedek İndir (Dışa Aktar)
+              <div className="p-4 rounded-xl bg-[#171717] border border-[#383838] space-y-2">
+                <div className="text-xs font-bold uppercase tracking-wider text-white">
+                  Export Full JSON Backup
                 </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                  Tüm bağlantılarınızı, koleksiyonlarınızı, etiketlerinizi ve notlarınızı tek bir JSON dosyası olarak kaydedin.
+                <p className="text-xs text-[#8e8e8e] leading-relaxed">
+                  Download all your links, collections, tags, and personal notes into a single portable JSON file.
                 </p>
-                <div className="pt-2">
+                <div className="pt-1">
                   <button
                     onClick={handleExportJson}
                     disabled={isProcessing}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-xs transition-colors"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#7dd3fc] hover:bg-[#38bdf8] text-[#0f172a] text-xs font-bold shadow-xs transition-colors"
                   >
                     <Download className="w-4 h-4" />
-                    <span>JSON Yedeği İndir (.json)</span>
+                    <span>Download JSON Backup</span>
                   </button>
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-3">
-                <div className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                  Yedek Yükle (Geri Yükle)
+              <div className="p-4 rounded-xl bg-[#171717] border border-[#383838] space-y-3">
+                <div className="text-xs font-bold uppercase tracking-wider text-white">
+                  Restore from JSON Backup
                 </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                  Daha önce indirdiğiniz Saved JSON yedeğini yükleyerek verilerinizi geri getirin.
+                <p className="text-xs text-[#8e8e8e] leading-relaxed">
+                  Upload a previously exported Saved JSON backup to restore your data.
                 </p>
 
-                <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-700 dark:text-slate-300">
+                <label className="flex items-center gap-2 cursor-pointer text-xs text-neutral-300">
                   <input
                     type="checkbox"
                     checked={overwrite}
                     onChange={(e) => setOverwrite(e.target.checked)}
-                    className="w-4 h-4 rounded text-rose-600 focus:ring-rose-500 dark:bg-slate-800 dark:border-slate-700"
+                    className="w-4 h-4 rounded text-rose-500 focus:ring-rose-500 bg-[#212121] border-[#383838]"
                   />
-                  <span>Mevcut tüm verileri sil ve yedeğin üzerine yaz</span>
+                  <span>Overwrite existing database</span>
                 </label>
 
                 <div className="pt-1">
-                  <label className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-100 text-xs font-semibold cursor-pointer transition-colors">
+                  <label className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#333333] hover:bg-[#404040] text-white text-xs font-semibold cursor-pointer transition-colors">
                     <Upload className="w-4 h-4" />
-                    <span>JSON Dosyası Seç</span>
+                    <span>Select JSON File</span>
                     <input
                       type="file"
                       accept=".json"
@@ -311,36 +300,36 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
             </div>
           ) : (
             <div className="space-y-4">
-              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-2">
-                <div className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                  HTML Yer İmleri Dosyası İndir
+              <div className="p-4 rounded-xl bg-[#171717] border border-[#383838] space-y-2">
+                <div className="text-xs font-bold uppercase tracking-wider text-white">
+                  Export HTML Bookmarks
                 </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                  Standart Netscape Bookmark formatında dışa aktarın. Bu dosyayı Google Chrome, Firefox, Safari, Brave veya Raindrop içine aktarabilirsiniz.
+                <p className="text-xs text-[#8e8e8e] leading-relaxed">
+                  Export standard Netscape HTML format compatible with Google Chrome, Firefox, Safari, and Linkwarden.
                 </p>
-                <div className="pt-2">
+                <div className="pt-1">
                   <button
                     onClick={handleExportHtml}
                     disabled={isProcessing}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-xs transition-colors"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#7dd3fc] hover:bg-[#38bdf8] text-[#0f172a] text-xs font-bold shadow-xs transition-colors"
                   >
                     <Download className="w-4 h-4" />
-                    <span>HTML Yer İmleri İndir (.html)</span>
+                    <span>Export Bookmarks HTML</span>
                   </button>
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-2">
-                <div className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                  Tarayıcı veya Linkwarden Yer İmlerini İçe Aktar
+              <div className="p-4 rounded-xl bg-[#171717] border border-[#383838] space-y-2">
+                <div className="text-xs font-bold uppercase tracking-wider text-white">
+                  Import HTML Bookmarks
                 </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                  Chrome, Firefox veya Linkwarden'dan dışa aktardığınız HTML yer imi dosyasını seçin. Klasörler otomatik olarak koleksiyonlara dönüştürülecektir.
+                <p className="text-xs text-[#8e8e8e] leading-relaxed">
+                  Import your bookmarks from Chrome, Firefox, Raindrop, or your Linkwarden instance. Folders will be converted into collections automatically.
                 </p>
-                <div className="pt-2">
-                  <label className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-100 text-xs font-semibold cursor-pointer transition-colors">
+                <div className="pt-1">
+                  <label className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#333333] hover:bg-[#404040] text-white text-xs font-semibold cursor-pointer transition-colors">
                     <Upload className="w-4 h-4" />
-                    <span>HTML Dosyası Seç</span>
+                    <span>Select HTML File</span>
                     <input
                       type="file"
                       accept=".html,.htm"
@@ -353,11 +342,10 @@ export const ImportExportModal: React.FC<ImportExportModalProps> = ({
             </div>
           )}
 
-          {/* Privacy Note */}
-          <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/30 p-3 rounded-xl border border-slate-200/60 dark:border-slate-800">
-            <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
+          <div className="flex items-center gap-2 text-xs text-[#8e8e8e] bg-[#171717] p-3 rounded-xl border border-[#383838]">
+            <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
             <span>
-              Verileriniz hiçbir sunucuya yüklenmez. Tüm aktarım ve yedekleme işlemleri 100% cihazınızda istemci tarafında gerçekleşir.
+              100% Client-side. No data is ever sent to any remote server.
             </span>
           </div>
         </div>

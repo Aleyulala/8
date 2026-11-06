@@ -30,8 +30,6 @@ export const AddEditLinkModal: React.FC<AddEditLinkModalProps> = ({
   const [tagInput, setTagInput] = useState('');
   const [notes, setNotes] = useState('');
   const [isPinned, setIsPinned] = useState(false);
-  const [isRead, setIsRead] = useState(false);
-  const [isArchived, setIsArchived] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -43,8 +41,6 @@ export const AddEditLinkModal: React.FC<AddEditLinkModalProps> = ({
       setTags(editingLink.tags || []);
       setNotes(editingLink.notes || '');
       setIsPinned(editingLink.isPinned || false);
-      setIsRead(editingLink.isRead || false);
-      setIsArchived(editingLink.isArchived || false);
     } else {
       setUrl('');
       setTitle('');
@@ -53,8 +49,6 @@ export const AddEditLinkModal: React.FC<AddEditLinkModalProps> = ({
       setTags([]);
       setNotes('');
       setIsPinned(false);
-      setIsRead(false);
-      setIsArchived(false);
     }
   }, [editingLink, isOpen, defaultCollectionId, collections]);
 
@@ -62,7 +56,6 @@ export const AddEditLinkModal: React.FC<AddEditLinkModalProps> = ({
 
   const handleUrlBlur = () => {
     if (url && !title) {
-      // Auto-suggest a clean title from the domain/URL
       const domain = getDomain(url);
       setTitle(domain.charAt(0).toUpperCase() + domain.slice(1));
     }
@@ -99,8 +92,8 @@ export const AddEditLinkModal: React.FC<AddEditLinkModalProps> = ({
         tags,
         notes: notes.trim(),
         isPinned,
-        isRead,
-        isArchived
+        isRead: false,
+        isArchived: false
       });
       onClose();
     } finally {
@@ -109,35 +102,34 @@ export const AddEditLinkModal: React.FC<AddEditLinkModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs overflow-y-auto">
       <div 
-        className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-8"
+        className="w-full max-w-lg bg-[#212121] rounded-2xl shadow-2xl border border-[#3e3e3e] overflow-hidden my-8 text-neutral-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#333333]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-[#38bdf8]/15 text-[#38bdf8] flex items-center justify-center">
               <LinkIcon className="w-4 h-4" />
             </div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-              {editingLink ? 'Bağlantıyı Düzenle' : 'Yeni Bağlantı Ekle'}
+            <h2 className="text-base font-bold text-white">
+              {editingLink ? 'Edit Link' : 'New Link'}
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-[#333333] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Form Body */}
+        {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          {/* URL Input */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
-              Bağlantı URL'si *
+            <label className="block text-xs font-semibold text-neutral-300 uppercase tracking-wider mb-1.5">
+              URL *
             </label>
             <input
               type="text"
@@ -147,75 +139,69 @@ export const AddEditLinkModal: React.FC<AddEditLinkModalProps> = ({
               onChange={(e) => setUrl(e.target.value)}
               onBlur={handleUrlBlur}
               placeholder="https://example.com"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#171717] border border-[#383838] text-sm text-white focus:outline-none focus:border-[#38bdf8] transition-colors"
             />
           </div>
 
-          {/* Title Input */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
-              Başlık
+            <label className="block text-xs font-semibold text-neutral-300 uppercase tracking-wider mb-1.5">
+              Title
             </label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Bağlantı Başlığı"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors"
+              placeholder="Webpage title"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#171717] border border-[#383838] text-sm text-white focus:outline-none focus:border-[#38bdf8] transition-colors"
             />
           </div>
 
-          {/* Description Input */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
-              Açıklama
+            <label className="block text-xs font-semibold text-neutral-300 uppercase tracking-wider mb-1.5">
+              Description
             </label>
             <textarea
               rows={2}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Bağlantı hakkında kısa bir not veya özet..."
-              className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors resize-none"
+              placeholder="Brief summary..."
+              className="w-full px-3.5 py-2 rounded-xl bg-[#171717] border border-[#383838] text-sm text-white focus:outline-none focus:border-[#38bdf8] transition-colors resize-none"
             />
           </div>
 
-          {/* Collection Selection */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
-              Koleksiyon
+            <label className="block text-xs font-semibold text-neutral-300 uppercase tracking-wider mb-1.5">
+              Collection
             </label>
-            <div className="relative">
-              <select
-                value={collectionId || ''}
-                onChange={(e) => setCollectionId(e.target.value ? Number(e.target.value) : null)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors cursor-pointer"
-              >
-                <option value="">Koleksiyonsuz</option>
-                {collections.map((col) => (
-                  <option key={col.id} value={col.id}>
-                    {col.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <select
+              value={collectionId || ''}
+              onChange={(e) => setCollectionId(e.target.value ? Number(e.target.value) : null)}
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#171717] border border-[#383838] text-sm text-white focus:outline-none focus:border-[#38bdf8] transition-colors cursor-pointer"
+            >
+              <option value="">No Collection</option>
+              {collections.map((col) => (
+                <option key={col.id} value={col.id}>
+                  {col.name}
+                </option>
+              ))}
+            </select>
           </div>
 
-          {/* Tags */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
-              Etiketler
+            <label className="block text-xs font-semibold text-neutral-300 uppercase tracking-wider mb-1.5">
+              Tags
             </label>
             <div className="flex flex-wrap gap-1.5 mb-2">
               {tags.map((tag) => (
                 <span
                   key={tag}
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-medium"
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#38bdf8]/15 text-[#7dd3fc] text-xs font-medium border border-[#38bdf8]/20"
                 >
                   #{tag}
                   <button
                     type="button"
                     onClick={() => handleRemoveTag(tag)}
-                    className="hover:text-rose-500 transition-colors"
+                    className="hover:text-rose-400"
                   >
                     <X className="w-3 h-3" />
                   </button>
@@ -233,90 +219,61 @@ export const AddEditLinkModal: React.FC<AddEditLinkModalProps> = ({
                     handleAddTag(tagInput);
                   }
                 }}
-                placeholder="Etiket yazıp Enter'a basın..."
-                className="flex-1 px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors"
+                placeholder="Type tag and press Enter..."
+                className="flex-1 px-3.5 py-2 rounded-xl bg-[#171717] border border-[#383838] text-xs text-white focus:outline-none focus:border-[#38bdf8] transition-colors"
               />
               <button
                 type="button"
                 onClick={() => handleAddTag(tagInput)}
-                className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-medium transition-colors"
+                className="px-3 py-2 rounded-xl bg-[#333333] hover:bg-[#404040] text-xs font-medium text-white transition-colors"
               >
-                Ekle
+                Add
               </button>
             </div>
           </div>
 
-          {/* Notes */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
-              Detaylı Notlar (Yerel Hafıza)
+            <label className="block text-xs font-semibold text-neutral-300 uppercase tracking-wider mb-1.5">
+              Notes (Markdown)
             </label>
             <textarea
-              rows={3}
+              rows={2}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="Markdown veya düz metin formatında kişisel notlarınız..."
-              className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors resize-none font-mono text-xs"
+              placeholder="Personal markdown notes..."
+              className="w-full px-3.5 py-2 rounded-xl bg-[#171717] border border-[#383838] text-xs text-white focus:outline-none focus:border-[#38bdf8] transition-colors font-mono resize-none"
             />
           </div>
 
-          {/* Quick Checkboxes */}
-          <div className="flex flex-wrap items-center gap-4 pt-2">
-            <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-slate-700 dark:text-slate-300">
+          <div className="pt-2">
+            <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-neutral-300">
               <input
                 type="checkbox"
                 checked={isPinned}
                 onChange={(e) => setIsPinned(e.target.checked)}
-                className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 dark:bg-slate-800 dark:border-slate-700"
+                className="w-4 h-4 rounded text-[#38bdf8] focus:ring-[#38bdf8] bg-[#171717] border-[#383838]"
               />
-              <span className="flex items-center gap-1">
-                <Star className="w-3.5 h-3.5 text-amber-500" />
-                Sabitle (Favori)
-              </span>
-            </label>
-
-            <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-slate-700 dark:text-slate-300">
-              <input
-                type="checkbox"
-                checked={isRead}
-                onChange={(e) => setIsRead(e.target.checked)}
-                className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 dark:bg-slate-800 dark:border-slate-700"
-              />
-              <span className="flex items-center gap-1">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-                Okundu Olarak İşaretle
-              </span>
-            </label>
-
-            <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-slate-700 dark:text-slate-300">
-              <input
-                type="checkbox"
-                checked={isArchived}
-                onChange={(e) => setIsArchived(e.target.checked)}
-                className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 dark:bg-slate-800 dark:border-slate-700"
-              />
-              <span className="flex items-center gap-1">
-                <Archive className="w-3.5 h-3.5 text-blue-500" />
-                Arşivle
+              <span className="flex items-center gap-1.5">
+                <Star className="w-3.5 h-3.5 text-amber-400" />
+                Pin to Dashboard
               </span>
             </label>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#333333]">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="px-4 py-2 rounded-xl text-xs font-medium text-neutral-400 hover:text-white hover:bg-[#333333] transition-colors"
             >
-              İptal
+              Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-5 py-2 rounded-xl text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20 disabled:opacity-50 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="px-5 py-2 rounded-xl text-xs font-bold bg-[#7dd3fc] hover:bg-[#38bdf8] text-[#0f172a] shadow-sm disabled:opacity-50 transition-all"
             >
-              {editingLink ? 'Değişiklikleri Kaydet' : 'Kaydet'}
+              {editingLink ? 'Save Changes' : 'Create Link'}
             </button>
           </div>
         </form>

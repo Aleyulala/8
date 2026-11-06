@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import { 
+  Link as LinkIcon, 
   Star, 
-  ExternalLink, 
-  Clock, 
-  CheckCircle2, 
-  Archive, 
-  Trash2, 
-  Edit3, 
+  Calendar, 
+  Folder, 
   FileText, 
-  RotateCcw,
-  Globe
+  FileCode, 
+  Globe, 
+  FileImage,
+  ExternalLink,
+  MoreVertical,
+  Edit2,
+  Trash2,
+  RotateCcw
 } from 'lucide-react';
 import { CollectionItem, LinkItem } from '../types';
 import { formatDate, getDomain, getFaviconUrl } from '../utils/favicon';
@@ -21,12 +24,22 @@ interface LinkCardProps {
   onToggleRead: (id: number, current: boolean) => void;
   onToggleArchive: (id: number, current: boolean) => void;
   onMoveToTrash: (id: number) => void;
-  onRestoreFromTrash: (id: number) => void;
-  onPermanentDelete: (id: number) => void;
+  onRestoreFromTrash?: (id: number) => void;
+  onPermanentDelete?: (id: number) => void;
   onEdit: (link: LinkItem) => void;
   onOpenDetail: (link: LinkItem) => void;
-  onSelectTag: (tag: string) => void;
+  isCompact?: boolean;
 }
+
+// Curated sleek gradients inspired by Linkwarden banners
+const BANNER_GRADIENTS = [
+  'from-emerald-950 via-teal-900 to-slate-900',
+  'from-blue-950 via-indigo-900 to-slate-900',
+  'from-amber-950 via-orange-950 to-slate-900',
+  'from-purple-950 via-fuchsia-950 to-slate-900',
+  'from-rose-950 via-pink-950 to-slate-900',
+  'from-cyan-950 via-sky-950 to-slate-900',
+];
 
 export const LinkCard: React.FC<LinkCardProps> = ({
   link,
@@ -39,201 +52,197 @@ export const LinkCard: React.FC<LinkCardProps> = ({
   onPermanentDelete,
   onEdit,
   onOpenDetail,
-  onSelectTag
+  isCompact = false
 }) => {
   const [imgError, setImgError] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const domain = getDomain(link.url);
   const faviconUrl = getFaviconUrl(link.url);
 
+  // Pick deterministic gradient based on link URL hash
+  const gradientIndex = Math.abs(
+    link.url.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
+  ) % BANNER_GRADIENTS.length;
+  const gradientClass = BANNER_GRADIENTS[gradientIndex];
+
   return (
-    <div className={`group relative flex flex-col justify-between bg-white dark:bg-slate-900 border rounded-2xl p-5 shadow-xs hover:shadow-md transition-all duration-200 ${
-      link.isPinned 
-        ? 'border-blue-300 dark:border-blue-800/80 ring-1 ring-blue-500/10' 
-        : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
-    }`}>
-      {/* Üst Alan: Favicon, Alan Adı, Pin & Durum Butonları */}
-      <div>
-        <div className="flex items-center justify-between gap-2 mb-3">
-          <div className="flex items-center gap-2 min-w-0">
-            {/* Favicon veya Varsayılan İkon */}
-            <div className="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0 overflow-hidden border border-slate-200/60 dark:border-slate-700/60">
-              {!imgError ? (
-                <img
-                  src={faviconUrl}
-                  alt={domain}
-                  onError={() => setImgError(true)}
-                  className="w-4 h-4 object-contain"
-                  loading="lazy"
-                />
-              ) : (
-                <Globe className="w-3.5 h-3.5 text-slate-400" />
-              )}
-            </div>
+    <div className="group relative rounded-xl border border-[#404040] bg-[#262626] hover:border-[#606060] transition-all duration-150 flex flex-col justify-between overflow-hidden shadow-md">
+      
+      {/* Top Banner Image / Preview */}
+      <div 
+        onClick={() => onOpenDetail(link)}
+        className={`relative w-full ${isCompact ? 'h-32' : 'h-36 sm:h-40'} bg-gradient-to-tr ${gradientClass} cursor-pointer flex items-center justify-center overflow-hidden border-b border-[#383838]`}
+      >
+        {/* Subtle patterned overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] [background-size:12px_12px] opacity-40" />
 
-            {/* Alan Adı */}
-            <span className="text-xs font-medium text-slate-500 dark:text-slate-400 truncate hover:text-slate-700 dark:hover:text-slate-200">
-              {domain}
+        {/* Center Website Logo Icon */}
+        <div className="relative z-10 w-12 h-12 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-200">
+          {!imgError ? (
+            <img
+              src={faviconUrl}
+              alt={domain}
+              onError={() => setImgError(true)}
+              className="w-6 h-6 object-contain"
+              loading="lazy"
+            />
+          ) : (
+            <span className="text-lg font-bold text-[#38bdf8] uppercase">
+              {domain.charAt(0)}
             </span>
-          </div>
-
-          {/* Hızlı Eylemler (Pin, Okuma) */}
-          <div className="flex items-center gap-1 shrink-0">
-            <button
-              onClick={() => link.id && onTogglePin(link.id, link.isPinned)}
-              className={`p-1.5 rounded-lg transition-colors ${
-                link.isPinned
-                  ? 'text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/40'
-                  : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
-              }`}
-              title={link.isPinned ? 'Sabitlemeyi kaldır' : 'Sabitle (Favori)'}
-            >
-              <Star className={`w-4 h-4 ${link.isPinned ? 'fill-current' : ''}`} />
-            </button>
-
-            <button
-              onClick={() => link.id && onToggleRead(link.id, link.isRead)}
-              className={`p-1.5 rounded-lg transition-colors ${
-                link.isRead
-                  ? 'text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-950/40'
-                  : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
-              }`}
-              title={link.isRead ? 'Okunmadı olarak işaretle' : 'Okundu olarak işaretle'}
-            >
-              {link.isRead ? <CheckCircle2 className="w-4 h-4" /> : <Clock className="w-4 h-4" />}
-            </button>
-          </div>
+          )}
         </div>
 
-        {/* Başlık */}
-        <h3 className="text-base font-semibold text-slate-900 dark:text-white line-clamp-2 leading-snug mb-1.5 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-          <a
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:underline flex items-baseline gap-1"
-          >
-            <span>{link.title || link.url}</span>
-            <ExternalLink className="w-3.5 h-3.5 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </a>
-        </h3>
+        {/* Pin Button at Top-Left */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            if (link.id) onTogglePin(link.id, link.isPinned);
+          }}
+          className={`absolute top-2.5 left-2.5 z-20 p-1.5 rounded-lg backdrop-blur-md transition-colors ${
+            link.isPinned 
+              ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' 
+              : 'bg-black/40 text-neutral-400 hover:text-white border border-white/5 opacity-0 group-hover:opacity-100'
+          }`}
+          title={link.isPinned ? 'Sabitlemeyi kaldır' : 'Sabitle'}
+        >
+          <Star className={`w-3.5 h-3.5 ${link.isPinned ? 'fill-current' : ''}`} />
+        </button>
 
-        {/* Açıklama */}
-        {link.description && (
-          <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 mb-3 leading-relaxed">
-            {link.description}
-          </p>
-        )}
-
-        {/* Not Bildirgesi (Eğer varsa) */}
-        {link.notes && (
-          <div 
-            onClick={() => onOpenDetail(link)}
-            className="mb-3 px-2.5 py-1.5 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-400 flex items-center gap-1.5 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-          >
-            <FileText className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-            <span className="truncate italic">Not: {link.notes}</span>
-          </div>
-        )}
-
-        {/* Etiketler */}
-        {link.tags && link.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mb-4">
-            {link.tags.map((tag) => (
-              <button
-                key={tag}
-                onClick={() => onSelectTag(tag)}
-                className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-              >
-                #{tag}
-              </button>
-            ))}
-          </div>
-        )}
+        {/* Format Icons at Bottom-Right */}
+        <div className="absolute bottom-2 right-2 z-10 bg-black/60 backdrop-blur-xs px-2 py-0.5 rounded-md flex items-center gap-1.5 border border-white/10 text-[10px] text-neutral-300">
+          <span title="Web Adresi"><Globe className="w-3 h-3 text-[#38bdf8]" /></span>
+          <span title="Metin İçeriği"><FileText className="w-3 h-3 text-neutral-400" /></span>
+          <span title="HTML Arşivi"><FileCode className="w-3 h-3 text-neutral-400" /></span>
+          <span title="Görsel Önizleme"><FileImage className="w-3 h-3 text-neutral-400" /></span>
+        </div>
       </div>
 
-      {/* Alt Alan: Koleksiyon, Tarih & İşlemler */}
-      <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs">
-        {/* Koleksiyon & Tarih */}
-        <div className="flex items-center gap-2 min-w-0">
-          {collection && (
-            <span 
-              className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium"
-              style={{ 
-                backgroundColor: `${collection.color || '#3b82f6'}15`, 
-                color: collection.color || '#3b82f6' 
-              }}
+      {/* Card Content */}
+      <div className="p-3.5 flex flex-col justify-between flex-1 gap-2">
+        <div>
+          {/* Title */}
+          <h3 className="text-sm font-semibold text-[#7dd3fc] hover:text-[#bae6fd] line-clamp-2 leading-snug mb-1">
+            <a
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline flex items-start gap-1"
             >
+              <span>{link.title || link.url}</span>
+              <ExternalLink className="w-3 h-3 shrink-0 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </a>
+          </h3>
+
+          {/* Domain with link icon */}
+          <div className="flex items-center gap-1.5 text-xs text-[#a3a3a3] hover:text-neutral-200 truncate">
+            <LinkIcon className="w-3 h-3 shrink-0 text-[#737373]" />
+            <span className="truncate">{domain}</span>
+          </div>
+        </div>
+
+        {/* Bottom Section: Collection & Date */}
+        <div className="pt-2 border-t border-[#333333] flex items-center justify-between text-xs text-[#a3a3a3]">
+          <div className="flex items-center gap-1.5 min-w-0">
+            {collection ? (
               <span 
-                className="w-1.5 h-1.5 rounded-full" 
-                style={{ backgroundColor: collection.color || '#3b82f6' }}
-              />
-              <span className="truncate max-w-[90px]">{collection.name}</span>
-            </span>
-          )}
-          <span className="text-[11px] text-slate-400">
-            {formatDate(link.createdAt)}
-          </span>
+                className="flex items-center gap-1 truncate text-[11px] font-medium px-1.5 py-0.5 rounded-md"
+                style={{ 
+                  backgroundColor: `${collection.color || '#38bdf8'}18`, 
+                  color: collection.color || '#38bdf8' 
+                }}
+              >
+                <Folder className="w-3 h-3 shrink-0" />
+                <span className="truncate max-w-[100px]">{collection.name}</span>
+              </span>
+            ) : (
+              <span className="text-[11px] text-[#737373]">Koleksiyonsuz</span>
+            )}
+          </div>
+
+          <div className="flex items-center gap-1 text-[11px] text-[#737373] shrink-0">
+            <Calendar className="w-3 h-3" />
+            <span>{formatDate(link.createdAt)}</span>
+
+            {/* Actions Menu Trigger */}
+            <div className="relative ml-1">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setMenuOpen(!menuOpen);
+                }}
+                className="p-1 rounded hover:bg-[#333333] text-[#a3a3a3] hover:text-white transition-colors"
+                title="İşlemler"
+              >
+                <MoreVertical className="w-3.5 h-3.5" />
+              </button>
+
+              {menuOpen && (
+                <>
+                  <div 
+                    className="fixed inset-0 z-30" 
+                    onClick={() => setMenuOpen(false)} 
+                  />
+                  <div className="absolute right-0 bottom-6 z-40 w-36 py-1 bg-[#1e1e1e] border border-[#404040] rounded-xl shadow-xl text-xs">
+                    {link.isTrash ? (
+                      <>
+                        <button
+                          onClick={() => {
+                            if (link.id && onRestoreFromTrash) onRestoreFromTrash(link.id);
+                            setMenuOpen(false);
+                          }}
+                          className="w-full px-3 py-1.5 text-left text-emerald-400 hover:bg-[#2a2a2a] flex items-center gap-2"
+                        >
+                          <RotateCcw className="w-3.5 h-3.5" /> Geri Yükle
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (link.id && onPermanentDelete) onPermanentDelete(link.id);
+                            setMenuOpen(false);
+                          }}
+                          className="w-full px-3 py-1.5 text-left text-rose-400 hover:bg-[#2a2a2a] flex items-center gap-2"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" /> Kalıcı Sil
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => {
+                            onEdit(link);
+                            setMenuOpen(false);
+                          }}
+                          className="w-full px-3 py-1.5 text-left text-neutral-200 hover:bg-[#2a2a2a] flex items-center gap-2"
+                        >
+                          <Edit2 className="w-3.5 h-3.5" /> Düzenle
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (link.id) onTogglePin(link.id, link.isPinned);
+                            setMenuOpen(false);
+                          }}
+                          className="w-full px-3 py-1.5 text-left text-neutral-200 hover:bg-[#2a2a2a] flex items-center gap-2"
+                        >
+                          <Star className="w-3.5 h-3.5" /> {link.isPinned ? 'Sabitlemeyi Kaldır' : 'Sabitle'}
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (link.id) onMoveToTrash(link.id);
+                            setMenuOpen(false);
+                          }}
+                          className="w-full px-3 py-1.5 text-left text-rose-400 hover:bg-[#2a2a2a] flex items-center gap-2"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" /> Çöpe At
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
         </div>
 
-        {/* Butonlar */}
-        <div className="flex items-center gap-1">
-          {link.isTrash ? (
-            <>
-              <button
-                onClick={() => link.id && onRestoreFromTrash(link.id)}
-                className="p-1 rounded-lg text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors"
-                title="Geri Yükle"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-              </button>
-              <button
-                onClick={() => link.id && onPermanentDelete(link.id)}
-                className="p-1 rounded-lg text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
-                title="Kalıcı Olarak Sil"
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-              </button>
-            </>
-          ) : (
-            <>
-              <button
-                onClick={() => onOpenDetail(link)}
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                title="Detay & Notlar"
-              >
-                <FileText className="w-3.5 h-3.5" />
-              </button>
-
-              <button
-                onClick={() => link.id && onToggleArchive(link.id, link.isArchived)}
-                className={`p-1 rounded-lg transition-colors ${
-                  link.isArchived
-                    ? 'text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/40'
-                    : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
-                }`}
-                title={link.isArchived ? 'Arşivden çıkar' : 'Arşive taşı'}
-              >
-                <Archive className="w-3.5 h-3.5" />
-              </button>
-
-              <button
-                onClick={() => onEdit(link)}
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                title="Düzenle"
-              >
-                <Edit3 className="w-3.5 h-3.5" />
-              </button>
-
-              <button
-                onClick={() => link.id && onMoveToTrash(link.id)}
-                className="p-1 rounded-lg text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
-                title="Çöp Kutusuna Taşı"
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-              </button>
-            </>
-          )}
-        </div>
       </div>
     </div>
   );

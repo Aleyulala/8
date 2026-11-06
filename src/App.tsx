@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, initializeDatabase } from './db';
-import { CollectionItem, LinkItem, SortOption, ViewFilter, ViewMode } from './types';
-import { Navbar } from './components/Navbar';
+import { CollectionItem, LinkItem, SortOption, ViewMode } from './types';
 import { Sidebar } from './components/Sidebar';
-import { LinkCard } from './components/LinkCard';
-import { LinkListItem } from './components/LinkListItem';
+import { MobileNavBar } from './components/MobileNavBar';
+import { DashboardView } from './components/DashboardView';
+import { LinksView } from './components/LinksView';
+import { CollectionsView } from './components/CollectionsView';
+import { TagsView } from './components/TagsView';
 import { AddEditLinkModal } from './components/AddEditLinkModal';
 import { ManageCollectionsModal } from './components/ManageCollectionsModal';
 import { ManageTagsModal } from './components/ManageTagsModal';
@@ -14,41 +16,37 @@ import { ImportExportModal } from './components/ImportExportModal';
 import { SettingsModal } from './components/SettingsModal';
 import { getStorageUsage } from './utils/exportImport';
 import { getDomain } from './utils/favicon';
-import { Bookmark, Plus, Search, Folder, Trash2, RotateCcw } from 'lucide-react';
+import { Search, Plus, Home, Bookmark, Moon, Sun, FileUp } from 'lucide-react';
+
+type MainViewType = 
+  | 'dashboard' 
+  | 'links' 
+  | 'pinned' 
+  | 'collection' 
+  | 'tag' 
+  | 'collections_list' 
+  | 'tags_list' 
+  | 'trash';
 
 export const App: React.FC = () => {
-  // Theme state
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
-    const saved = localStorage.getItem('saved_theme');
-    if (saved) return saved === 'dark';
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  });
+  // Navigation View State
+  const [activeView, setActiveView] = useState<MainViewType>('dashboard');
+  const [selectedCollectionId, setSelectedCollectionId] = useState<number | null>(null);
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('saved_theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('saved_theme', 'light');
-    }
-  }, [isDarkMode]);
-
-  // View & Filter states
-  const [currentFilter, setCurrentFilter] = useState<ViewFilter>({ type: 'all' });
+  // Search, View & Sort States
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [sortBy, setSortBy] = useState<SortOption>('date_desc');
-  const [sidebarOpenMobile, setSidebarOpenMobile] = useState(false);
 
-  // Storage info
+  // Storage estimation
   const [storageInfo, setStorageInfo] = useState({
     formattedUsed: '...',
     formattedQuota: '...',
     percentage: 0
   });
 
-  // Modal states
+  // Modals
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingLink, setEditingLink] = useState<LinkItem | null>(null);
   const [detailLink, setDetailLink] = useState<LinkItem | null>(null);
@@ -57,7 +55,7 @@ export const App: React.FC = () => {
   const [isImportExportOpen, setIsImportExportOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-  // Initialize DB on start & check URL query params (e.g. from Bookmarklet)
+  // Initialize DB on start & check Bookmarklet query params
   useEffect(() => {
     initializeDatabase();
 
@@ -84,7 +82,6 @@ export const App: React.FC = () => {
     }
   }, []);
 
-  // Update storage stats
   const updateStorage = async () => {
     const stats = await getStorageUsage();
     const pct = stats.quotaBytes > 0 ? (stats.usedBytes / stats.quotaBytes) * 100 : 0;
@@ -99,12 +96,12 @@ export const App: React.FC = () => {
     updateStorage();
   }, []);
 
-  // Reactive DB queries
+  // Reactive IndexedDB data via Dexie
   const allLinks = useLiveQuery(() => db.links.toArray(), []) || [];
   const collections = useLiveQuery(() => db.collections.toArray(), []) || [];
   const tags = useLiveQuery(() => db.tags.toArray(), []) || [];
 
-  // Map collections for quick lookup
+  // Map collections for O(1) lookups
   const collectionMap = useMemo(() => {
     const map = new Map<number, CollectionItem>();
     collections.forEach((c) => {
@@ -113,13 +110,10 @@ export const App: React.FC = () => {
     return map;
   }, [collections]);
 
-  // Calculate live counts
+  // Realtime counters
   const counts = useMemo(() => {
     let all = 0;
     let pinned = 0;
-    let unread = 0;
-    let read = 0;
-    let archived = 0;
     let trash = 0;
     const colCounts: Record<number, number> = {};
     const tagCounts: Record<string, number> = {};
@@ -127,75 +121,50 @@ export const App: React.FC = () => {
     allLinks.forEach((link) => {
       if (link.isTrash) {
         trash++;
-        return; // Trash items don't count towards active views
+        return;
+      }
+      all++;
+      if (link.isPinned) pinned++;
+
+      if (link.collectionId) {
+        colCounts[link.collectionId] = (colCounts[link.collectionId] || 0) + 1;
       }
 
-      if (link.isArchived) {
-        archived++;
-      } else {
-        all++;
-        if (link.isPinned) pinned++;
-        if (link.isRead) read++;
-        else unread++;
-
-        if (link.collectionId) {
-          colCounts[link.collectionId] = (colCounts[link.collectionId] || 0) + 1;
-        }
-
-        if (link.tags) {
-          link.tags.forEach((t) => {
-            tagCounts[t] = (tagCounts[t] || 0) + 1;
-          });
-        }
+      if (link.tags) {
+        link.tags.forEach((t) => {
+          tagCounts[t] = (tagCounts[t] || 0) + 1;
+        });
       }
     });
 
     return {
       all,
       pinned,
-      unread,
-      read,
-      archived,
       trash,
       collections: colCounts,
       tags: tagCounts
     };
   }, [allLinks]);
 
-  // Filter links
-  const filteredLinks = useMemo(() => {
+  // Filtered links for current view
+  const currentViewLinks = useMemo(() => {
     let items = allLinks.filter((link) => {
-      // Trash filter check
-      if (currentFilter.type === 'trash') {
-        return link.isTrash;
-      }
+      if (activeView === 'trash') return link.isTrash;
       if (link.isTrash) return false;
 
-      // Archive filter check
-      if (currentFilter.type === 'archived') {
-        return link.isArchived;
-      }
-      if (link.isArchived) return false;
-
-      // Normal filters
-      switch (currentFilter.type) {
+      switch (activeView) {
         case 'pinned':
           return link.isPinned;
-        case 'unread':
-          return !link.isRead;
-        case 'read':
-          return link.isRead;
         case 'collection':
-          return link.collectionId === currentFilter.id;
+          return link.collectionId === selectedCollectionId;
         case 'tag':
-          return link.tags && link.tags.includes(currentFilter.tag);
-        case 'all':
+          return link.tags && selectedTag && link.tags.includes(selectedTag);
+        case 'links':
         default:
           return true;
       }
     });
 
-    // Search query
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
       items = items.filter((link) => {
@@ -209,7 +178,6 @@ export const App: React.FC = () => {
       });
     }
 
-    // Sort
     return items.sort((a, b) => {
       switch (sortBy) {
         case 'date_asc':
@@ -225,7 +193,7 @@ export const App: React.FC = () => {
           return b.createdAt - a.createdAt;
       }
     });
-  }, [allLinks, currentFilter, searchQuery, sortBy]);
+  }, [allLinks, activeView, selectedCollectionId, selectedTag, searchQuery, sortBy]);
 
   // Actions
   const handleSaveLink = async (data: Partial<LinkItem>) => {
@@ -250,7 +218,6 @@ export const App: React.FC = () => {
         updatedAt: Date.now()
       });
 
-      // Auto add new tags to tag table
       if (data.tags) {
         for (const t of data.tags) {
           const exists = await db.tags.where('name').equalsIgnoreCase(t).first();
@@ -302,7 +269,6 @@ export const App: React.FC = () => {
     }
   };
 
-  // Collection Actions
   const handleAddCollection = async (data: { name: string; description?: string; color: string }) => {
     await db.collections.add({
       name: data.name,
@@ -317,12 +283,10 @@ export const App: React.FC = () => {
   };
 
   const handleDeleteCollection = async (id: number) => {
-    // Unlink links from this collection
     await db.links.where('collectionId').equals(id).modify({ collectionId: null });
     await db.collections.delete(id);
   };
 
-  // Tag Actions
   const handleAddTag = async (name: string) => {
     const exists = await db.tags.where('name').equalsIgnoreCase(name).first();
     if (!exists) {
@@ -332,7 +296,6 @@ export const App: React.FC = () => {
 
   const handleDeleteTag = async (name: string) => {
     await db.tags.where('name').equalsIgnoreCase(name).delete();
-    // Also remove from links
     const linksWithTag = await db.links.where('tags').equals(name).toArray();
     for (const l of linksWithTag) {
       if (l.id) {
@@ -343,177 +306,310 @@ export const App: React.FC = () => {
     }
   };
 
-  // Header Title derivation
-  const getHeaderTitle = () => {
-    switch (currentFilter.type) {
-      case 'pinned':
-        return 'Sabitlenen Bağlantılar';
-      case 'unread':
-        return 'Okuma Listesi (Okunmamış)';
-      case 'read':
-        return 'Okunan Bağlantılar';
-      case 'archived':
-        return 'Arşivlenmiş Bağlantılar';
-      case 'trash':
-        return 'Çöp Kutusu';
-      case 'collection': {
-        const col = collectionMap.get(currentFilter.id);
-        return col ? `Koleksiyon: ${col.name}` : 'Koleksiyon';
-      }
-      case 'tag':
-        return `Etiket: #${currentFilter.tag}`;
-      case 'all':
-      default:
-        return 'Tüm Bağlantılar';
-    }
-  };
+  // Mobile Bottom Bar active mapper
+  const mobileCurrentTab = useMemo(() => {
+    if (activeView === 'dashboard') return 'dashboard';
+    if (activeView === 'links' || activeView === 'pinned') return 'links';
+    if (activeView === 'collection' || activeView === 'collections_list') return 'collections';
+    if (activeView === 'tag' || activeView === 'tags_list') return 'tags';
+    return 'dashboard';
+  }, [activeView]);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200">
-      {/* Top Navbar */}
-      <Navbar
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        viewMode={viewMode}
-        onViewModeChange={setViewMode}
-        sortBy={sortBy}
-        onSortByChange={setSortBy}
-        onOpenAddModal={() => {
-          setEditingLink(null);
-          setIsAddModalOpen(true);
-        }}
-        onOpenImportExport={() => setIsImportExportOpen(true)}
-        onOpenSettings={() => setIsSettingsOpen(true)}
-        onToggleSidebar={() => setSidebarOpenMobile(!sidebarOpenMobile)}
-        isDarkMode={isDarkMode}
-        onToggleDarkMode={() => setIsDarkMode(!isDarkMode)}
-        totalLinksCount={counts.all}
-      />
-
-      {/* Main Body */}
-      <div className="flex-1 flex max-w-7xl w-full mx-auto">
-        {/* Left Sidebar */}
+    <div className="flex h-screen w-screen overflow-hidden bg-[#171717] text-[#fafafa] font-sans antialiased">
+      
+      {/* Desktop Sidebar (Left - Hidden on mobile) */}
+      <div className="hidden md:flex">
         <Sidebar
-          currentFilter={currentFilter}
-          onFilterChange={setCurrentFilter}
+          currentTab={
+            activeView === 'dashboard' ? 'dashboard' :
+            activeView === 'pinned' ? 'pinned' :
+            activeView === 'collection' ? 'collection' :
+            activeView === 'tag' ? 'tag' : 'links'
+          }
+          activeCollectionId={selectedCollectionId}
+          activeTag={selectedTag}
+          onSelectTab={(tab) => {
+            setActiveView(tab);
+            setSearchQuery('');
+          }}
+          onSelectCollection={(id) => {
+            setSelectedCollectionId(id);
+            setActiveView('collection');
+            setSearchQuery('');
+          }}
+          onSelectTag={(tag) => {
+            setSelectedTag(tag);
+            setActiveView('tag');
+            setSearchQuery('');
+          }}
           collections={collections}
           tags={tags}
           counts={counts}
-          storageInfo={storageInfo}
+          onOpenNewLink={() => {
+            setEditingLink(null);
+            setIsAddModalOpen(true);
+          }}
           onOpenManageCollections={() => setIsCollectionsModalOpen(true)}
           onOpenManageTags={() => setIsTagsModalOpen(true)}
-          isOpenMobile={sidebarOpenMobile}
-          onCloseMobile={() => setSidebarOpenMobile(false)}
+          onOpenSettings={() => setIsSettingsOpen(true)}
+          onOpenSearch={() => {
+            setActiveView('links');
+          }}
         />
+      </div>
 
-        {/* Content Area */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 min-w-0">
-          {/* Section Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2.5">
-                <span>{getHeaderTitle()}</span>
-                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
-                  {filteredLinks.length}
-                </span>
-              </h1>
-              {searchQuery && (
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                  "{searchQuery}" araması için sonuçlar gösteriliyor
-                </p>
-              )}
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col h-screen overflow-y-auto min-w-0">
+        
+        {/* Mobile Header Bar (Visible on mobile only) */}
+        <header className="md:hidden flex items-center justify-between px-4 py-3 bg-[#1b1b1b] border-b border-[#2e2e2e] shrink-0 sticky top-0 z-30">
+          <div 
+            onClick={() => setActiveView('dashboard')}
+            className="flex items-center gap-2 cursor-pointer"
+          >
+            <div className="w-7 h-7 rounded-lg bg-[#38bdf8] flex items-center justify-center font-bold text-xs text-slate-950">
+              S
             </div>
-
-            {/* Empty Trash Button if viewing trash */}
-            {currentFilter.type === 'trash' && counts.trash > 0 && (
-              <button
-                onClick={handleEmptyTrash}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 hover:bg-rose-100 text-xs font-semibold border border-rose-200 dark:border-rose-900/50 transition-colors self-start sm:self-auto"
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-                <span>Çöp Kutusunu Boşalt</span>
-              </button>
-            )}
+            <span className="font-semibold text-base tracking-tight text-white">saved</span>
           </div>
 
-          {/* Links Listing */}
-          {filteredLinks.length > 0 ? (
-            viewMode === 'grid' ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredLinks.map((link) => (
-                  <LinkCard
-                    key={link.id}
-                    link={link}
-                    collection={link.collectionId ? collectionMap.get(link.collectionId) : undefined}
-                    onTogglePin={handleTogglePin}
-                    onToggleRead={handleToggleRead}
-                    onToggleArchive={handleToggleArchive}
-                    onMoveToTrash={handleMoveToTrash}
-                    onRestoreFromTrash={handleRestoreFromTrash}
-                    onPermanentDelete={handlePermanentDelete}
-                    onEdit={(l) => {
-                      setEditingLink(l);
-                      setIsAddModalOpen(true);
-                    }}
-                    onOpenDetail={(l) => setDetailLink(l)}
-                    onSelectTag={(tag) => setCurrentFilter({ type: 'tag', tag })}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {filteredLinks.map((link) => (
-                  <LinkListItem
-                    key={link.id}
-                    link={link}
-                    viewMode={viewMode}
-                    collection={link.collectionId ? collectionMap.get(link.collectionId) : undefined}
-                    onTogglePin={handleTogglePin}
-                    onToggleRead={handleToggleRead}
-                    onToggleArchive={handleToggleArchive}
-                    onMoveToTrash={handleMoveToTrash}
-                    onRestoreFromTrash={handleRestoreFromTrash}
-                    onPermanentDelete={handlePermanentDelete}
-                    onEdit={(l) => {
-                      setEditingLink(l);
-                      setIsAddModalOpen(true);
-                    }}
-                    onOpenDetail={(l) => setDetailLink(l)}
-                    onSelectTag={(tag) => setCurrentFilter({ type: 'tag', tag })}
-                  />
-                ))}
-              </div>
-            )
-          ) : (
-            /* Empty State */
-            <div className="text-center py-16 px-4 bg-white/50 dark:bg-slate-900/50 border border-dashed border-slate-300 dark:border-slate-800 rounded-3xl">
-              <div className="w-12 h-12 mx-auto rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4">
-                <Bookmark className="w-6 h-6" />
-              </div>
-              <h3 className="text-base font-bold text-slate-800 dark:text-slate-200 mb-1">
-                {searchQuery ? 'Eşleşen bağlantı bulunamadı' : 'Bu görünümde henüz bağlantı yok'}
-              </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto mb-6">
-                {searchQuery
-                  ? 'Farklı bir anahtar kelime veya etiket aramayı deneyebilirsiniz.'
-                  : 'Yeni bir web sitesi veya makale kaydederek koleksiyonunuzu oluşturmaya başlayın.'}
-              </p>
-              {!searchQuery && currentFilter.type !== 'trash' && (
-                <button
-                  onClick={() => {
-                    setEditingLink(null);
-                    setIsAddModalOpen(true);
-                  }}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-md shadow-blue-500/20 transition-all hover:scale-[1.02]"
-                >
-                  <Plus className="w-4 h-4" />
-                  <span>Bağlantı Ekle</span>
-                </button>
-              )}
-            </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsImportExportOpen(true)}
+              className="p-1.5 rounded-lg text-[#a3a3a3] hover:text-white transition-colors"
+              title="Yedek Al/Yükle"
+            >
+              <FileUp className="w-4 h-4" />
+            </button>
+
+            <button
+              onClick={() => {
+                setEditingLink(null);
+                setIsAddModalOpen(true);
+              }}
+              className="w-8 h-8 rounded-full bg-[#7dd3fc] text-[#0f172a] flex items-center justify-center font-bold shadow-md shadow-sky-500/20 active:scale-95 transition-all"
+              title="Yeni Bağlantı"
+            >
+              <Plus className="w-4 h-4 stroke-[2.5]" />
+            </button>
+          </div>
+        </header>
+
+        {/* View Content */}
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+          {activeView === 'dashboard' && (
+            <DashboardView
+              links={allLinks}
+              collections={collections}
+              tagsCount={tags.length}
+              pinnedCount={counts.pinned}
+              collectionMap={collectionMap}
+              onViewAllRecent={() => {
+                setActiveView('links');
+                setSearchQuery('');
+              }}
+              onViewCollection={(id) => {
+                setSelectedCollectionId(id);
+                setActiveView('collection');
+                setSearchQuery('');
+              }}
+              onOpenNewLink={() => {
+                setEditingLink(null);
+                setIsAddModalOpen(true);
+              }}
+              onOpenDetail={(link) => setDetailLink(link)}
+              onTogglePin={handleTogglePin}
+              onToggleRead={handleToggleRead}
+              onToggleArchive={handleToggleArchive}
+              onMoveToTrash={handleMoveToTrash}
+              onEditLink={(link) => {
+                setEditingLink(link);
+                setIsAddModalOpen(true);
+              }}
+            />
+          )}
+
+          {activeView === 'links' && (
+            <LinksView
+              title="All Links"
+              links={currentViewLinks}
+              collections={collections}
+              collectionMap={collectionMap}
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              viewMode={viewMode}
+              onViewModeChange={setViewMode}
+              sortBy={sortBy}
+              onSortByChange={setSortBy}
+              onOpenNewLink={() => {
+                setEditingLink(null);
+                setIsAddModalOpen(true);
+              }}
+              onOpenDetail={(link) => setDetailLink(link)}
+              onTogglePin={handleTogglePin}
+              onToggleRead={handleToggleRead}
+              onToggleArchive={handleToggleArchive}
+              onMoveToTrash={handleMoveToTrash}
+              onEditLink={(link) => {
+                setEditingLink(link);
+                setIsAddModalOpen(true);
+              }}
+            />
+          )}
+
+          {activeView === 'pinned' && (
+            <LinksView
+              title="Pinned Links"
+              subtitle="Favori ve sabitlenmiş yer imleriniz"
+              links={currentViewLinks}
+              collections={collections}
+              collectionMap={collectionMap}
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              viewMode={viewMode}
+              onViewModeChange={setViewMode}
+              sortBy={sortBy}
+              onSortByChange={setSortBy}
+              onOpenNewLink={() => {
+                setEditingLink(null);
+                setIsAddModalOpen(true);
+              }}
+              onOpenDetail={(link) => setDetailLink(link)}
+              onTogglePin={handleTogglePin}
+              onToggleRead={handleToggleRead}
+              onToggleArchive={handleToggleArchive}
+              onMoveToTrash={handleMoveToTrash}
+              onEditLink={(link) => {
+                setEditingLink(link);
+                setIsAddModalOpen(true);
+              }}
+            />
+          )}
+
+          {activeView === 'collection' && selectedCollectionId && (
+            <LinksView
+              title={collectionMap.get(selectedCollectionId)?.name || 'Koleksiyon'}
+              subtitle={collectionMap.get(selectedCollectionId)?.description}
+              links={currentViewLinks}
+              collections={collections}
+              collectionMap={collectionMap}
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              viewMode={viewMode}
+              onViewModeChange={setViewMode}
+              sortBy={sortBy}
+              onSortByChange={setSortBy}
+              onOpenNewLink={() => {
+                setEditingLink(null);
+                setIsAddModalOpen(true);
+              }}
+              onOpenDetail={(link) => setDetailLink(link)}
+              onTogglePin={handleTogglePin}
+              onToggleRead={handleToggleRead}
+              onToggleArchive={handleToggleArchive}
+              onMoveToTrash={handleMoveToTrash}
+              onEditLink={(link) => {
+                setEditingLink(link);
+                setIsAddModalOpen(true);
+              }}
+            />
+          )}
+
+          {activeView === 'tag' && selectedTag && (
+            <LinksView
+              title={`#${selectedTag}`}
+              subtitle="Etiketlenen bağlantılar"
+              links={currentViewLinks}
+              collections={collections}
+              collectionMap={collectionMap}
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              viewMode={viewMode}
+              onViewModeChange={setViewMode}
+              sortBy={sortBy}
+              onSortByChange={setSortBy}
+              onOpenNewLink={() => {
+                setEditingLink(null);
+                setIsAddModalOpen(true);
+              }}
+              onOpenDetail={(link) => setDetailLink(link)}
+              onTogglePin={handleTogglePin}
+              onToggleRead={handleToggleRead}
+              onToggleArchive={handleToggleArchive}
+              onMoveToTrash={handleMoveToTrash}
+              onEditLink={(link) => {
+                setEditingLink(link);
+                setIsAddModalOpen(true);
+              }}
+            />
+          )}
+
+          {activeView === 'collections_list' && (
+            <CollectionsView
+              collections={collections}
+              counts={counts.collections}
+              onSelectCollection={(id) => {
+                setSelectedCollectionId(id);
+                setActiveView('collection');
+              }}
+              onOpenManageCollections={() => setIsCollectionsModalOpen(true)}
+            />
+          )}
+
+          {activeView === 'tags_list' && (
+            <TagsView
+              tags={tags}
+              counts={counts.tags}
+              onSelectTag={(tag) => {
+                setSelectedTag(tag);
+                setActiveView('tag');
+              }}
+              onOpenManageTags={() => setIsTagsModalOpen(true)}
+            />
+          )}
+
+          {activeView === 'trash' && (
+            <LinksView
+              title="Çöp Kutusu"
+              subtitle="Silinen bağlantılar burada saklanır. Kalıcı olarak silebilir veya geri yükleyebilirsiniz."
+              links={currentViewLinks}
+              collections={collections}
+              collectionMap={collectionMap}
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              viewMode={viewMode}
+              onViewModeChange={setViewMode}
+              sortBy={sortBy}
+              onSortByChange={setSortBy}
+              onOpenNewLink={() => {}}
+              onOpenDetail={(link) => setDetailLink(link)}
+              onTogglePin={() => {}}
+              onToggleRead={() => {}}
+              onToggleArchive={() => {}}
+              onMoveToTrash={() => {}}
+              onRestoreFromTrash={handleRestoreFromTrash}
+              onPermanentDelete={handlePermanentDelete}
+              onEditLink={() => {}}
+              isTrashView={true}
+              onEmptyTrash={handleEmptyTrash}
+            />
           )}
         </main>
       </div>
+
+      {/* Mobile Fixed Bottom Navigation Bar (Hidden on desktop) */}
+      <MobileNavBar
+        currentTab={mobileCurrentTab}
+        onSelectTab={(tab) => {
+          if (tab === 'dashboard') setActiveView('dashboard');
+          else if (tab === 'links') setActiveView('links');
+          else if (tab === 'collections') setActiveView('collections_list');
+          else if (tab === 'tags') setActiveView('tags_list');
+          else if (tab === 'settings') setIsSettingsOpen(true);
+          setSearchQuery('');
+        }}
+      />
 
       {/* Modals */}
       <AddEditLinkModal
@@ -526,7 +622,7 @@ export const App: React.FC = () => {
         editingLink={editingLink}
         collections={collections}
         allTags={tags}
-        defaultCollectionId={currentFilter.type === 'collection' ? currentFilter.id : null}
+        defaultCollectionId={selectedCollectionId}
       />
 
       <ManageCollectionsModal
@@ -569,12 +665,14 @@ export const App: React.FC = () => {
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
         storageInfo={storageInfo}
-        totalLinks={counts.all + counts.archived + counts.trash}
+        totalLinks={counts.all + counts.trash}
         totalCollections={collections.length}
         totalTags={tags.length}
         onRefreshData={updateStorage}
       />
+
     </div>
   );
 };
+
 export default App;

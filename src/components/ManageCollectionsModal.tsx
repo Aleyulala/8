@@ -12,16 +12,14 @@ interface ManageCollectionsModalProps {
 }
 
 const PRESET_COLORS = [
-  '#3b82f6', // Blue
-  '#10b981', // Emerald
-  '#8b5cf6', // Purple
-  '#f59e0b', // Amber
-  '#ef4444', // Red
-  '#ec4899', // Pink
-  '#06b6d4', // Cyan
-  '#6366f1', // Indigo
-  '#14b8a6', // Teal
-  '#84cc16'  // Lime
+  '#38bdf8', // Sky
+  '#fbbf24', // Amber
+  '#4ade80', // Green
+  '#a78bfa', // Purple
+  '#f472b6', // Pink
+  '#f87171', // Red
+  '#2dd4bf', // Teal
+  '#fb923c'  // Orange
 ];
 
 export const ManageCollectionsModal: React.FC<ManageCollectionsModalProps> = ({
@@ -80,34 +78,32 @@ export const ManageCollectionsModal: React.FC<ManageCollectionsModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs overflow-y-auto">
       <div 
-        className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-8"
+        className="w-full max-w-lg bg-[#212121] rounded-2xl shadow-2xl border border-[#3e3e3e] overflow-hidden my-8 text-neutral-200"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#333333]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-[#38bdf8]/15 text-[#38bdf8] flex items-center justify-center">
               <Folder className="w-4 h-4" />
             </div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-              Koleksiyonları Yönet
+            <h2 className="text-base font-bold text-white">
+              Manage Collections
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-[#333333] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <div className="p-6 space-y-6">
-          {/* Ekleme / Düzenleme Formu */}
-          <form onSubmit={handleSubmit} className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-3">
-            <div className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-              {editingId ? 'Koleksiyonu Güncelle' : 'Yeni Koleksiyon Oluştur'}
+        <div className="p-6 space-y-5">
+          <form onSubmit={handleSubmit} className="p-4 rounded-xl bg-[#171717] border border-[#383838] space-y-3">
+            <div className="text-xs font-bold uppercase tracking-wider text-neutral-400">
+              {editingId ? 'Edit Collection' : 'Create New Collection'}
             </div>
 
             <div>
@@ -116,8 +112,8 @@ export const ManageCollectionsModal: React.FC<ManageCollectionsModalProps> = ({
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Koleksiyon Adı (örn: İş, Tasarım, Yazılım)"
-                className="w-full px-3 py-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors"
+                placeholder="Collection name (e.g. Research, Tech, Recipes)"
+                className="w-full px-3 py-2 rounded-xl bg-[#212121] border border-[#383838] text-sm text-white focus:outline-none focus:border-[#38bdf8] transition-colors"
               />
             </div>
 
@@ -126,26 +122,23 @@ export const ManageCollectionsModal: React.FC<ManageCollectionsModalProps> = ({
                 type="text"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Açıklama (isteğe bağlı)"
-                className="w-full px-3 py-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors"
+                placeholder="Description (optional)"
+                className="w-full px-3 py-2 rounded-xl bg-[#212121] border border-[#383838] text-xs text-white focus:outline-none focus:border-[#38bdf8] transition-colors"
               />
             </div>
 
-            {/* Renk Seçimi */}
             <div>
-              <div className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">
-                Koleksiyon Rengi
-              </div>
+              <div className="text-xs font-medium text-neutral-400 mb-1.5">Color</div>
               <div className="flex flex-wrap gap-2">
                 {PRESET_COLORS.map((c) => (
                   <button
                     key={c}
                     type="button"
                     onClick={() => setColor(c)}
-                    className="w-6 h-6 rounded-full flex items-center justify-center transition-transform hover:scale-110"
+                    className="w-6 h-6 rounded-full flex items-center justify-center transition-transform hover:scale-110 shadow-sm"
                     style={{ backgroundColor: c }}
                   >
-                    {color === c && <Check className="w-3.5 h-3.5 text-white stroke-[3]" />}
+                    {color === c && <Check className="w-3.5 h-3.5 text-black stroke-[3]" />}
                   </button>
                 ))}
               </div>
@@ -156,43 +149,42 @@ export const ManageCollectionsModal: React.FC<ManageCollectionsModalProps> = ({
                 <button
                   type="button"
                   onClick={handleCancelEdit}
-                  className="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                  className="px-3 py-1.5 rounded-lg text-xs font-medium text-neutral-400 hover:bg-[#262626]"
                 >
-                  Vazgeç
+                  Cancel
                 </button>
               )}
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-4 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-xs transition-colors"
+                className="px-4 py-1.5 rounded-lg text-xs font-bold bg-[#7dd3fc] hover:bg-[#38bdf8] text-[#0f172a] shadow-xs"
               >
-                {editingId ? 'Güncelle' : 'Koleksiyon Ekle'}
+                {editingId ? 'Update' : 'Create Collection'}
               </button>
             </div>
           </form>
 
-          {/* Mevcut Koleksiyonlar Listesi */}
           <div>
-            <div className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">
-              Mevcut Koleksiyonlar ({collections.length})
+            <div className="text-xs font-bold uppercase tracking-wider text-neutral-400 mb-2">
+              Existing Collections ({collections.length})
             </div>
-            <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+            <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
               {collections.map((col) => (
                 <div
                   key={col.id}
-                  className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800"
+                  className="flex items-center justify-between p-3 rounded-xl bg-[#1a1a1a] border border-[#333333]"
                 >
                   <div className="flex items-center gap-3 min-w-0">
                     <span
-                      className="w-3.5 h-3.5 rounded-full shrink-0"
-                      style={{ backgroundColor: col.color || '#3b82f6' }}
+                      className="w-3 h-3 rounded-full shrink-0 shadow-sm"
+                      style={{ backgroundColor: col.color || '#38bdf8' }}
                     />
                     <div className="min-w-0">
-                      <div className="text-sm font-semibold text-slate-900 dark:text-white truncate">
+                      <div className="text-sm font-semibold text-white truncate">
                         {col.name}
                       </div>
                       {col.description && (
-                        <div className="text-xs text-slate-500 dark:text-slate-400 truncate">
+                        <div className="text-xs text-[#8e8e8e] truncate">
                           {col.description}
                         </div>
                       )}
@@ -202,26 +194,21 @@ export const ManageCollectionsModal: React.FC<ManageCollectionsModalProps> = ({
                   <div className="flex items-center gap-1 shrink-0">
                     <button
                       onClick={() => handleStartEdit(col)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-                      title="Düzenle"
+                      className="p-1.5 rounded-lg text-[#8e8e8e] hover:text-white hover:bg-[#282828] transition-colors"
+                      title="Edit"
                     >
                       <Edit2 className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => col.id && onDeleteCollection(col.id)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
-                      title="Sil"
+                      className="p-1.5 rounded-lg text-[#8e8e8e] hover:text-rose-400 hover:bg-rose-950/30 transition-colors"
+                      title="Delete"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
               ))}
-              {collections.length === 0 && (
-                <div className="text-xs text-center py-4 text-slate-400">
-                  Henüz koleksiyon bulunmuyor.
-                </div>
-              )}
             </div>
           </div>
         </div>
