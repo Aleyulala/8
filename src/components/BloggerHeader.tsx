@@ -261,8 +261,8 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
   return (
     <header className="sticky top-0 z-40 w-full h-[60px] bg-[#1e1e1e] border-b border-[#252526] px-3 sm:px-6 flex items-center justify-between select-none shadow-sm">
       
-      {/* Sol Bölüm: Hamburger Menü Butonu */}
-      <div className="flex items-center gap-2 shrink-0">
+      {/* Sol Bölüm: Hamburger Menü Butonu + SAVED Marka Logosu */}
+      <div className="flex items-center gap-3 shrink-0">
         <button
           onClick={onToggleSidebar}
           className="p-2 rounded-lg text-[#989b9f] hover:text-[#fffdfc] hover:bg-[#252526] transition-colors cursor-pointer flex items-center justify-center"
@@ -271,6 +271,16 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
         >
           <MenuHamburgerIcon className="w-5 h-5" />
         </button>
+
+        <div 
+          onClick={onGoHome}
+          className="cursor-pointer flex items-center gap-2 group select-none"
+          title="Ana Sayfaya Git"
+        >
+          <span className="font-extrabold text-base sm:text-lg tracking-wider text-white group-hover:text-[#60cdff] transition-colors uppercase font-mono">
+            SAVED
+          </span>
+        </div>
       </div>
 
       {/* Orta Bölüm: Blogger Hap Tasarımlı Arama Çubuğu (Bul...) */}
