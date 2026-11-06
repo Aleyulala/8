@@ -4,6 +4,9 @@ import { db, initializeDatabase } from './db';
 import { CollectionItem, LinkItem, SortOption, ViewMode } from './types';
 import { Sidebar } from './components/Sidebar';
 import { MobileNavBar } from './components/MobileNavBar';
+import { BloggerMobileNav } from './components/BloggerMobileNav';
+import { BloggerDrawer } from './components/BloggerDrawer';
+import { FloatingMenu } from './components/FloatingMenu';
 import { DashboardView } from './components/DashboardView';
 import { LinksView } from './components/LinksView';
 import { CollectionsView } from './components/CollectionsView';
@@ -16,7 +19,7 @@ import { ImportExportModal } from './components/ImportExportModal';
 import { SettingsModal } from './components/SettingsModal';
 import { getStorageUsage } from './utils/exportImport';
 import { getDomain } from './utils/favicon';
-import { Search, Plus, Home, Bookmark, Moon, Sun, FileUp } from 'lucide-react';
+import { Search, Plus, Home, Bookmark, Moon, Sun, FileUp, Menu } from 'lucide-react';
 
 type MainViewType = 
   | 'dashboard' 
@@ -46,7 +49,8 @@ export const App: React.FC = () => {
     percentage: 0
   });
 
-  // Modals
+  // Modals & Drawer
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingLink, setEditingLink] = useState<LinkItem | null>(null);
   const [detailLink, setDetailLink] = useState<LinkItem | null>(null);
@@ -364,14 +368,24 @@ export const App: React.FC = () => {
         
         {/* Mobile Header Bar (Visible on mobile only) */}
         <header className="md:hidden flex items-center justify-between px-4 py-3 bg-[#1b1b1b] border-b border-[#2e2e2e] shrink-0 sticky top-0 z-30">
-          <div 
-            onClick={() => setActiveView('dashboard')}
-            className="flex items-center gap-2 cursor-pointer"
-          >
-            <div className="w-7 h-7 rounded-lg bg-[#38bdf8] flex items-center justify-center font-bold text-xs text-slate-950">
-              S
+          <div className="flex items-center gap-2.5">
+            <button
+              onClick={() => setIsDrawerOpen(true)}
+              className="w-8 h-8 rounded-xl bg-[#262626] hover:bg-[#333333] border border-[#383838] text-[#d4d4d4] hover:text-white flex items-center justify-center transition-colors"
+              title="Çekmece Menüsünü Aç"
+            >
+              <Menu className="w-4 h-4" />
+            </button>
+
+            <div 
+              onClick={() => setActiveView('dashboard')}
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <div className="w-7 h-7 rounded-lg bg-[#38bdf8] flex items-center justify-center font-bold text-xs text-slate-950 shadow-sm shadow-sky-500/20">
+                S
+              </div>
+              <span className="font-semibold text-base tracking-tight text-white">saved</span>
             </div>
-            <span className="font-semibold text-base tracking-tight text-white">saved</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -598,16 +612,74 @@ export const App: React.FC = () => {
         </main>
       </div>
 
-      {/* Mobile Fixed Bottom Navigation Bar (Hidden on desktop) */}
-      <MobileNavBar
-        currentTab={mobileCurrentTab}
+      {/* Blogger Mobile Fixed Bottom Navigation Bar (.mobM / .mobC) */}
+      <BloggerMobileNav
+        currentTab={
+          activeView === 'dashboard' ? 'dashboard' :
+          activeView === 'pinned' ? 'pinned' :
+          activeView === 'collection' ? 'collection' :
+          activeView === 'tag' ? 'tag' :
+          activeView === 'trash' ? 'trash' : 'links'
+        }
         onSelectTab={(tab) => {
-          if (tab === 'dashboard') setActiveView('dashboard');
-          else if (tab === 'links') setActiveView('links');
-          else if (tab === 'collections') setActiveView('collections_list');
-          else if (tab === 'tags') setActiveView('tags_list');
-          else if (tab === 'settings') setIsSettingsOpen(true);
+          setActiveView(tab);
           setSearchQuery('');
+        }}
+        onOpenDrawer={() => setIsDrawerOpen(true)}
+        onOpenSearch={() => {
+          setActiveView('links');
+        }}
+      />
+
+      {/* Modern CTA Floating Action Buttons (.cta-container) */}
+      <FloatingMenu
+        onOpenNewLink={() => {
+          setEditingLink(null);
+          setIsAddModalOpen(true);
+        }}
+        onOpenSearch={() => {
+          setActiveView('links');
+        }}
+        onOpenCollections={() => {
+          setActiveView('collections_list');
+        }}
+      />
+
+      {/* Blogger Side Drawer (.mainL / .mnBr) */}
+      <BloggerDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        currentTab={activeView}
+        onSelectTab={(tab) => {
+          setActiveView(tab);
+          setSearchQuery('');
+        }}
+        collections={collections}
+        tags={tags}
+        counts={counts}
+        activeCollectionId={selectedCollectionId}
+        activeTag={selectedTag}
+        onSelectCollection={(id) => {
+          setSelectedCollectionId(id);
+          setActiveView('collection');
+          setSearchQuery('');
+        }}
+        onSelectTag={(tag) => {
+          setSelectedTag(tag);
+          setActiveView('tag');
+          setSearchQuery('');
+        }}
+        onOpenNewLink={() => {
+          setEditingLink(null);
+          setIsAddModalOpen(true);
+        }}
+        onOpenManageCollections={() => setIsCollectionsModalOpen(true)}
+        onOpenManageTags={() => setIsTagsModalOpen(true)}
+        onOpenImportExport={() => setIsImportExportOpen(true)}
+        onOpenSettings={() => setIsSettingsOpen(true)}
+        onSearchSubmit={(q) => {
+          setSearchQuery(q);
+          setActiveView('links');
         }}
       />
 
