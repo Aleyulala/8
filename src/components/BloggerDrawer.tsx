@@ -146,26 +146,6 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               </button>
             </li>
 
-            {/* 2. TOPLULUK: Element.io / Matrix Grubu */}
-            <li>
-              <a
-                href="https://matrix.to/#/#negronn-show:matrix.org"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium bg-[#1e293b]/50 hover:bg-[#1e293b] text-[#38bdf8] transition-colors group cursor-pointer border border-transparent"
-                title="Element.io Matrix Topluluğu (Oda: !CYfB8T6Ikr-o54o-gK1nOkET7s1pxixgZ-GJEGIFIT0)"
-              >
-                <div className="flex items-center gap-2.5">
-                  <MatrixIcon className="w-4 h-4 text-[#38bdf8]" />
-                  <div className="flex flex-col text-left">
-                    <span className="font-bold text-xs text-white group-hover:text-[#38bdf8]">Topluluk</span>
-                    <span className="text-[10px] text-[#9ca3af] font-mono">@negronn:matrix.org</span>
-                  </div>
-                </div>
-                <ExternalLink className="w-3.5 h-3.5 text-[#38bdf8] opacity-70 group-hover:opacity-100" />
-              </a>
-            </li>
-
             {/* 3. KLASÖR 1: Hizmetler (+ / − Genişletilebilir) */}
             <li className="pt-1">
               <div 
