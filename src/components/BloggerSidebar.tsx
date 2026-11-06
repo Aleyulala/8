@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Plus, 
   ExternalLink,
@@ -11,9 +11,7 @@ import {
   ShieldCheck,
   Send,
   Code2,
-  BookOpen,
-  Phone,
-  Palette
+  Phone
 } from 'lucide-react';
 import { 
   HomeIcon,
@@ -62,31 +60,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
   const [hizmetlerOpen, setHizmetlerOpen] = useState(true);
   const [klasorOpen, setKlasorOpen] = useState(true);
   const [gelistiriciOpen, setGelistiriciOpen] = useState(true);
-  const [plusUiOpen, setPlusUiOpen] = useState(false);
   const [socialExpanded, setSocialExpanded] = useState(false);
-  const [currentThemeColor, setCurrentThemeColor] = useState<string>('#38bdf8');
-
-  useEffect(() => {
-    const savedColor = localStorage.getItem('saved_theme_color') || '#38bdf8';
-    setCurrentThemeColor(savedColor);
-  }, []);
-
-  const handleSelectThemeColor = (color: string) => {
-    setCurrentThemeColor(color);
-    document.documentElement.style.setProperty('--tv-nav-ring', color);
-    document.documentElement.style.setProperty('--linkB', color);
-    document.documentElement.style.setProperty('--linkC', color);
-    document.documentElement.style.setProperty('--text-primary', color);
-    document.documentElement.style.setProperty('--theme-color', color);
-    localStorage.setItem('saved_theme_color', color);
-  };
-
-  const THEME_PALETTE = [
-    '#38bdf8', '#0ea5e9', '#06b6d4', '#14b8a6', 
-    '#10b981', '#22c55e', '#84cc16', '#eab308', 
-    '#f59e0b', '#f97316', '#ef4444', '#f43f5e', 
-    '#ec4899', '#d946ef', '#a855f7', '#6366f1'
-  ];
 
   return (
     <aside className="w-[230px] bg-[#1e1e1e] border-r border-[#252526] flex flex-col justify-between h-[calc(100vh-60px)] shrink-0 text-xs select-none shadow-xs">
@@ -376,166 +350,9 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
             )}
           </li>
 
-          {/* 6. KLASÖR 4: Plus UI Dokümantasyon & Bileşenler (+ / − Genişletilebilir) */}
-          <li className="pt-1">
-            <div 
-              onClick={() => setPlusUiOpen(!plusUiOpen)}
-              className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-[#d4d4d4] hover:bg-[#252526] hover:text-white cursor-pointer transition-colors"
-            >
-              <div className="flex items-center gap-2.5">
-                <BookOpen className="w-4 h-4 text-emerald-400" />
-                <span>Plus UI Dokümanlar</span>
-                <span className="px-1.5 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 text-[9px] font-bold">
-                  3.0
-                </span>
-              </div>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setPlusUiOpen(!plusUiOpen);
-                }}
-                className="w-5 h-5 rounded-full bg-[#1e1e1e] hover:bg-[#333333] border border-white/10 flex items-center justify-center text-xs font-bold text-[#60cdff] transition-all cursor-pointer"
-                aria-label={plusUiOpen ? "Daralt" : "Genişlet"}
-              >
-                {plusUiOpen ? '−' : '+'}
-              </button>
-            </div>
-
-            {plusUiOpen && (
-              <ul className="space-y-0.5 pl-3 border-l border-white/10 ml-4 mt-1">
-                <li>
-                  <a
-                    href="https://plus-ui.fineshop.app/2024/10/menu.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
-                  >
-                    <span>1. Menü & Gezinme</span>
-                    <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://plus-ui.fineshop.app/2024/10/components.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
-                  >
-                    <span>2. Bileşenler</span>
-                    <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://plus-ui.fineshop.app/2024/10/plugins.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
-                  >
-                    <span>3. Eklentiler (Plugins)</span>
-                    <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://plus-ui.fineshop.app/2024/10/tabs.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
-                  >
-                    <span>4. Sekmeler & Tab</span>
-                    <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://plus-ui.fineshop.app/2024/10/split.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
-                  >
-                    <span>5. Bölünmüş Sayfa</span>
-                    <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://plus-ui.fineshop.app/2024/10/fullpage.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
-                  >
-                    <span>6. Tam Sayfa</span>
-                    <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://plus-ui.fineshop.app/2024/10/comments.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
-                  >
-                    <span>7. Yorum Sistemi</span>
-                    <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://plus-ui.fineshop.app/2024/10/appearance.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
-                  >
-                    <span>8. Tema & Görünüm</span>
-                    <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://plus-ui.fineshop.app/2024/10/installation.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
-                  >
-                    <span>9. Kurulum Rehberi</span>
-                    <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
-                  </a>
-                </li>
-              </ul>
-            )}
-          </li>
+          {/* 6. KLASÖR 4 kaldırıldı */}
 
         </ul>
-
-        {/* Tema Vurgu Rengi Seçici (XML 1:1 .thmW) */}
-        <div className="mt-4 p-2.5 rounded-xl bg-[#252526] border border-white/5 space-y-2">
-          <div className="flex items-center justify-between text-[11px] font-bold text-white">
-            <div className="flex items-center gap-1.5">
-              <Palette className="w-3.5 h-3.5 text-[#60cdff]" />
-              <span>Tema Vurgu Rengi</span>
-            </div>
-            <span className="w-3 h-3 rounded-full border border-white/30" style={{ backgroundColor: currentThemeColor }} />
-          </div>
-          <div className="grid grid-cols-8 gap-1 pt-0.5">
-            {THEME_PALETTE.map(c => {
-              const isSelected = currentThemeColor.toLowerCase() === c.toLowerCase();
-              return (
-                <button
-                  key={c}
-                  type="button"
-                  onClick={() => handleSelectThemeColor(c)}
-                  className={`w-5 h-5 rounded-full transition-transform hover:scale-125 cursor-pointer relative ${
-                    isSelected ? 'ring-2 ring-white scale-110 shadow-md' : 'opacity-80 hover:opacity-100'
-                  }`}
-                  style={{ backgroundColor: c }}
-                  title={c}
-                />
-              );
-            })}
-          </div>
-        </div>
       </div>
 
       {/* Alt Bölüm (.mnBrs Footer): Sosyal Ağlar (.mSoc + Genişletme) */}
@@ -631,7 +448,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
 
         <div className="flex items-center justify-between text-[10px] text-[#989b9f] font-mono px-1">
           <span>GNU GPL v3.0</span>
-          <span>saved v1.0 • Plus UI</span>
+          <span>v1.0 • Plus UI</span>
         </div>
       </div>
 

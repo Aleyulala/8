@@ -49,7 +49,7 @@ export const LinkCard: React.FC<LinkCardProps> = ({
   // Fallback views & comments if not set
   const views = link.views || Math.abs(link.title.length * 3 + 12);
   const comments = link.commentsCount !== undefined ? link.commentsCount : (link.isPinned ? 3 : Math.abs(link.title.length % 3));
-  const author = link.authorName || 'SAVED';
+  const author = link.authorName || 'NEGRONN';
 
   // Thumbnail fallback: use link.thumbnail if available, else curated aesthetic background
   const hasThumbnail = Boolean(link.thumbnail && !imgError);

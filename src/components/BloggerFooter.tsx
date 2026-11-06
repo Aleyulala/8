@@ -198,7 +198,7 @@ export const BloggerFooter: React.FC<BloggerFooterProps> = ({
                   rel="noopener noreferrer"
                   className="hover:text-[#38bdf8] transition-colors flex items-center gap-1.5"
                 >
-                  <span>SAVED App</span>
+                  <span>Bağlantılar</span>
                   <ExternalLink className="w-2.5 h-2.5 opacity-50" />
                 </a>
               </li>
@@ -307,7 +307,7 @@ export const BloggerFooter: React.FC<BloggerFooterProps> = ({
                 rel="noopener noreferrer"
                 className="text-[#38bdf8] hover:underline font-medium"
               >
-                SAVED
+                NEGRONN
               </a>
             </span>
           </div>
