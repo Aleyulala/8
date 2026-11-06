@@ -5,16 +5,18 @@ import { MatrixIcon } from './BloggerIcons';
 export const BloggerNotificationBar: React.FC = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [activeSlide, setActiveSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
 
   const totalSlides = 3;
 
   useEffect(() => {
+    if (isPaused) return;
     const timer = setInterval(() => {
       setActiveSlide((prev) => (prev + 1) % totalSlides);
-    }, 5500);
+    }, 7000);
     return () => clearInterval(timer);
-  }, [totalSlides]);
+  }, [totalSlides, isPaused]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
@@ -38,6 +40,8 @@ export const BloggerNotificationBar: React.FC = () => {
       <div 
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
         className="flex items-center justify-between gap-3 px-3.5 py-2 rounded-xl bg-[#252526] border border-transparent shadow-sm select-none min-h-[46px] touch-pan-y"
       >
         
@@ -54,21 +58,21 @@ export const BloggerNotificationBar: React.FC = () => {
         {/* Orta Slayt İçeriği (.bar-slider) */}
         <div className="flex-1 overflow-hidden flex items-center justify-center text-center">
           
-          {/* SLAYT 0: ALİ & NSONE (Blogger XML 1:1) */}
+          {/* SLAYT 0: ALİ & NSONE (Blogger XML 1:1 & Screenshot Birebir) */}
           {activeSlide === 0 && (
-            <div className="ali-nsone-text-wrap inline-flex items-center justify-center gap-3 select-none animate-in fade-in duration-300">
+            <div className="ali-nsone-text-wrap inline-flex items-center justify-center gap-4 sm:gap-6 select-none animate-in fade-in duration-300">
               <a
                 href="https://aleyulala.blogspot.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="ali-nsone-slide-btn font-extrabold text-[15px] tracking-[5px] uppercase text-white hover:text-[#60cdff] transition-colors cursor-pointer"
+                className="ali-nsone-slide-btn font-extrabold text-[15px] sm:text-[16px] tracking-[6px] uppercase text-white hover:text-[#60cdff] transition-colors cursor-pointer"
                 title="ALİ"
               >
                 ALİ
               </a>
               <a
                 href="https://aleyulala.github.io/saved/"
-                className="ali-nsone-amp font-bold text-[15px] text-[#60cdff] px-2 py-0.5 rounded-md hover:bg-white/10 hover:scale-125 transition-all cursor-pointer"
+                className="ali-nsone-amp font-bold text-[15px] sm:text-[16px] text-[#989b9f] hover:text-white px-2 py-0.5 rounded-md hover:bg-white/10 transition-all cursor-pointer"
                 title="ALİ &amp; NSONE"
               >
                 &amp;
@@ -77,7 +81,7 @@ export const BloggerNotificationBar: React.FC = () => {
                 href="https://negronshow.blogspot.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="ali-nsone-slide-btn font-extrabold text-[15px] tracking-[5px] uppercase text-white hover:text-[#60cdff] transition-colors cursor-pointer"
+                className="ali-nsone-slide-btn font-extrabold text-[15px] sm:text-[16px] tracking-[6px] uppercase text-white hover:text-[#60cdff] transition-colors cursor-pointer"
                 title="NSONE"
               >
                 NSONE

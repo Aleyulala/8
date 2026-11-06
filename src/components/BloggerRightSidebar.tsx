@@ -5,7 +5,9 @@ import {
   Verify1Icon,
   EyeIcon,
   MessageNotif1Icon,
-  ArchiveIcon
+  ArchiveIcon,
+  TagBloggerIcon,
+  ChatBloggerIcon
 } from './BloggerIcons';
 import { 
   Calendar, 
@@ -202,9 +204,9 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
               <div className="absolute bottom-2 left-2 z-10">
                 <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-black/75 backdrop-blur-md text-white text-[10px] font-bold shadow-sm">
                   <span className="w-3.5 h-3.5 rounded-full bg-[#1e1e1e] flex items-center justify-center text-[7px] text-[#60cdff] font-extrabold">
-                    S
+                    N
                   </span>
-                  <span>SAVED</span>
+                  <span>{featuredFirst.authorName || 'NEGRONN'}</span>
                   <Verify1Icon className="w-3 h-3 text-[#60cdff]" />
                 </div>
               </div>
@@ -269,7 +271,7 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
         {/* Başlık: Hedef İkonu + Etiketler + Çizgi Butonlar (.car-nav) */}
         <div className="flex items-center justify-between pb-1">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-bold text-[#60cdff] leading-none">◎</span>
+            <TagBloggerIcon className="w-4 h-4 text-[#60cdff]" />
             <h2 className="text-[1.15rem] font-bold text-white tracking-wide">
               Etiketler
             </h2>
@@ -333,7 +335,7 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
       <section aria-label="Bize Ulaşın" className="rounded-xl bg-[#252526] p-4 space-y-3.5 shadow-sm border border-transparent">
         
         <div className="flex items-center gap-2 border-b border-[#333333] pb-2">
-          <MessageCircle className="w-4 h-4 text-[#60cdff]" />
+          <ChatBloggerIcon className="w-4 h-4 text-[#60cdff]" />
           <h2 className="text-sm font-bold text-white tracking-wide">
             Bize Ulaşın
           </h2>

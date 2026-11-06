@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CollectionItem } from '../types';
+import { TagBloggerIcon } from './BloggerIcons';
 
 export interface BloggerSlide {
   id: string;
@@ -262,9 +263,7 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
             className="group/badge inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/70 hover:bg-black/90 backdrop-blur-md text-white text-xs sm:text-sm font-medium transition-all duration-200 active:scale-95 shadow-lg cursor-pointer"
             title={`${activeSlide.category} kategorisine git`}
           >
-            <span className="text-white/80 group-hover/badge:text-[#60cdff] text-base leading-none font-bold">
-              ◎
-            </span>
+            <TagBloggerIcon className="w-3.5 h-3.5 text-[#60cdff]" />
             <span className="tracking-wide">
               {activeSlide.category}
             </span>

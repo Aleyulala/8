@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { SearchNormalIcon, CloseIcon } from './BloggerIcons';
+import { SearchNormalIcon, CloseIcon, RankingIcon, Link21Icon } from './BloggerIcons';
 import { LinkItem, CollectionItem } from '../types';
 import { db } from '../db';
 import { getFaviconUrl } from '../utils/favicon';
@@ -350,13 +350,13 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
             )}
             {hasShortcut && shortcutTarget && (
               <div className="flex items-center gap-2 text-[#60cdff]">
-                <span className="text-base">⚡</span>
+                <RankingIcon className="w-4 h-4 text-[#60cdff]" />
                 <span><strong>{shortcutTarget.label}</strong> üzerinde ara: <em>"{shortcutPayload}"</em></span>
               </div>
             )}
             {!hasShortcut && isDirectUrl && (
               <div className="flex items-center gap-2 text-sky-300">
-                <span className="text-base">🔗</span>
+                <Link21Icon className="w-4 h-4 text-sky-300" />
                 <span>Doğrudan Web Adresine Git: <strong>{trimmedQuery}</strong></span>
               </div>
             )}
@@ -418,7 +418,9 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
                       </span>
                     )}
                     {link.isPinned && (
-                      <span className="text-amber-400 text-xs" title="Sabitlenmiş">★</span>
+                      <span title="Sabitlenmiş">
+                        <RankingIcon className="w-3.5 h-3.5 text-amber-400" />
+                      </span>
                     )}
                   </div>
                 </div>
