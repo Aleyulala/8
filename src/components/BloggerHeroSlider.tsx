@@ -232,7 +232,7 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
                 e.stopPropagation();
                 setIsLightboxOpen(true);
               }}
-              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/55 hover:bg-black/80 backdrop-blur-md border border-white/20 text-white/90 hover:text-white flex items-center justify-center transition-all duration-200 active:scale-95 shadow-md"
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 hover:bg-black/85 backdrop-blur-md text-white/90 hover:text-white flex items-center justify-center transition-all duration-200 active:scale-95 shadow-md"
               title="Tam Ekran Görüntüle"
               aria-label="Tam Ekran"
             >
@@ -243,7 +243,7 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
           {/* Left Arrow Button (.sldP) - desktop hover */}
           <button
             onClick={handlePrev}
-            className="hidden sm:flex absolute left-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/40 hover:bg-black/75 backdrop-blur-md border border-white/15 text-white/90 hover:text-white items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 active:scale-90 shadow-md"
+            className="hidden sm:flex absolute left-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/50 hover:bg-black/80 backdrop-blur-md text-white/90 hover:text-white items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 active:scale-90 shadow-md"
             aria-label="Önceki Slayt"
           >
             <ChevronLeft className="w-5 h-5" />
@@ -252,7 +252,7 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
           {/* Right Arrow Button (.sldN) - desktop hover */}
           <button
             onClick={handleNext}
-            className="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/40 hover:bg-black/75 backdrop-blur-md border border-white/15 text-white/90 hover:text-white items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 active:scale-90 shadow-md"
+            className="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/50 hover:bg-black/80 backdrop-blur-md text-white/90 hover:text-white items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 active:scale-90 shadow-md"
             aria-label="Sonraki Slayt"
           >
             <ChevronRight className="w-5 h-5" />
@@ -262,7 +262,7 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
           <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 z-20">
             <button
               onClick={(e) => handleCategoryClick(e, activeSlide)}
-              className="group/badge inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/60 hover:bg-black/85 backdrop-blur-md border border-white/20 text-white text-xs sm:text-sm font-medium transition-all duration-200 active:scale-95 shadow-lg"
+              className="group/badge inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/70 hover:bg-black/90 backdrop-blur-md text-white text-xs sm:text-sm font-medium transition-all duration-200 active:scale-95 shadow-lg"
               title={`${activeSlide.category} kategorisine git`}
             >
               <span className="text-white/80 group-hover/badge:text-[#60cdff] text-base leading-none font-bold">
@@ -352,20 +352,20 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
             <img
               src={activeSlide.imageUrl}
               alt={activeSlide.title}
-              className="max-h-[75vh] w-auto max-w-full rounded-xl object-contain shadow-2xl border border-white/10"
+              className="max-h-[75vh] w-auto max-w-full rounded-xl object-contain shadow-2xl"
             />
 
             {/* Left / Right Modal Nav */}
             <button
               onClick={handlePrev}
-              className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/20 backdrop-blur-md"
+              className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/70 hover:bg-black/90 text-white backdrop-blur-md"
               aria-label="Önceki"
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
             <button
               onClick={handleNext}
-              className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/20 backdrop-blur-md"
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/70 hover:bg-black/90 text-white backdrop-blur-md"
               aria-label="Sonraki"
             >
               <ChevronRight className="w-6 h-6" />

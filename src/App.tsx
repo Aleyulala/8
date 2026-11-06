@@ -430,13 +430,13 @@ export const App: React.FC = () => {
         {/* BİRLEŞİK KAYDIRMA ALANI: Orta İçerik ve Sağ Bar BİRLİKTE Kayar (.mainW) */}
         <div 
           id="mainScrollContainer"
-          className="flex-1 h-[calc(100vh-56px)] overflow-y-auto overflow-x-hidden min-w-0 bg-[#1e1e1e]"
+          className="flex-1 h-[calc(100vh-60px)] overflow-y-auto overflow-x-hidden min-w-0 bg-[#1e1e1e]"
         >
-          <div className="max-w-[1360px] mx-auto p-3 sm:p-5 lg:p-6 pb-20">
-            <div className="flex flex-col lg:flex-row gap-6 items-start">
+          <div className="max-w-[1280px] mx-auto px-4 sm:px-[25px] pt-4 sm:pt-[30px] pb-20">
+            <div className="flex flex-col lg:flex-row gap-[25px] items-start">
               
-              {/* ORTA BÖLÜM: Ana İçerik Alanı (.mainC) */}
-              <main className="flex-1 min-w-0 w-full">
+              {/* ORTA BÖLÜM: Ana İçerik Alanı (.blogB) */}
+              <main className="flex-1 min-w-0 w-full lg:w-[calc(100%-325px)]">
                 {activeView === 'dashboard' && (
                   <DashboardView
                     links={allLinks}
@@ -672,7 +672,7 @@ export const App: React.FC = () => {
               </main>
 
               {/* SAĞ BAR: Popüler Post, Etiketler, Bize Ulaşın (.sideB) */}
-              <aside className="w-full lg:w-80 shrink-0">
+              <aside className="w-full lg:w-[300px] shrink-0">
                 <BloggerRightSidebar
                   pinnedLinks={allLinks.filter(l => l.isPinned && !l.isTrash && !l.isArchived)}
                   allLinks={allLinks}

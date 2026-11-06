@@ -21,7 +21,7 @@ export const TagsView: React.FC<TagsViewProps> = ({
         <div className="flex items-center gap-2">
           <Hash className="w-5 h-5 text-[#38bdf8]" />
           <h1 className="text-xl font-light text-white tracking-tight">Tags</h1>
-          <span className="text-xs px-2 py-0.5 rounded-full bg-[#262626] border border-[#383838] text-[#a3a3a3] font-mono">
+          <span className="text-xs px-2 py-0.5 rounded-full bg-[#252526] text-[#a3a3a3] font-mono">
             {tags.length}
           </span>
         </div>
@@ -42,7 +42,7 @@ export const TagsView: React.FC<TagsViewProps> = ({
             <button
               key={tag.name}
               onClick={() => onSelectTag(tag.name)}
-              className="p-3.5 rounded-xl bg-[#262626] border border-[#383838] hover:border-[#555555] cursor-pointer transition-all flex items-center justify-between text-left group shadow-sm"
+              className="p-3.5 rounded-xl bg-[#252526] hover:bg-[#28282b] border border-transparent cursor-pointer transition-all flex items-center justify-between text-left group shadow-sm"
             >
               <div className="flex items-center gap-2 truncate">
                 <span className="text-neutral-500 font-mono">#</span>

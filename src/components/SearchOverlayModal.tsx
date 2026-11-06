@@ -247,7 +247,7 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
           <select
             value={selectedEngine}
             onChange={(e) => setSelectedEngine(e.target.value)}
-            className="bg-[#1e1e1e] hover:bg-[#28282b] text-[#d4d4d4] text-xs font-semibold py-2 px-2.5 rounded-xl border border-[#383838] outline-none cursor-pointer shrink-0 max-w-[110px] sm:max-w-[130px] truncate"
+            className="bg-[#1e1e1e] hover:bg-[#28282b] text-[#d4d4d4] text-xs font-semibold py-2 px-2.5 rounded-xl border border-transparent outline-none cursor-pointer shrink-0 max-w-[110px] sm:max-w-[130px] truncate"
             title="Arama Motoru Seçin"
           >
             {SEARCH_ENGINES.map(eng => (
@@ -312,7 +312,7 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all cursor-pointer border ${
                   isActive
                     ? 'bg-[#60cdff]/15 text-[#60cdff] border-[#60cdff]/40 shadow-sm'
-                    : 'bg-[#1e1e1e] hover:bg-[#28282b] text-[#a3a3a3] hover:text-white border-[#383838]'
+                    : 'bg-[#1e1e1e] hover:bg-[#28282b] text-[#a3a3a3] hover:text-white border-transparent'
                 }`}
               >
                 <span>{eng.name}</span>
@@ -323,7 +323,7 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
 
         {/* Canlı Kısayol / Hesap Makinesi / Doğrudan URL Önizlemesi */}
         {(mathResult !== null || hasShortcut || isDirectUrl) && (
-          <div className="p-3 rounded-xl bg-[#1e1e1e]/90 border border-[#404045] flex items-center justify-between text-xs animate-in fade-in duration-150">
+          <div className="p-3 rounded-xl bg-[#1e1e1e]/90 border border-white/5 flex items-center justify-between text-xs animate-in fade-in duration-150">
             {mathResult !== null && (
               <div className="flex items-center gap-2 text-emerald-400 font-mono">
                 <span className="text-base font-bold">🧮</span>
@@ -342,7 +342,7 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
                 <span>Doğrudan Web Adresine Git: <strong>{trimmedQuery}</strong></span>
               </div>
             )}
-            <kbd className="px-2 py-0.5 rounded text-[10px] font-mono bg-[#252526] text-[#989b9f] border border-[#383838]">
+            <kbd className="px-2 py-0.5 rounded text-[10px] font-mono bg-[#252526] text-[#989b9f]">
               Enter ↵
             </kbd>
           </div>
@@ -350,7 +350,7 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
 
         {/* Eşleşen Kayıtlı Linkler Paneli */}
         {matchingLinks.length > 0 && (
-          <div className="max-h-72 overflow-y-auto rounded-xl bg-[#1e1e1e] border border-[#383838] p-1.5 space-y-1 shadow-2xl">
+          <div className="max-h-72 overflow-y-auto rounded-xl bg-[#1e1e1e] border border-white/5 p-1.5 space-y-1 shadow-2xl">
             <div className="px-2.5 py-1 text-[11px] font-semibold text-[#989b9f] uppercase tracking-wider flex items-center justify-between">
               <span>Kayıtlı Bağlantılarınız ({matchingLinks.length})</span>
               <span className="text-[10px] font-normal text-[#71717a]">Gezinmek için ↑ ↓</span>
@@ -395,7 +395,7 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
 
                   <div className="flex items-center gap-1.5 shrink-0">
                     {colName && (
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#28282b] text-[#a3a3a3] border border-[#383838]">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#28282b] text-[#a3a3a3]">
                         {colName}
                       </span>
                     )}

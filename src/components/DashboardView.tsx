@@ -252,7 +252,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
           <article 
             onClick={() => onOpenPostPage(pinnedPost)}
-            className="group relative rounded-xl bg-[#252526] hover:bg-[#28282b] border border-[#383838] hover:border-[#60cdff]/60 transition-all duration-200 overflow-hidden cursor-pointer shadow-md hover:shadow-xl hover:shadow-black/60 flex flex-col md:flex-row select-none"
+            className="group relative rounded-xl bg-[#252526] hover:bg-[#28282b] border border-transparent hover:border-[#60cdff]/30 transition-all duration-200 overflow-hidden cursor-pointer shadow-md hover:shadow-xl hover:shadow-black/60 flex flex-col md:flex-row select-none"
           >
             {/* Sol Görsel / Thumbnail */}
             <div className="relative md:w-1/2 aspect-[16/9] md:aspect-auto bg-[#1e1e1e] overflow-hidden shrink-0">
@@ -266,7 +266,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               ) : (
                 <div className="w-full h-full min-h-[220px] flex flex-col items-center justify-center bg-gradient-to-tr from-sky-950 via-[#1c2430] to-[#252526] p-6 relative">
                   <div className="absolute inset-0 bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] [background-size:14px_14px]" />
-                  <div className="relative z-10 w-16 h-16 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-center p-3 shadow-xl mb-2 group-hover:scale-105 transition-transform">
+                  <div className="relative z-10 w-16 h-16 rounded-2xl bg-black/60 backdrop-blur-md flex items-center justify-center p-3 shadow-xl mb-2 group-hover:scale-105 transition-transform">
                     <img
                       src={getFaviconUrl(pinnedPost.url)}
                       alt={getDomain(pinnedPost.url)}
@@ -287,7 +287,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
               {/* Sol Üst: 👁 Görüntülenme */}
               <div className="absolute top-2.5 left-2.5 z-10">
-                <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md text-white text-[10px] font-medium border border-white/10 shadow-sm">
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md text-white text-[10px] font-medium shadow-sm">
                   <Eye className="w-3 h-3 text-[#60cdff]" />
                   <span>{pinnedPost.views || Math.abs(pinnedPost.title.length * 3 + 12)}</span>
                 </div>
@@ -295,19 +295,19 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
               {/* Sağ Üst: 💬 Yorumlar ve 🔖 Sabit */}
               <div className="absolute top-2.5 right-2.5 z-10 flex items-center gap-1.5">
-                <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md text-white text-[10px] font-medium border border-white/10 shadow-sm">
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md text-white text-[10px] font-medium shadow-sm">
                   <MessageSquare className="w-2.5 h-2.5 text-white/90" />
                   <span>{pinnedPost.commentsCount !== undefined ? pinnedPost.commentsCount : 0}</span>
                 </div>
-                <div className="p-1 rounded-md bg-amber-500/30 text-amber-300 border border-amber-500/50 shadow-sm">
+                <div className="p-1 rounded-md bg-amber-500/30 text-amber-300 shadow-sm">
                   <Bookmark className="w-3 h-3 fill-current text-amber-300" />
                 </div>
               </div>
 
               {/* Sol Alt: SAVED ✔ Rozeti */}
               <div className="absolute bottom-2.5 left-2.5 z-10">
-                <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md text-white text-[10px] font-bold border border-white/15 shadow-sm">
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#1e1e1e] flex items-center justify-center text-[7px] text-[#60cdff] font-extrabold border border-white/20">
+                <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md text-white text-[10px] font-bold shadow-sm">
+                  <span className="w-3.5 h-3.5 rounded-full bg-[#1e1e1e] flex items-center justify-center text-[7px] text-[#60cdff] font-extrabold">
                     S
                   </span>
                   <span>{pinnedPost.authorName || 'SAVED'}</span>
@@ -319,7 +319,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             {/* Sağ Metin İçeriği */}
             <div className="p-4 sm:p-5 flex flex-col justify-between flex-1 gap-3">
               <div className="space-y-2">
-                <div className="text-[11px] text-[#9ca3af] lowercase font-medium">
+                <div className="text-[11px] text-[#60cdff] hover:underline lowercase font-medium">
                   {pinnedPost.tags[0] || (pinnedPost.collectionId ? collectionMap.get(pinnedPost.collectionId)?.name.toLowerCase() : 'genel')}
                 </div>
 
@@ -335,10 +335,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </div>
 
               {/* Alt Satır: Yayınlandı! + Tarih + Daha */}
-              <div className="pt-3 border-t border-[#333333] flex items-center justify-between text-xs text-[#9ca3af]">
-                <div className="flex items-center gap-2.5">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 text-[10px] font-semibold">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <div className="pt-3 border-t border-white/5 flex items-center justify-between text-xs text-[#9ca3af]">
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#457f57] text-white text-[10px] font-semibold">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-200 animate-pulse" />
                     Yayınlandı!
                   </span>
                   <span className="text-[11px] text-[#71717a]">{formatDate(pinnedPost.createdAt)}</span>
@@ -372,7 +372,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-[18px] gap-y-[36px]">
           {latestPosts.map((post) => (
             <LinkCard
               key={post.id}

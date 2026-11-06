@@ -57,7 +57,7 @@ export const LinkCard: React.FC<LinkCardProps> = ({
   return (
     <article 
       onClick={handleCardClick}
-      className="group relative rounded-xl bg-[#252526] hover:bg-[#28282b] border border-[#383838] hover:border-[#60cdff]/60 transition-all duration-200 hover:-translate-y-1 shadow-md hover:shadow-xl hover:shadow-black/60 flex flex-col justify-between overflow-hidden cursor-pointer select-none"
+      className="group relative rounded-xl bg-[#252526] hover:bg-[#28282b] border border-transparent hover:border-[#60cdff]/30 transition-all duration-200 hover:-translate-y-1 shadow-md hover:shadow-xl hover:shadow-black/60 flex flex-col justify-between overflow-hidden cursor-pointer select-none"
     >
       
       {/* 1. Blogger Post Thumbnail (.pThmb) */}
@@ -73,7 +73,7 @@ export const LinkCard: React.FC<LinkCardProps> = ({
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-tr from-sky-950 via-[#1c2430] to-[#252526] p-4 relative">
             <div className="absolute inset-0 bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] [background-size:12px_12px]" />
-            <div className="w-12 h-12 rounded-2xl bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center p-2.5 shadow-lg group-hover:scale-110 transition-transform">
+            <div className="w-12 h-12 rounded-2xl bg-black/60 backdrop-blur-md flex items-center justify-center p-2.5 shadow-lg group-hover:scale-110 transition-transform">
               <img
                 src={faviconUrl}
                 alt={domain}
@@ -91,7 +91,7 @@ export const LinkCard: React.FC<LinkCardProps> = ({
 
         {/* Sol Üst: Görüntülenme Sayısı (👁 74) */}
         <div className="absolute top-2 left-2 z-10">
-          <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md text-white text-[10px] font-medium border border-white/10 shadow-sm">
+          <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md text-white text-[10px] font-medium shadow-sm">
             <Eye className="w-3 h-3 text-[#60cdff]" />
             <span>{views}</span>
           </div>
@@ -99,7 +99,7 @@ export const LinkCard: React.FC<LinkCardProps> = ({
 
         {/* Sağ Üst: Yorum Sayısı (💬 6) & Sabitleme/Yer İmi (🔖) */}
         <div className="absolute top-2 right-2 z-10 flex items-center gap-1.5">
-          <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md text-white text-[10px] font-medium border border-white/10 shadow-sm">
+          <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md text-white text-[10px] font-medium shadow-sm">
             <MessageSquare className="w-2.5 h-2.5 text-white/90" />
             <span>{comments}</span>
           </div>
@@ -111,10 +111,10 @@ export const LinkCard: React.FC<LinkCardProps> = ({
                 onTogglePin(link.id, link.isPinned);
               }
             }}
-            className={`p-1 rounded-md backdrop-blur-md text-[10px] border shadow-sm transition-colors ${
+            className={`p-1 rounded-md backdrop-blur-md text-[10px] shadow-sm transition-colors ${
               link.isPinned 
-                ? 'bg-amber-500/30 text-amber-300 border-amber-500/50' 
-                : 'bg-black/65 text-white/80 border-white/10 hover:text-white'
+                ? 'bg-amber-500/30 text-amber-300' 
+                : 'bg-black/65 text-white/80 hover:text-white'
             }`}
             title={link.isPinned ? 'Sabitlendi' : 'Sabitle'}
           >
@@ -124,8 +124,8 @@ export const LinkCard: React.FC<LinkCardProps> = ({
 
         {/* Sol Alt: Yazar / Marka Rozeti (AI ✔ / NEGRONN ✔) */}
         <div className="absolute bottom-2 left-2 z-10">
-          <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md text-white text-[10px] font-bold border border-white/15 shadow-sm tracking-wide">
-            <span className="w-3 h-3 rounded-full bg-[#1e1e1e] border border-white/20 flex items-center justify-center text-[7px] text-[#60cdff] font-extrabold">
+          <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md text-white text-[10px] font-bold shadow-sm tracking-wide">
+            <span className="w-3.5 h-3.5 rounded-full bg-[#1e1e1e] flex items-center justify-center text-[7px] text-[#60cdff] font-extrabold">
               {author.charAt(0)}
             </span>
             <span>{author}</span>
@@ -140,12 +140,12 @@ export const LinkCard: React.FC<LinkCardProps> = ({
         
         <div className="space-y-1">
           {/* Kategori Adı (Örn: videolar, oyun, bilgisayar) */}
-          <div className="flex items-center gap-1.5 text-[11px] text-[#9ca3af] lowercase tracking-wide font-medium">
+          <div className="flex items-center gap-1.5 text-[11px] text-[#60cdff] hover:underline lowercase tracking-wide font-medium">
             <span>{collection?.name.toLowerCase() || (link.tags[0] || 'genel')}</span>
           </div>
 
           {/* Başlık (.pTtl) */}
-          <h3 className="text-sm font-bold text-white group-hover:text-[#60cdff] line-clamp-2 leading-snug transition-colors">
+          <h3 className="text-[14px] font-bold text-white group-hover:text-[#60cdff] line-clamp-2 leading-snug transition-colors">
             {link.title || link.url}
           </h3>
 
@@ -157,15 +157,17 @@ export const LinkCard: React.FC<LinkCardProps> = ({
           )}
         </div>
 
-        {/* Alt Bilgi: Tarih (.pInf) */}
-        <div className="pt-2 border-t border-[#333333] flex items-center justify-between text-[11px] text-[#71717a]">
-          <div className="flex items-center gap-1">
-            <Calendar className="w-3 h-3 text-[#60cdff]" />
+        {/* Alt Bilgi: Yayınlandı! + Tarih + Daha (.pInf) */}
+        <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[11px] text-[#71717a]">
+          <div className="flex items-center gap-1.5">
+            <span className="px-1.5 py-0.5 rounded bg-[#457f57] text-white text-[10px] font-medium">
+              Yayınlandı!
+            </span>
             <span>{formatDate(link.createdAt)}</span>
           </div>
 
           <span className="text-xs text-[#60cdff] opacity-0 group-hover:opacity-100 transition-opacity font-medium">
-            Görüntüle →
+            Daha →
           </span>
         </div>
 

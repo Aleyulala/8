@@ -42,7 +42,7 @@ export const CollectionsView: React.FC<CollectionsViewProps> = ({
             <div
               key={col.id}
               onClick={() => col.id && onSelectCollection(col.id)}
-              className="p-4 rounded-xl bg-[#262626] border border-[#383838] hover:border-[#555555] cursor-pointer transition-all flex items-center justify-between group shadow-sm"
+              className="p-4 rounded-xl bg-[#252526] hover:bg-[#28282b] border border-transparent cursor-pointer transition-all flex items-center justify-between group shadow-sm"
             >
               <div className="flex items-center gap-3 min-w-0">
                 <div 
@@ -64,7 +64,7 @@ export const CollectionsView: React.FC<CollectionsViewProps> = ({
               </div>
 
               <div className="flex items-center gap-2 shrink-0 ml-3">
-                <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded-lg bg-[#1f1f1f] text-[#a3a3a3] border border-white/5">
+                <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded-lg bg-[#1e1e1e] text-[#a3a3a3]">
                   {count}
                 </span>
                 <ChevronRight className="w-4 h-4 text-[#737373] group-hover:translate-x-0.5 transition-transform" />

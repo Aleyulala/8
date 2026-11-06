@@ -71,14 +71,14 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
   };
 
   return (
-    <article className="space-y-6 animate-in fade-in duration-200">
+    <article className="space-y-6 max-w-[780px] mx-auto animate-in fade-in duration-200">
       
       {/* 1. Üst Kontrol & Ekmek Kırıntısı Barı (.brdCmb) */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#333333]">
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/5">
         <div className="flex items-center gap-2 text-xs text-[#a1a1aa]">
           <button
             onClick={onBack}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#252526] hover:bg-[#333333] text-white border border-[#383838] transition-colors font-medium active:scale-95"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#252526] hover:bg-[#333333] text-white border border-transparent transition-colors font-medium active:scale-95"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Geri Dön</span>
@@ -111,10 +111,10 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
         <div className="flex items-center gap-1.5">
           <button
             onClick={() => link.id && onTogglePin(link.id, link.isPinned)}
-            className={`p-2 rounded-xl border transition-all ${
+            className={`p-2 rounded-xl transition-all ${
               link.isPinned
-                ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
-                : 'bg-[#252526] text-[#a1a1aa] hover:text-white border-[#383838]'
+                ? 'bg-amber-500/20 text-amber-300'
+                : 'bg-[#252526] text-[#a1a1aa] hover:text-white'
             }`}
             title={link.isPinned ? 'Sabitlemeyi kaldır' : 'Sabitle'}
           >
@@ -123,10 +123,10 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
 
           <button
             onClick={() => link.id && onToggleRead(link.id, link.isRead)}
-            className={`p-2 rounded-xl border transition-all ${
+            className={`p-2 rounded-xl transition-all ${
               link.isRead
-                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                : 'bg-[#252526] text-[#a1a1aa] hover:text-white border-[#383838]'
+                ? 'bg-emerald-500/20 text-emerald-300'
+                : 'bg-[#252526] text-[#a1a1aa] hover:text-white'
             }`}
             title={link.isRead ? 'Okundu' : 'Okundu olarak işaretle'}
           >
@@ -135,7 +135,7 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
 
           <button
             onClick={() => onEdit(link)}
-            className="p-2 rounded-xl bg-[#252526] hover:bg-[#333333] text-[#a1a1aa] hover:text-[#38bdf8] border border-[#383838] transition-colors"
+            className="p-2 rounded-xl bg-[#252526] hover:bg-[#333333] text-[#a1a1aa] hover:text-[#38bdf8] transition-colors"
             title="Düzenle"
           >
             <Edit2 className="w-4 h-4" />
@@ -143,7 +143,7 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
 
           <button
             onClick={() => link.id && onMoveToTrash(link.id)}
-            className="p-2 rounded-xl bg-[#252526] hover:bg-[#333333] text-[#a1a1aa] hover:text-rose-400 border border-[#383838] transition-colors"
+            className="p-2 rounded-xl bg-[#252526] hover:bg-[#333333] text-[#a1a1aa] hover:text-rose-400 transition-colors"
             title="Çöpe At"
           >
             <Trash2 className="w-4 h-4" />
@@ -212,11 +212,11 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
       </div>
 
       {/* 3. Büyük Görsel / Önizleme Bannerı (.pThmb) */}
-      <div className="relative w-full rounded-2xl overflow-hidden border border-[#383838] bg-gradient-to-tr from-sky-950 via-[#1c2430] to-[#18181b] p-8 sm:p-12 shadow-2xl flex flex-col items-center justify-center text-center space-y-5">
+      <div className="relative w-full rounded-2xl overflow-hidden border border-transparent bg-gradient-to-tr from-sky-950 via-[#1c2430] to-[#18181b] p-8 sm:p-12 shadow-2xl flex flex-col items-center justify-center text-center space-y-5">
         <div className="absolute inset-0 bg-[radial-gradient(#ffffff0f_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
 
         {/* Logo Avatar */}
-        <div className="relative z-10 w-20 h-20 rounded-3xl bg-[#1e1e1e]/90 backdrop-blur-md border border-white/15 flex items-center justify-center shadow-2xl p-4">
+        <div className="relative z-10 w-20 h-20 rounded-3xl bg-[#1e1e1e]/90 backdrop-blur-md flex items-center justify-center shadow-2xl p-4">
           <img
             src={faviconUrl}
             alt={domain}
@@ -232,7 +232,7 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
           <h2 className="text-lg sm:text-xl font-bold text-white tracking-wide">
             {domain}
           </h2>
-          <p className="text-xs sm:text-sm text-[#9ca3af] break-all font-mono bg-black/40 px-4 py-2 rounded-xl border border-white/10">
+          <p className="text-xs sm:text-sm text-[#9ca3af] break-all font-mono bg-black/40 px-4 py-2 rounded-xl">
             {link.url}
           </p>
         </div>
@@ -251,7 +251,7 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
 
           <button
             onClick={handleCopy}
-            className="inline-flex items-center gap-2 px-4 py-3 rounded-full bg-[#252526] hover:bg-[#333333] text-white border border-[#383838] text-xs font-semibold active:scale-95 transition-all"
+            className="inline-flex items-center gap-2 px-4 py-3 rounded-full bg-[#252526] hover:bg-[#333333] text-white text-xs font-semibold active:scale-95 transition-all"
           >
             {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
             <span>{copied ? 'Kopyalandı' : 'URL Kopyala'}</span>
@@ -260,7 +260,7 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
       </div>
 
       {/* 4. Gönderi Açıklaması ve Notlar (.post-body) */}
-      <div className="rounded-2xl bg-[#252526] border border-[#383838] p-6 space-y-4 shadow-md">
+      <div className="rounded-2xl bg-[#252526] border border-transparent p-6 space-y-4 shadow-md">
         <h3 className="text-sm font-bold uppercase tracking-wider text-white border-b border-[#333333] pb-2 flex items-center gap-2">
           <FileText className="w-4 h-4 text-[#38bdf8]" />
           <span>Bağlantı Detayı & Açıklama</span>

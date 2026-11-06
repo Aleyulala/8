@@ -89,10 +89,10 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
 
       {/* Drawer Panel (.mainL / .mnBr) */}
       <aside 
-        className="relative w-[85vw] max-w-[320px] bg-[#1e1e1e] border-r border-[#2d2d2d] h-full flex flex-col justify-between shadow-2xl z-10 overflow-hidden transform transition-transform duration-300 ease-out"
+        className="relative w-[85vw] max-w-[480px] bg-[#1e1e1e] border-r border-[#252526] h-full flex flex-col justify-between shadow-2xl z-10 overflow-hidden transform transition-transform duration-300 ease-out"
       >
         {/* Drawer Header: SAVED Brand & Close button */}
-        <div className="p-4 border-b border-[#2d2d2d] flex items-center justify-between bg-[#252526]">
+        <div className="p-4 border-b border-[#252526] flex items-center justify-between bg-[#1e1e1e]">
           <div className="flex items-center gap-2">
             <span className="font-extrabold text-base tracking-wider text-white uppercase">
               SAVED
@@ -101,7 +101,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
 
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-xl bg-[#1e1e1e] hover:bg-[#333333] border border-[#383838] text-[#a3a3a3] hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-xl bg-[#252526] hover:bg-[#333333] text-[#a3a3a3] hover:text-white flex items-center justify-center transition-colors cursor-pointer"
             title="Kapat"
           >
             <CloseIcon className="w-4 h-4" />
@@ -109,7 +109,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
         </div>
 
         {/* Drawer Scrollable Content (.mnMen) */}
-        <div className="flex-1 overflow-y-auto p-3 space-y-4 text-xs">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 text-xs">
           
           {/* Fast Search input */}
           <div 
@@ -127,7 +127,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               value={localSearch}
               readOnly
               placeholder="Bul... (Ctrl+K)"
-              className="w-full bg-[#252526] group-hover:bg-[#28282b] border border-[#383838] group-hover:border-[#60cdff]/60 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-[#737373] outline-none transition-colors cursor-pointer"
+              className="w-full bg-[#252526] group-hover:bg-[#28282b] border border-transparent group-hover:border-[#60cdff]/30 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-[#737373] outline-none transition-colors cursor-pointer"
             />
             <SearchNormalIcon className="w-4 h-4 text-[#737373] group-hover:text-[#60cdff] transition-colors absolute left-2.5 top-2.5 pointer-events-none" />
           </div>
@@ -156,7 +156,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
                 }}
                 className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl font-medium transition-colors cursor-pointer ${
                   currentTab === 'dashboard'
-                    ? 'bg-[#252526] text-[#38bdf8] border border-[#383838]'
+                    ? 'bg-[#252526] text-[#38bdf8]'
                     : 'text-[#d4d4d4] hover:bg-[#252526]/70 hover:text-white'
                 }`}
               >
@@ -183,7 +183,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               </div>
 
               {hizmetlerOpen && (
-                <ul className="space-y-0.5 pl-3 border-l-2 border-[#383838] ml-4 mt-1">
+                <ul className="space-y-0.5 pl-3 border-l border-white/10 ml-4 mt-1">
                   {/* 1. Etkileşimler (Saved Sabitlenenler) */}
                   <li>
                     <button
@@ -249,7 +249,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
                 <div className="flex items-center gap-2.5">
                   <Zap className="w-4 h-4 text-amber-400" />
                   <span>Klasör</span>
-                  <span className="px-1.5 py-0.2 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-500/40 text-[9px] font-bold">
+                  <span className="px-1.5 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 text-[9px] font-bold">
                     New!
                   </span>
                 </div>
@@ -259,7 +259,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               </div>
 
               {klasorOpen && (
-                <ul className="space-y-0.5 pl-3 border-l-2 border-[#383838] ml-4 mt-1">
+                <ul className="space-y-0.5 pl-3 border-l border-white/10 ml-4 mt-1">
                   {/* 1. İlgi Alanları (Saved: Tüm Bağlantılar) */}
                   <li>
                     <button
@@ -332,7 +332,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               </div>
 
               {gelistiriciOpen && (
-                <ul className="space-y-0.5 pl-3 border-l-2 border-[#383838] ml-4 mt-1">
+                <ul className="space-y-0.5 pl-3 border-l border-white/10 ml-4 mt-1">
                   {/* 1. Ters Çevir (RTL / Yön Değiştirme) */}
                   <li>
                     <button
@@ -347,7 +347,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
                       <div className="flex items-center gap-2">
                         <ArrowSwapHorizontalIcon className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
                         <span>Ters Çevir</span>
-                        <span className="px-1.5 py-0.2 rounded-full bg-cyan-950/80 text-[#60cdff] border border-cyan-500/40 text-[9px] font-bold">
+                        <span className="px-1.5 py-0.5 rounded-full bg-cyan-950/80 text-[#60cdff] text-[9px] font-bold">
                           New!
                         </span>
                       </div>

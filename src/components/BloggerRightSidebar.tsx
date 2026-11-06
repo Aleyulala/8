@@ -113,28 +113,28 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
         </div>
       )}
 
-      {/* Widget 1: Popüler Post (#PopularPosts01) */}
+      {/* Widget 1: Popüler Post (#PopularPosts01 - Sıfır Kutu, Kenarlıksız, Doğrudan Sidebar Üzerinde) */}
       <section aria-label="Popüler Post" className="space-y-4">
         
-        {/* Başlık: Pulse İkonu + Popüler Post */}
-        <div className="flex items-center gap-2 pb-1">
-          <PulseIcon className="w-4 h-4 text-white/90" />
-          <h2 className="text-base font-bold text-white tracking-wide">
+        {/* Başlık: Pulse İkonu + Popüler Post (.title) */}
+        <div className="flex items-center gap-2 mb-3">
+          <PulseIcon className="w-5 h-5 text-[#60cdff]" />
+          <h2 className="text-[1.15rem] font-bold text-white tracking-wide">
             Popüler Post
           </h2>
         </div>
 
-        {/* 1. Öne Çıkan Büyük Popüler Post (#1) */}
+        {/* 1. Öne Çıkan Büyük Popüler Post (.mostP - Kart Kutusu Yok, Doğrudan Sidebar'da) */}
         {featuredFirst && (
           <article
             onClick={() => {
               onOpenPostPage(featuredFirst);
               if (onCloseDrawer) onCloseDrawer();
             }}
-            className="group rounded-2xl bg-[#252526] hover:bg-[#28282b] border border-[#383838] hover:border-[#60cdff]/60 p-3 transition-all duration-200 cursor-pointer shadow-md overflow-hidden space-y-3"
+            className="group cursor-pointer select-none space-y-2 mb-5"
           >
-            {/* Büyük Thumbnail */}
-            <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden bg-[#1e1e1e]">
+            {/* Büyük 16:9 Thumbnail (.iThmb .thmb) */}
+            <div className="relative w-full aspect-[16/9] rounded-[14px] overflow-hidden bg-[#1e1e1e]">
               {featuredFirst.thumbnail ? (
                 <img
                   src={featuredFirst.thumbnail}
@@ -144,7 +144,7 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
                 />
               ) : (
                 <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-tr from-sky-950 via-[#1c2430] to-[#252526] p-4 relative">
-                  <div className="w-10 h-10 rounded-xl bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center p-2 shadow-lg mb-1">
+                  <div className="w-10 h-10 rounded-xl bg-black/60 backdrop-blur-md flex items-center justify-center p-2 shadow-lg mb-1">
                     <img
                       src={getFaviconUrl(featuredFirst.url)}
                       alt={getDomain(featuredFirst.url)}
@@ -159,27 +159,27 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/60 pointer-events-none" />
 
-              {/* Badges */}
+              {/* Badges (.tfxM .tfxC - Beyaz Bordersız) */}
               <div className="absolute top-2 left-2 z-10">
-                <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md text-white text-[10px] font-medium border border-white/10">
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md text-white text-[10px] font-medium shadow-sm">
                   <Eye className="w-3 h-3 text-[#60cdff]" />
                   <span>{featuredFirst.views || 74}</span>
                 </div>
               </div>
 
               <div className="absolute top-2 right-2 z-10 flex items-center gap-1.5">
-                <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md text-white text-[10px] font-medium border border-white/10">
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md text-white text-[10px] font-medium shadow-sm">
                   <MessageSquare className="w-2.5 h-2.5 text-white/90" />
                   <span>{featuredFirst.commentsCount !== undefined ? featuredFirst.commentsCount : 0}</span>
                 </div>
-                <div className="p-1 rounded-md bg-black/65 backdrop-blur-md text-white/80 border border-white/10">
+                <div className="p-1 rounded-md bg-black/65 backdrop-blur-md text-white/80 shadow-sm">
                   <Bookmark className="w-3 h-3 fill-current text-amber-300" />
                 </div>
               </div>
 
               <div className="absolute bottom-2 left-2 z-10">
-                <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md text-white text-[10px] font-bold border border-white/15">
-                  <span className="w-3 h-3 rounded-full bg-[#1e1e1e] flex items-center justify-center text-[7px] text-[#60cdff] font-extrabold">
+                <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md text-white text-[10px] font-bold shadow-sm">
+                  <span className="w-3.5 h-3.5 rounded-full bg-[#1e1e1e] flex items-center justify-center text-[7px] text-[#60cdff] font-extrabold">
                     S
                   </span>
                   <span>SAVED</span>
@@ -188,14 +188,18 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
               </div>
             </div>
 
-            {/* Metin İçeriği */}
-            <div className="space-y-1">
-              <div className="text-[11px] text-[#9ca3af]">
-                {formatDate(featuredFirst.createdAt)} — {featuredFirst.tags[0] || 'genel'}
+            {/* Metin İçeriği (.iCtnt) */}
+            <div className="space-y-1.5 pt-1">
+              <div className="flex items-center gap-2 text-xs">
+                <span className="px-1.5 py-0.5 rounded bg-[#457f57] text-white text-[10px] font-medium">
+                  Yayınlandı!
+                </span>
+                <span className="text-[11px] text-[#71717a]">{formatDate(featuredFirst.createdAt)}</span>
+                <span className="text-[11px] text-[#60cdff] hover:underline lowercase">{featuredFirst.tags[0] || 'genel'}</span>
               </div>
 
-              <h3 className="font-bold text-sm text-white group-hover:text-[#60cdff] line-clamp-2 leading-snug transition-colors">
-                #1 {featuredFirst.title}
+              <h3 className="font-bold text-[14px] text-white group-hover:text-[#60cdff] line-clamp-2 leading-snug transition-colors">
+                {featuredFirst.title}
               </h3>
 
               {featuredFirst.description && (
@@ -207,10 +211,9 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
           </article>
         )}
 
-        {/* 2. Liste Formatındaki Popüler Gönderiler (#2, #3, #4, #5) */}
-        <div className="space-y-3 pt-1">
+        {/* 2. Liste Formatındaki Popüler Gönderiler (.itm - Kutusuz, Çizgisiz, Doğrudan Sidebar'da) */}
+        <div className="space-y-4 pt-1">
           {listPosts.map((post, idx) => {
-            const rank = idx + 2;
             const category = post.tags[0] || 'genel';
             return (
               <article
@@ -219,14 +222,18 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
                   onOpenPostPage(post);
                   if (onCloseDrawer) onCloseDrawer();
                 }}
-                className="group cursor-pointer space-y-1 border-b border-[#2d2d30] pb-3 last:border-b-0 transition-colors"
+                className="group cursor-pointer select-none space-y-1 transition-colors"
               >
-                <div className="text-[11px] text-[#71717a] font-medium">
-                  {formatDate(post.createdAt)} — <span className="text-[#9ca3af]">{category}</span>
+                <div className="flex items-center gap-2 text-xs">
+                  <span className="px-1.5 py-0.5 rounded bg-[#457f57] text-white text-[10px] font-medium">
+                    Yayınlandı!
+                  </span>
+                  <span className="text-[11px] text-[#71717a]">{formatDate(post.createdAt)}</span>
+                  <span className="text-[11px] text-[#60cdff] hover:underline lowercase">{category}</span>
                 </div>
 
-                <h4 className="font-semibold text-xs sm:text-sm text-white/90 group-hover:text-[#60cdff] leading-snug transition-colors line-clamp-2">
-                  #{rank} {post.title}
+                <h4 className="font-bold text-xs sm:text-[13px] text-white/90 group-hover:text-[#60cdff] leading-snug transition-colors line-clamp-2">
+                  {post.title}
                 </h4>
               </article>
             );
@@ -240,8 +247,8 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
         {/* Başlık: Hedef İkonu + Etiketler + Çizgi Butonlar (.car-nav) */}
         <div className="flex items-center justify-between pb-1">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-bold text-white leading-none">◎</span>
-            <h2 className="text-base font-bold text-white tracking-wide">
+            <span className="text-sm font-bold text-[#60cdff] leading-none">◎</span>
+            <h2 className="text-[1.15rem] font-bold text-white tracking-wide">
               Etiketler
             </h2>
           </div>
@@ -286,7 +293,7 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
                   onSelectTag(t.name);
                   if (onCloseDrawer) onCloseDrawer();
                 }}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#252526] hover:bg-[#333333] text-[#d4d4d4] hover:text-[#60cdff] border border-[#383838] hover:border-[#60cdff]/60 text-xs font-medium transition-all shrink-0 active:scale-95"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#252526] hover:bg-[#2d2d30] text-[#d4d4d4] hover:text-[#60cdff] border border-transparent text-xs font-medium transition-all shrink-0 active:scale-95 shadow-sm"
               >
                 <span>{t.name}</span>
                 <span className="text-[10px] text-[#71717a] font-mono">({count})</span>
@@ -297,7 +304,7 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
       </section>
 
       {/* Widget 3: Bize Ulaşın (#ContactForm2) */}
-      <section aria-label="Bize Ulaşın" className="rounded-2xl bg-[#252526] border border-[#383838] p-4 space-y-3.5 shadow-sm">
+      <section aria-label="Bize Ulaşın" className="rounded-xl bg-[#252526] p-4 space-y-3.5 shadow-sm border border-transparent">
         
         <div className="flex items-center gap-2 border-b border-[#333333] pb-2">
           <MessageCircle className="w-4 h-4 text-[#60cdff]" />
@@ -307,7 +314,7 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
         </div>
 
         {sentSuccess ? (
-          <div className="p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs text-center font-medium">
+          <div className="p-3 rounded-xl bg-emerald-500/20 text-emerald-300 text-xs text-center font-medium">
             Mesajınız başarıyla iletildi! Teşekkür ederiz.
           </div>
         ) : (
@@ -318,7 +325,7 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
                 placeholder="İsim"
                 value={contactName}
                 onChange={(e) => setContactName(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-[#1e1e1e] border border-[#383838] focus:border-[#60cdff] text-white text-xs outline-none transition-colors"
+                className="w-full px-3 py-2 rounded-xl bg-[#1e1e1e] border border-transparent focus:border-[#60cdff]/50 text-white text-xs outline-none transition-colors"
                 required
               />
             </div>
@@ -328,7 +335,7 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
                 placeholder="E-posta *"
                 value={contactEmail}
                 onChange={(e) => setContactEmail(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-[#1e1e1e] border border-[#383838] focus:border-[#60cdff] text-white text-xs outline-none transition-colors"
+                className="w-full px-3 py-2 rounded-xl bg-[#1e1e1e] border border-transparent focus:border-[#60cdff]/50 text-white text-xs outline-none transition-colors"
                 required
               />
             </div>
@@ -338,13 +345,13 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
                 value={contactMessage}
                 onChange={(e) => setContactMessage(e.target.value)}
                 rows={3}
-                className="w-full px-3 py-2 rounded-xl bg-[#1e1e1e] border border-[#383838] focus:border-[#60cdff] text-white text-xs outline-none transition-colors resize-none"
+                className="w-full px-3 py-2 rounded-xl bg-[#1e1e1e] border border-transparent focus:border-[#60cdff]/50 text-white text-xs outline-none transition-colors resize-none"
                 required
               />
             </div>
             <button
               type="submit"
-              className="w-full flex items-center justify-center gap-1.5 py-2 px-4 rounded-xl bg-[#60cdff] hover:bg-[#38bdf8] text-[#0f172a] font-bold text-xs shadow-md shadow-sky-500/20 active:scale-98 transition-all cursor-pointer"
+              className="w-full flex items-center justify-center gap-1.5 py-2 px-4 rounded-xl bg-gradient-to-r from-[#38bdf8] to-[#0ea5e9] hover:from-[#7dd3fc] hover:to-[#38bdf8] text-[#0f172a] font-bold text-xs shadow-md shadow-sky-500/20 active:scale-98 transition-all cursor-pointer"
             >
               <Send className="w-3.5 h-3.5" />
               <span>Gönder</span>

@@ -14,7 +14,7 @@ export const BloggerNotificationBar: React.FC = () => {
 
   return (
     <div className="w-full mb-4">
-      <div className="flex items-center justify-between gap-3 px-3.5 py-2 rounded-xl bg-[#252526] border border-[#383838] shadow-sm select-none">
+      <div className="flex items-center justify-between gap-3 px-3.5 py-2 rounded-xl bg-[#252526] border border-transparent shadow-sm select-none">
         
         {/* Sol Kapat Butonu */}
         <button

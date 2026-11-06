@@ -21,7 +21,7 @@ export const MobileLinkItem: React.FC<MobileLinkItemProps> = ({
   return (
     <div 
       onClick={() => onOpenDetail(link)}
-      className="flex items-center justify-between p-3 rounded-xl bg-[#262626] border border-[#383838] hover:border-[#505050] cursor-pointer transition-colors gap-3"
+      className="flex items-center justify-between p-3 rounded-xl bg-[#252526] hover:bg-[#28282b] border border-transparent cursor-pointer transition-colors gap-3"
     >
       {/* Left: Info */}
       <div className="flex-1 min-w-0">
@@ -55,7 +55,7 @@ export const MobileLinkItem: React.FC<MobileLinkItemProps> = ({
       </div>
 
       {/* Right: Square Thumbnail Preview */}
-      <div className="w-16 h-16 rounded-xl bg-gradient-to-tr from-slate-900 to-indigo-950 border border-white/10 shrink-0 overflow-hidden flex items-center justify-center shadow-inner">
+      <div className="w-16 h-16 rounded-xl bg-[#1e1e1e] shrink-0 overflow-hidden flex items-center justify-center shadow-inner">
         {!imgError ? (
           <img
             src={faviconUrl}

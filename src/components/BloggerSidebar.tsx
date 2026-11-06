@@ -61,7 +61,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
   const [gelistiriciOpen, setGelistiriciOpen] = useState(true);
 
   return (
-    <aside className="w-64 bg-[#1e1e1e] border-r border-[rgba(255,255,255,0.08)] flex flex-col justify-between h-[calc(100vh-56px)] shrink-0 text-xs select-none shadow-xs">
+    <aside className="w-[230px] bg-[#1e1e1e] border-r border-[#252526] flex flex-col justify-between h-[calc(100vh-60px)] shrink-0 text-xs select-none shadow-xs">
       
       {/* Üst Menü Bölümü (.mnMen) */}
       <div className="p-3 space-y-4 overflow-y-auto flex-1">
@@ -84,7 +84,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
               onClick={() => onSelectTab('dashboard')}
               className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl font-medium transition-colors cursor-pointer ${
                 currentTab === 'dashboard'
-                  ? 'bg-[#252526] text-[#38bdf8] border border-[#383838]'
+                  ? 'bg-[#252526] text-[#38bdf8]'
                   : 'text-[#d4d4d4] hover:bg-[#252526]/70 hover:text-white'
               }`}
             >
@@ -111,7 +111,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
             </div>
 
             {hizmetlerOpen && (
-              <ul className="space-y-0.5 pl-3 border-l-2 border-[#383838] ml-4 mt-1">
+              <ul className="space-y-0.5 pl-3 border-l border-white/10 ml-4 mt-1">
                 {/* 1. Etkileşimler (Saved Sabitlenenler) */}
                 <li>
                   <button
@@ -174,7 +174,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
               <div className="flex items-center gap-2.5">
                 <Zap className="w-4 h-4 text-amber-400" />
                 <span>Klasör</span>
-                <span className="px-1.5 py-0.2 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-500/40 text-[9px] font-bold">
+                <span className="px-1.5 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 text-[9px] font-bold">
                   New!
                 </span>
               </div>
@@ -184,7 +184,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
             </div>
 
             {klasorOpen && (
-              <ul className="space-y-0.5 pl-3 border-l-2 border-[#383838] ml-4 mt-1">
+              <ul className="space-y-0.5 pl-3 border-l border-white/10 ml-4 mt-1">
                 {/* 1. İlgi Alanları (Saved: Tüm Bağlantılar) */}
                 <li>
                   <button
@@ -254,7 +254,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
             </div>
 
             {gelistiriciOpen && (
-              <ul className="space-y-0.5 pl-3 border-l-2 border-[#383838] ml-4 mt-1">
+              <ul className="space-y-0.5 pl-3 border-l border-white/10 ml-4 mt-1">
                 {/* 1. Ters Çevir (RTL / Yön Değiştirme) */}
                 <li>
                   <button
@@ -269,7 +269,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                     <div className="flex items-center gap-2">
                       <ArrowSwapHorizontalIcon className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
                       <span>Ters Çevir</span>
-                      <span className="px-1.5 py-0.2 rounded-full bg-cyan-950/80 text-[#60cdff] border border-cyan-500/40 text-[9px] font-bold">
+                      <span className="px-1.5 py-0.5 rounded-full bg-cyan-950/80 text-[#60cdff] text-[9px] font-bold">
                         New!
                       </span>
                     </div>
@@ -315,7 +315,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
       </div>
 
       {/* Alt Bölüm (.mnBrs Footer): Sosyal Ağlar (.mSoc) */}
-      <div className="p-3 border-t border-[rgba(255,255,255,0.08)] bg-[#1e1e1e] space-y-2">
+      <div className="p-3 border-t border-[#252526] bg-[#1e1e1e] space-y-2">
         <div className="flex items-center justify-around text-[#a3a3a3]">
           <a
             href="https://www.instagram.com/aleyul.ala/"

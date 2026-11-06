@@ -36,7 +36,7 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <header className="sticky top-0 z-40 w-full h-14 bg-[#1e1e1e] border-b border-[rgba(255,255,255,0.08)] px-3 sm:px-5 flex items-center justify-between select-none shadow-sm">
+    <header className="sticky top-0 z-40 w-full h-[60px] bg-[#1e1e1e] border-b border-[#252526] px-3 sm:px-6 flex items-center justify-between select-none shadow-sm">
       
       {/* Sol Bölüm: Hamburger + SAVED Marka Başlığı */}
       <div className="flex items-center gap-3 shrink-0">
@@ -73,7 +73,7 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
             value={searchQuery}
             readOnly
             placeholder="Bul..."
-            className="w-full bg-[#252526] group-hover:bg-[#28282b] focus:bg-[#2d2d30] border border-[#383838] group-hover:border-[#60cdff]/60 rounded-full pl-9 pr-14 py-1.5 text-xs text-[#fffdfc] placeholder-[#989b9f] outline-none transition-all shadow-inner cursor-pointer"
+            className="w-full bg-[#252526] group-hover:bg-[#28282b] focus:bg-[#2d2d30] border border-transparent group-hover:border-[#60cdff]/30 rounded-full pl-9 pr-14 py-1.5 text-xs text-[#fffdfc] placeholder-[#989b9f] outline-none transition-all shadow-inner cursor-pointer"
           />
           <span className="absolute left-3 text-[#989b9f] group-hover:text-[#60cdff] transition-colors pointer-events-none">
             <SearchNormalIcon className="w-3.5 h-3.5" />
@@ -91,7 +91,7 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
               <CloseIcon className="w-3.5 h-3.5" />
             </button>
           ) : (
-            <kbd className="hidden sm:inline-block absolute right-3 px-1.5 py-0.5 rounded text-[9px] font-mono bg-[#1e1e1e] text-[#989b9f] border border-[#383838] group-hover:border-[#60cdff]/40 group-hover:text-[#60cdff] transition-colors">
+            <kbd className="hidden sm:inline-block absolute right-3 px-1.5 py-0.5 rounded text-[9px] font-mono bg-[#1e1e1e] text-[#989b9f] group-hover:text-[#60cdff] transition-colors">
               Ctrl K
             </kbd>
           )}
@@ -104,7 +104,7 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
         {/* + Yeni Link Ekle Butonu */}
         <button
           onClick={onOpenNewLink}
-          className="hidden sm:flex items-center gap-1.5 py-1 px-3 rounded-full bg-[#252526] hover:bg-[#2d2d30] border border-[#383838] hover:border-[#60cdff]/60 text-xs text-[#fffdfc] font-semibold transition-all cursor-pointer active:scale-95"
+          className="hidden sm:flex items-center gap-1.5 py-1.5 px-3 rounded-full bg-[#252526] hover:bg-[#2d2d30] border border-transparent hover:border-[#60cdff]/40 text-xs text-[#fffdfc] font-semibold transition-all cursor-pointer active:scale-95"
           title="Yeni Bağlantı Ekle"
         >
           <Plus className="w-3.5 h-3.5 text-[#60cdff]" />
@@ -143,7 +143,7 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
         {/* SAĞ ÜST: LOGO YOK, SADECE 'saved' YAZISI */}
         <button
           onClick={onOpenSettings}
-          className="px-3.5 py-1 rounded-full bg-[#252526] hover:bg-[#2f2f34] border border-[#444444] hover:border-[#60cdff] text-[#60cdff] font-mono text-xs font-bold tracking-wider transition-all select-none shadow-sm active:scale-95 cursor-pointer ml-1"
+          className="px-3.5 py-1.5 rounded-full bg-[#252526] hover:bg-[#2f2f34] border border-transparent hover:border-[#60cdff]/50 text-[#60cdff] font-mono text-xs font-bold tracking-wider transition-all select-none shadow-sm active:scale-95 cursor-pointer ml-1"
           title="Saved Ayarları & Yönetim"
         >
           saved

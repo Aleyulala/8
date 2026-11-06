@@ -14,10 +14,16 @@
     --bg-base-100: #1e1e1e;
     --bg-base-200: #252526;
     --bg-base-300: #2d2d30;
-    --border-color: #383838;
+    --border-color: #252526;
     --text-primary: #38bdf8;
     --text-base: #fffdfc;
     --text-muted: #989b9f;
+
+    --contentW: 1280px;
+    --sideW: 300px;
+    --menuW: 230px;
+    --pageW: 780px;
+    --headerH: 60px;
   }
 
   body {
@@ -27,6 +33,48 @@
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
+}
+
+/* Popüler Post (#PopularPosts01) - Blogger XML 1:1 Dikişsiz Sıfır Kutu */
+#PopularPosts01,
+.PopularPosts,
+.itemPp,
+.itemPp > *,
+.itemPp article,
+.itemPp .itm,
+.itemPp .iCtnt {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+#PopularPosts01 .title,
+.PopularPosts .title {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 0 20px 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+}
+#PopularPosts01 .itemPp > *:not(:last-child),
+.PopularPosts .itemPp > *:not(:last-child) {
+  margin-bottom: 20px !important;
+  border: none !important;
+}
+.itemPp .mostP .iThmb,
+.PopularPosts .mostP .iThmb {
+  position: relative !important;
+  border-radius: 14px !important;
+  overflow: hidden !important;
+  margin: 0 0 16px 0 !important;
 }
 
 /* Custom Scrollbar */
