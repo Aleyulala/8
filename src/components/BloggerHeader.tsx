@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Palette, MapPin, Settings as SettingsIcon } from 'lucide-react';
+import { Palette, MapPin, Settings as SettingsIcon, Sun, Moon, Laptop, Check, ChevronDown } from 'lucide-react';
 import { 
   MenuHamburgerIcon, 
   SearchNormalIcon, 
@@ -17,22 +17,22 @@ import {
 } from './BloggerIcons';
 
 const THEME_COLORS = [
-  { id: 0, hex: '#38bdf8', name: 'Sky Blue' },
-  { id: 1, hex: '#0ea5e9', name: 'Ocean' },
-  { id: 2, hex: '#06b6d4', name: 'Cyan' },
-  { id: 3, hex: '#14b8a6', name: 'Teal' },
-  { id: 4, hex: '#10b981', name: 'Emerald' },
-  { id: 5, hex: '#22c55e', name: 'Green' },
-  { id: 6, hex: '#84cc16', name: 'Lime' },
-  { id: 7, hex: '#eab308', name: 'Yellow' },
-  { id: 8, hex: '#f59e0b', name: 'Amber' },
-  { id: 9, hex: '#f97316', name: 'Orange' },
-  { id: 10, hex: '#ef4444', name: 'Red' },
-  { id: 11, hex: '#f43f5e', name: 'Rose' },
-  { id: 12, hex: '#ec4899', name: 'Pink' },
-  { id: 13, hex: '#d946ef', name: 'Fuchsia' },
-  { id: 14, hex: '#a855f7', name: 'Purple' },
-  { id: 15, hex: '#6366f1', name: 'Indigo' },
+  { id: 0, hex: '#5f6368', name: 'Gri (Varsayılan)' },
+  { id: 1, hex: '#ea4335', name: 'Kırmızı' },
+  { id: 2, hex: '#1e8e3e', name: 'Yeşil' },
+  { id: 3, hex: '#4285f4', name: 'Mavi' },
+  { id: 4, hex: '#f9ab00', name: 'Sarı' },
+  { id: 5, hex: '#9334e6', name: 'Mor' },
+  { id: 6, hex: '#e52592', name: 'Pembe' },
+  { id: 7, hex: '#12b5cb', name: 'Camgöbeği' },
+  { id: 8, hex: '#fa7b17', name: 'Turuncu' },
+  { id: 9, hex: '#00897b', name: 'Teal' },
+  { id: 10, hex: '#3949ab', name: 'İndigo' },
+  { id: 11, hex: '#1a73e8', name: 'Google Mavi' },
+  { id: 12, hex: '#188038', name: 'Koyu Yeşil' },
+  { id: 13, hex: '#1967d2', name: 'Derin Mavi' },
+  { id: 14, hex: '#a142f4', name: 'Açık Mor' },
+  { id: 15, hex: '#d93025', name: 'Koyu Kırmızı' },
 ];
 
 const LANGUAGES = [
@@ -81,38 +81,95 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
   const [isTranslateOpen, setIsTranslateOpen] = useState(false);
   const [selectedLang, setSelectedLang] = useState<string>('tr');
   const [isDark, setIsDark] = useState<boolean>(true);
-  const [isThemePopupOpen, setIsThemePopupOpen] = useState(false);
+  const [isAppearanceOpen, setIsAppearanceOpen] = useState(false);
+  const [isThemePaletteOpen, setIsThemePaletteOpen] = useState(false);
+  const [currentMode, setCurrentMode] = useState<'dark' | 'light' | 'system'>('dark');
+  const [currentThemeIndex, setCurrentThemeIndex] = useState<number>(0);
+  const [currentThemeColor, setCurrentThemeColor] = useState<string>('#5f6368');
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [currentThemeColor, setCurrentThemeColor] = useState<string>('#38bdf8');
   const translateRef = useRef<HTMLDivElement>(null);
-  const themePopupRef = useRef<HTMLDivElement>(null);
+  const appearanceRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
 
-  const applyThemeColor = (color: string) => {
+  const applyThemeColor = (color: string, themeId: number = 0) => {
     setCurrentThemeColor(color);
+    setCurrentThemeIndex(themeId);
     document.documentElement.style.setProperty('--tv-nav-ring', color);
     document.documentElement.style.setProperty('--linkB', color);
     document.documentElement.style.setProperty('--linkC', color);
     document.documentElement.style.setProperty('--text-primary', color);
     document.documentElement.style.setProperty('--theme-color', color);
+    document.documentElement.style.setProperty('--c', color);
+
+    // Update root class thX
+    const root = document.documentElement;
+    const existingTh = root.className.match(/th\d+\b/g);
+    if (existingTh) root.classList.remove(...existingTh);
+    root.classList.add(`th${themeId}`, 'thS');
+
+    // Save in PLUS_UI_APPEARANCE and saved_theme_color
+    try {
+      const prev = JSON.parse(localStorage.getItem('PLUS_UI_APPEARANCE') || '{}');
+      prev.theme = themeId;
+      localStorage.setItem('PLUS_UI_APPEARANCE', JSON.stringify(prev));
+    } catch {}
     localStorage.setItem('saved_theme_color', color);
+    localStorage.setItem('saved_theme_id', String(themeId));
   };
 
-  // Initialize theme from localStorage or document
-  useEffect(() => {
-    const saved = localStorage.getItem('saved_theme');
-    if (saved === 'light') {
-      document.documentElement.classList.add('lgT');
-      document.documentElement.classList.remove('drK');
+  const applyThemeMode = (mode: 'dark' | 'light' | 'system') => {
+    setCurrentMode(mode);
+    const root = document.documentElement;
+    if (mode === 'light') {
+      root.classList.remove('drK', 'syS');
+      root.classList.add('lgT');
       setIsDark(false);
+    } else if (mode === 'system') {
+      root.classList.remove('drK', 'lgT');
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      root.classList.add('syS', prefersDark ? 'drK' : 'lgT');
+      setIsDark(prefersDark);
     } else {
-      document.documentElement.classList.remove('lgT');
-      document.documentElement.classList.add('drK');
+      root.classList.remove('lgT', 'syS');
+      root.classList.add('drK');
       setIsDark(true);
     }
 
-    const savedColor = localStorage.getItem('saved_theme_color') || '#38bdf8';
-    applyThemeColor(savedColor);
+    try {
+      const prev = JSON.parse(localStorage.getItem('PLUS_UI_APPEARANCE') || '{}');
+      prev.mode = mode;
+      localStorage.setItem('PLUS_UI_APPEARANCE', JSON.stringify(prev));
+    } catch {}
+    localStorage.setItem('saved_theme', mode);
+  };
+
+  // Initialize theme from PLUS_UI_APPEARANCE / localStorage
+  useEffect(() => {
+    try {
+      const appStr = localStorage.getItem('PLUS_UI_APPEARANCE');
+      if (appStr) {
+        const parsed = JSON.parse(appStr);
+        if (parsed.mode) {
+          applyThemeMode(parsed.mode);
+        } else {
+          applyThemeMode('dark');
+        }
+        if (typeof parsed.theme === 'number' && THEME_COLORS[parsed.theme]) {
+          applyThemeColor(THEME_COLORS[parsed.theme].hex, parsed.theme);
+        } else {
+          applyThemeColor('#5f6368', 0);
+        }
+      } else {
+        const savedMode = (localStorage.getItem('saved_theme') as any) || 'dark';
+        applyThemeMode(savedMode);
+        const savedColor = localStorage.getItem('saved_theme_color') || '#5f6368';
+        const foundIndex = THEME_COLORS.findIndex(c => c.hex.toLowerCase() === savedColor.toLowerCase());
+        applyThemeColor(savedColor, foundIndex >= 0 ? foundIndex : 0);
+      }
+    } catch {
+      applyThemeMode('dark');
+      applyThemeColor('#5f6368', 0);
+    }
 
     // Check existing Google Translate cookie
     const cookies = document.cookie.split(';');
@@ -129,14 +186,14 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
     }
   }, []);
 
-  // Close translate popup, theme popup & profile popup on outside click
+  // Close popups on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (translateRef.current && !translateRef.current.contains(e.target as Node)) {
         setIsTranslateOpen(false);
       }
-      if (themePopupRef.current && !themePopupRef.current.contains(e.target as Node)) {
-        setIsThemePopupOpen(false);
+      if (appearanceRef.current && !appearanceRef.current.contains(e.target as Node)) {
+        setIsAppearanceOpen(false);
       }
       if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
         setIsProfileOpen(false);
@@ -147,20 +204,6 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
-  const toggleTheme = () => {
-    const willBeDark = !isDark;
-    setIsDark(willBeDark);
-    if (willBeDark) {
-      document.documentElement.classList.remove('lgT');
-      document.documentElement.classList.add('drK');
-      localStorage.setItem('saved_theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('drK');
-      document.documentElement.classList.add('lgT');
-      localStorage.setItem('saved_theme', 'light');
-    }
-  };
 
   const handleSelectLanguage = (langCode: string) => {
     setSelectedLang(langCode);
@@ -320,62 +363,122 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
           )}
         </div>
 
-        {/* 2. Tema Değiştirici Butonu (.isMode - sun-moon-icon) */}
-        <button
-          onClick={toggleTheme}
-          className="p-2 rounded-lg text-[#989b9f] hover:text-[#fffdfc] hover:bg-[#252526] transition-colors cursor-pointer flex items-center justify-center"
-          title={isDark ? 'Aydınlık Mod' : 'Karanlık Mod'}
-          aria-label="Tema Modunu Değiştir"
-        >
-          <SunMoonIcon className="w-4 h-4" isDark={isDark} />
-        </button>
-
-        {/* 2.1 Tema Vurgu Rengi Seçici Butonu (.isTheme - XML 1:1 .thmW) */}
-        <div className="relative" ref={themePopupRef}>
+        {/* 2. Görünüm (Açık/Koyu/Sistem ve Tema Rengi) Butonu & Context Menüsü (.isMode - XML 1:1 .aprW & .thmW) */}
+        <div className="relative" ref={appearanceRef}>
           <button
-            onClick={() => setIsThemePopupOpen(prev => !prev)}
+            onClick={() => setIsAppearanceOpen(prev => !prev)}
             className={`p-2 rounded-lg transition-colors cursor-pointer flex items-center justify-center ${
-              isThemePopupOpen
-                ? 'bg-[#252526] text-white'
+              isAppearanceOpen
+                ? 'bg-[#252526] text-white shadow-sm'
                 : 'text-[#989b9f] hover:text-[#fffdfc] hover:bg-[#252526]'
             }`}
-            style={{ color: currentThemeColor }}
-            title="Tema Vurgu Rengini Değiştir"
-            aria-label="Tema Vurgu Rengi"
+            title="Görünüm ve Tema Ayarları"
+            aria-label="Görünüm ve Tema Modu"
           >
-            <Palette className="w-4 h-4" />
+            <SunMoonIcon className="w-4 h-4" isDark={isDark} />
           </button>
 
-          {/* Blogger XML .thmW Renk Paleti Pop-up */}
-          {isThemePopupOpen && (
-            <div className="thmW absolute right-0 top-[calc(100%+8px)] w-56 bg-[#1f1f1f] border border-[#2d2d30] rounded-xl shadow-2xl p-3 z-50 animate-in fade-in zoom-in-95 duration-150">
-              <div className="flex items-center justify-between pb-2 mb-2 border-b border-white/10 text-[11px] font-bold text-white uppercase tracking-wider">
-                <span>Tema Rengi</span>
-                <span className="w-3.5 h-3.5 rounded-full border border-white/30" style={{ backgroundColor: currentThemeColor }} />
+          {/* Blogger XML 1:1 Görünüm Context Menüsü (.aprW & .thmW) */}
+          {isAppearanceOpen && (
+            <div className="aprW absolute right-0 top-[calc(100%+8px)] w-60 bg-[#252526] border border-[#333333] rounded-xl shadow-2xl p-2 z-50 animate-in fade-in zoom-in-95 duration-150 select-none">
+              
+              <div className="px-2.5 py-1.5 text-[11px] font-bold text-[#989b9f] uppercase tracking-wider border-b border-white/5 flex items-center justify-between">
+                <span>Görünüm</span>
+                <button 
+                  onClick={() => setIsAppearanceOpen(false)} 
+                  className="text-[#71717a] hover:text-white p-0.5 rounded cursor-pointer"
+                  title="Kapat"
+                >
+                  <CloseIcon className="w-3 h-3" />
+                </button>
               </div>
 
-              <div className="thmP grid grid-cols-4 gap-2.5 p-1">
-                {THEME_COLORS.map(c => {
-                  const isSelected = currentThemeColor.toLowerCase() === c.hex.toLowerCase();
-                  return (
-                    <button
-                      key={c.id}
-                      type="button"
-                      onClick={() => {
-                        applyThemeColor(c.hex);
-                        setIsThemePopupOpen(false);
-                      }}
-                      className={`w-7 h-7 rounded-full flex items-center justify-center transition-all hover:scale-115 cursor-pointer relative shadow-sm ${
-                        isSelected ? 'ring-2 ring-white ring-offset-2 ring-offset-[#1f1f1f] scale-110 shadow-lg' : ''
-                      }`}
-                      style={{ backgroundColor: c.hex }}
-                      title={c.name}
-                    >
-                      {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-white" />}
-                    </button>
-                  );
-                })}
+              {/* Tema Modu Seçenekleri: Açık / Koyu / Sistem */}
+              <div className="space-y-1 py-1.5">
+                <button
+                  type="button"
+                  onClick={() => applyThemeMode('light')}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
+                    currentMode === 'light' ? 'bg-[#333333] text-white font-semibold' : 'text-[#d4d4d4] hover:bg-white/5 hover:text-white'
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Sun className="w-4 h-4 text-amber-400" />
+                    <span>Açık</span>
+                  </div>
+                  {currentMode === 'light' && <Check className="w-3.5 h-3.5 text-[#60cdff]" />}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => applyThemeMode('dark')}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
+                    currentMode === 'dark' ? 'bg-[#333333] text-white font-semibold' : 'text-[#d4d4d4] hover:bg-white/5 hover:text-white'
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Moon className="w-4 h-4 text-[#60cdff]" />
+                    <span>Koyu</span>
+                  </div>
+                  {currentMode === 'dark' && <Check className="w-3.5 h-3.5 text-[#60cdff]" />}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => applyThemeMode('system')}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
+                    currentMode === 'system' ? 'bg-[#333333] text-white font-semibold' : 'text-[#d4d4d4] hover:bg-white/5 hover:text-white'
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Laptop className="w-4 h-4 text-[#989b9f]" />
+                    <span>Sistem</span>
+                  </div>
+                  {currentMode === 'system' && <Check className="w-3.5 h-3.5 text-[#60cdff]" />}
+                </button>
               </div>
+
+              {/* Tema Vurgu Rengi (.thmB & .thmP) */}
+              <div className="pt-1.5 border-t border-white/5">
+                <button
+                  type="button"
+                  onClick={() => setIsThemePaletteOpen(prev => !prev)}
+                  className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-[#d4d4d4] hover:bg-white/5 hover:text-white transition-colors cursor-pointer"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Palette className="w-4 h-4" style={{ color: currentThemeColor }} />
+                    <span>Tema Rengi</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-3.5 h-3.5 rounded-full border border-white/30" style={{ backgroundColor: currentThemeColor }} />
+                    <ChevronDown className={`w-3.5 h-3.5 text-[#71717a] transition-transform duration-200 ${isThemePaletteOpen ? 'rotate-180' : ''}`} />
+                  </div>
+                </button>
+
+                {/* 16 Renk Paleti (.thmP) */}
+                {isThemePaletteOpen && (
+                  <div className="thmP grid grid-cols-4 gap-2.5 p-2 mt-1 bg-[#1e1e1e] rounded-lg animate-in fade-in duration-150">
+                    {THEME_COLORS.map(c => {
+                      const isSelected = currentThemeIndex === c.id;
+                      return (
+                        <button
+                          key={c.id}
+                          type="button"
+                          onClick={() => applyThemeColor(c.hex, c.id)}
+                          className={`w-7 h-7 rounded-full flex items-center justify-center transition-all hover:scale-115 cursor-pointer relative shadow-sm ${
+                            isSelected ? 'ring-2 ring-white ring-offset-2 ring-offset-[#1e1e1e] scale-110 shadow-lg' : ''
+                          }`}
+                          style={{ backgroundColor: c.hex }}
+                          title={c.name}
+                        >
+                          {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-white" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
             </div>
           )}
         </div>

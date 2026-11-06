@@ -456,7 +456,7 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
             </div>
 
             <div className="admA text-xs text-[#d4d4d4] leading-relaxed">
-              Saved Startpage ve Blogger ağının mimarı. Local-first açık kaynaklı sistemler, gizlilik odaklı web teknolojileri ve dijital içerik üretimi.
+              Saved Startpage ve Blogger ağının mimarı. Local-first açık kaynaklı sistemler, gizlilik odaklı web teknolojileri ve dijital içerik üretimi. Soru, öneri ve sohbet için <a href="https://matrix.to/#/#negronn-show:matrix.org" target="_blank" rel="noopener noreferrer" className="text-[#60cdff] hover:underline font-semibold">Topluluk</a> kanalımıza katılabilirsiniz.
             </div>
 
             <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
@@ -475,11 +475,11 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
                 href="https://matrix.to/#/#negronn-show:matrix.org"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#60cdff] hover:text-white transition-colors"
-                title="Topluluk: Matrix / Element.io (@negronn:matrix.org)"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#60cdff] hover:text-white transition-colors border border-[#60cdff]/20 hover:border-[#60cdff]/50 font-medium"
+                title="Topluluk: Matrix / Element.io (#negronn-show:matrix.org)"
               >
                 <MatrixIcon className="w-3.5 h-3.5 text-[#60cdff]" />
-                <span>Element.io</span>
+                <span>Topluluk</span>
               </a>
 
               <a

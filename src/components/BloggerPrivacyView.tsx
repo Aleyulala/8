@@ -272,7 +272,8 @@ export const BloggerPrivacyView: React.FC<BloggerPrivacyViewProps> = ({
             <p className="admA text-xs text-[#d4d4d4] leading-relaxed">
               Saved Startpage, açık kaynak yazılım felsefesi ve gizlilik odaklı mimarisiyle 
               geliştirilmiş yer imi ve bilgi yönetim sistemidir. Tüm kullanıcı verileri yalnızca 
-              kullanıcının yerel tarayıcısında (IndexedDB / localStorage) barındırılır.
+              kullanıcının yerel tarayıcısında (IndexedDB / localStorage) barındırılır. 
+              Katkıda bulunmak veya tartışmalara katılmak için <a href="https://matrix.to/#/#negronn-show:matrix.org" target="_blank" rel="noopener noreferrer" className="text-[#60cdff] hover:underline font-semibold">Topluluk</a> kanalımıza katılabilirsiniz.
             </p>
 
             <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
@@ -291,11 +292,11 @@ export const BloggerPrivacyView: React.FC<BloggerPrivacyViewProps> = ({
                 href="https://matrix.to/#/#negronn-show:matrix.org"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#60cdff] hover:text-white transition-colors"
-                title="Matrix / Element.io: @negronn:matrix.org"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#60cdff] hover:text-white transition-colors border border-[#60cdff]/20 hover:border-[#60cdff]/50 font-medium"
+                title="Topluluk: Matrix / Element.io (#negronn-show:matrix.org)"
               >
                 <MatrixIcon className="w-3.5 h-3.5 text-[#60cdff]" />
-                <span>Element.io</span>
+                <span>Topluluk</span>
               </a>
 
               <a
