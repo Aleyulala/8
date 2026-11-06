@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Home, Search, Menu, Pin, ArrowUp } from 'lucide-react';
+import { 
+  HomeIcon, 
+  SearchNormalIcon, 
+  MenuHamburgerIcon, 
+  FolderFavoriteIcon, 
+  ArrowUp4Icon 
+} from './BloggerIcons';
 
 interface BloggerMobileNavProps {
   currentTab: 'dashboard' | 'links' | 'pinned' | 'collection' | 'tag' | 'trash';
@@ -24,21 +30,21 @@ export const BloggerMobileNav: React.FC<BloggerMobileNavProps> = ({
     {
       id: 'dashboard',
       label: 'Ana Sayfa',
-      icon: Home,
+      icon: HomeIcon,
       isActive: currentTab === 'dashboard',
       onClick: () => onSelectTab('dashboard')
     },
     {
       id: 'search',
       label: 'Ara',
-      icon: Search,
+      icon: SearchNormalIcon,
       isActive: false,
       onClick: onOpenSearch
     },
     {
       id: 'menu',
       label: 'Menü',
-      icon: Menu,
+      icon: MenuHamburgerIcon,
       isActive: false,
       onClick: onOpenDrawer,
       isSpecial: true
@@ -46,14 +52,14 @@ export const BloggerMobileNav: React.FC<BloggerMobileNavProps> = ({
     {
       id: 'pinned',
       label: 'Sabitler',
-      icon: Pin,
+      icon: FolderFavoriteIcon,
       isActive: currentTab === 'pinned',
       onClick: () => onSelectTab('pinned')
     },
     {
       id: 'top',
       label: 'Yukarı',
-      icon: ArrowUp,
+      icon: ArrowUp4Icon,
       isActive: false,
       onClick: handleScrollTop
     }

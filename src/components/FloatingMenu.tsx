@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, ArrowUp, Search, Folder, Sparkles } from 'lucide-react';
+import { Plus } from 'lucide-react';
+import { SearchNormalIcon, Folder2Icon, ArrowUp4Icon } from './BloggerIcons';
 
 interface FloatingMenuProps {
   onOpenNewLink: () => void;
@@ -57,7 +58,7 @@ export const FloatingMenu: React.FC<FloatingMenuProps> = ({
           aria-label="Hızlı Arama"
           className="w-10 h-10 rounded-full bg-[#262626] hover:bg-[#38bdf8] text-[#a3a3a3] hover:text-[#0f172a] border border-[#3e3e3e] hover:border-[#38bdf8] flex items-center justify-center shadow-md hover:shadow-lg hover:-translate-y-1 active:scale-95 transition-all duration-200"
         >
-          <Search className="w-4 h-4 stroke-[2]" />
+          <SearchNormalIcon className="w-4 h-4" />
         </button>
 
         <span className="pointer-events-none absolute right-12 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg bg-[#1f1f1f] text-neutral-200 border border-[#383838] text-xs font-medium shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all duration-150">
@@ -72,7 +73,7 @@ export const FloatingMenu: React.FC<FloatingMenuProps> = ({
           aria-label="Koleksiyonlar"
           className="w-10 h-10 rounded-full bg-[#262626] hover:bg-[#38bdf8] text-[#a3a3a3] hover:text-[#0f172a] border border-[#3e3e3e] hover:border-[#38bdf8] flex items-center justify-center shadow-md hover:shadow-lg hover:-translate-y-1 active:scale-95 transition-all duration-200"
         >
-          <Folder className="w-4 h-4 stroke-[2]" />
+          <Folder2Icon className="w-4 h-4" />
         </button>
 
         <span className="pointer-events-none absolute right-12 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg bg-[#1f1f1f] text-neutral-200 border border-[#383838] text-xs font-medium shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all duration-150">
@@ -87,7 +88,7 @@ export const FloatingMenu: React.FC<FloatingMenuProps> = ({
           aria-label="Yukarı Çık"
           className="w-10 h-10 rounded-full bg-[#262626] hover:bg-[#38bdf8] text-[#a3a3a3] hover:text-[#0f172a] border border-[#3e3e3e] hover:border-[#38bdf8] flex items-center justify-center shadow-md hover:shadow-lg hover:-translate-y-1 active:scale-95 transition-all duration-200"
         >
-          <ArrowUp className="w-4 h-4 stroke-[2]" />
+          <ArrowUp4Icon className="w-4 h-4" />
         </button>
 
         <span className="pointer-events-none absolute right-12 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg bg-[#1f1f1f] text-neutral-200 border border-[#383838] text-xs font-medium shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all duration-150">

@@ -2,8 +2,9 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, initializeDatabase } from './db';
 import { CollectionItem, LinkItem, SortOption, ViewMode } from './types';
-import { Sidebar } from './components/Sidebar';
-import { MobileNavBar } from './components/MobileNavBar';
+import { BloggerHeader } from './components/BloggerHeader';
+import { BloggerSidebar } from './components/BloggerSidebar';
+import { BloggerRightSidebar } from './components/BloggerRightSidebar';
 import { BloggerMobileNav } from './components/BloggerMobileNav';
 import { BloggerDrawer } from './components/BloggerDrawer';
 import { FloatingMenu } from './components/FloatingMenu';
@@ -49,7 +50,8 @@ export const App: React.FC = () => {
     percentage: 0
   });
 
-  // Modals & Drawer
+  // Modals, Drawer & Sidebar
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingLink, setEditingLink] = useState<LinkItem | null>(null);
@@ -320,98 +322,73 @@ export const App: React.FC = () => {
   }, [activeView]);
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#171717] text-[#fafafa] font-sans antialiased">
+    <div className="flex flex-col h-screen w-screen overflow-hidden bg-[#1e1e1e] text-[#fffdfc] font-sans antialiased">
       
-      {/* Desktop Sidebar (Left - Hidden on mobile) */}
-      <div className="hidden md:flex">
-        <Sidebar
-          currentTab={
-            activeView === 'dashboard' ? 'dashboard' :
-            activeView === 'pinned' ? 'pinned' :
-            activeView === 'collection' ? 'collection' :
-            activeView === 'tag' ? 'tag' : 'links'
-          }
-          activeCollectionId={selectedCollectionId}
-          activeTag={selectedTag}
-          onSelectTab={(tab) => {
-            setActiveView(tab);
-            setSearchQuery('');
-          }}
-          onSelectCollection={(id) => {
-            setSelectedCollectionId(id);
-            setActiveView('collection');
-            setSearchQuery('');
-          }}
-          onSelectTag={(tag) => {
-            setSelectedTag(tag);
-            setActiveView('tag');
-            setSearchQuery('');
-          }}
-          collections={collections}
-          tags={tags}
-          counts={counts}
-          onOpenNewLink={() => {
-            setEditingLink(null);
-            setIsAddModalOpen(true);
-          }}
-          onOpenManageCollections={() => setIsCollectionsModalOpen(true)}
-          onOpenManageTags={() => setIsTagsModalOpen(true)}
-          onOpenSettings={() => setIsSettingsOpen(true)}
-          onOpenSearch={() => {
+      {/* 1. ÜST BAR: Blogger Header (.mainH - Fixed at Top) */}
+      <BloggerHeader
+        onToggleSidebar={() => setIsSidebarOpen(prev => !prev)}
+        onOpenDrawer={() => setIsDrawerOpen(true)}
+        searchQuery={searchQuery}
+        onSearchChange={(q) => {
+          setSearchQuery(q);
+          if (q.trim() && activeView !== 'links') {
             setActiveView('links');
-          }}
-        />
-      </div>
+          }
+        }}
+        onOpenNewLink={() => {
+          setEditingLink(null);
+          setIsAddModalOpen(true);
+        }}
+        onOpenImportExport={() => setIsImportExportOpen(true)}
+        onOpenSettings={() => setIsSettingsOpen(true)}
+        onGoHome={() => {
+          setActiveView('dashboard');
+          setSearchQuery('');
+        }}
+      />
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col h-screen overflow-y-auto min-w-0">
+      {/* 2. ANA GÖVDE: SOL BAR + ORTA İÇERİK + SAĞ BAR */}
+      <div className="flex flex-1 overflow-hidden min-h-0">
         
-        {/* Mobile Header Bar (Visible on mobile only) */}
-        <header className="md:hidden flex items-center justify-between px-4 py-3 bg-[#1b1b1b] border-b border-[#2e2e2e] shrink-0 sticky top-0 z-30">
-          <div className="flex items-center gap-2.5">
-            <button
-              onClick={() => setIsDrawerOpen(true)}
-              className="w-8 h-8 rounded-xl bg-[#262626] hover:bg-[#333333] border border-[#383838] text-[#d4d4d4] hover:text-white flex items-center justify-center transition-colors"
-              title="Çekmece Menüsünü Aç"
-            >
-              <Menu className="w-4 h-4" />
-            </button>
-
-            <div 
-              onClick={() => setActiveView('dashboard')}
-              className="flex items-center gap-2 cursor-pointer"
-            >
-              <div className="w-7 h-7 rounded-lg bg-[#38bdf8] flex items-center justify-center font-bold text-xs text-slate-950 shadow-sm shadow-sky-500/20">
-                S
-              </div>
-              <span className="font-semibold text-base tracking-tight text-white">saved</span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setIsImportExportOpen(true)}
-              className="p-1.5 rounded-lg text-[#a3a3a3] hover:text-white transition-colors"
-              title="Yedek Al/Yükle"
-            >
-              <FileUp className="w-4 h-4" />
-            </button>
-
-            <button
-              onClick={() => {
+        {/* SOL BAR: Blogger Navigation Sidebar (.mainL - Desktop) */}
+        {isSidebarOpen && (
+          <div className="hidden md:flex shrink-0">
+            <BloggerSidebar
+              currentTab={activeView}
+              activeCollectionId={selectedCollectionId}
+              activeTag={selectedTag}
+              onSelectTab={(tab) => {
+                setActiveView(tab);
+                setSearchQuery('');
+              }}
+              onSelectCollection={(id) => {
+                setSelectedCollectionId(id);
+                setActiveView('collection');
+                setSearchQuery('');
+              }}
+              onSelectTag={(tag) => {
+                setSelectedTag(tag);
+                setActiveView('tag');
+                setSearchQuery('');
+              }}
+              collections={collections}
+              tags={tags}
+              counts={counts}
+              onOpenNewLink={() => {
                 setEditingLink(null);
                 setIsAddModalOpen(true);
               }}
-              className="w-8 h-8 rounded-full bg-[#7dd3fc] text-[#0f172a] flex items-center justify-center font-bold shadow-md shadow-sky-500/20 active:scale-95 transition-all"
-              title="Yeni Bağlantı"
-            >
-              <Plus className="w-4 h-4 stroke-[2.5]" />
-            </button>
+              onOpenManageCollections={() => setIsCollectionsModalOpen(true)}
+              onOpenManageTags={() => setIsTagsModalOpen(true)}
+              onOpenSettings={() => setIsSettingsOpen(true)}
+              onOpenImportExport={() => setIsImportExportOpen(true)}
+            />
           </div>
-        </header>
+        )}
 
-        {/* View Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+        {/* ORTA BÖLÜM: Ana İçerik Alanı (.mainC) */}
+        <main className="flex-1 h-[calc(100vh-60px)] overflow-y-auto p-3 sm:p-5 lg:p-6 min-w-0">
+          <div className="max-w-6xl mx-auto pb-24 md:pb-12">
           {activeView === 'dashboard' && (
             <DashboardView
               links={allLinks}
@@ -609,7 +586,29 @@ export const App: React.FC = () => {
               onEmptyTrash={handleEmptyTrash}
             />
           )}
+          </div>
         </main>
+
+        {/* SAĞ BAR: Blogger Right Sidebar (.sideB - Desktop) */}
+        <BloggerRightSidebar
+          pinnedLinks={allLinks.filter(l => l.isPinned && !l.isTrash && !l.isArchived)}
+          collections={collections}
+          tags={tags}
+          counts={counts}
+          storageInfo={storageInfo}
+          onSelectCollection={(id) => {
+            setSelectedCollectionId(id);
+            setActiveView('collection');
+            setSearchQuery('');
+          }}
+          onSelectTag={(tag) => {
+            setSelectedTag(tag);
+            setActiveView('tag');
+            setSearchQuery('');
+          }}
+          onOpenDetail={(link) => setDetailLink(link)}
+        />
+
       </div>
 
       {/* Blogger Mobile Fixed Bottom Navigation Bar (.mobM / .mobC) */}

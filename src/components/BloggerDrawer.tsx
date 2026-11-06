@@ -1,24 +1,29 @@
 import React, { useState } from 'react';
 import { 
-  X, 
-  Home, 
-  Link as LinkIcon, 
-  Pin, 
-  Folder, 
   Hash, 
   Plus, 
-  Search, 
   Settings as SettingsIcon, 
   FileUp, 
   Trash2, 
   ExternalLink, 
   FolderPlus, 
-  Tag as TagIcon,
   ChevronDown,
   ChevronRight,
   ShieldCheck,
   Globe
 } from 'lucide-react';
+import { 
+  HomeIcon,
+  Link21Icon,
+  FolderFavoriteIcon,
+  Folder2Icon,
+  SearchNormalIcon,
+  CloseIcon,
+  InstagramIcon, 
+  TelegramIcon, 
+  MailIcon, 
+  GithubIcon 
+} from './BloggerIcons';
 import { CollectionItem, TagItem } from '../types';
 
 interface BloggerDrawerProps {
@@ -114,7 +119,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
             className="w-8 h-8 rounded-xl bg-[#262626] hover:bg-[#333333] border border-[#383838] text-[#a3a3a3] hover:text-white flex items-center justify-center transition-colors"
             title="Kapat"
           >
-            <X className="w-4 h-4" />
+            <CloseIcon className="w-4 h-4" />
           </button>
         </div>
 
@@ -131,7 +136,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               placeholder="Bağlantılarda ara... (Enter)"
               className="w-full bg-[#262626] border border-[#383838] focus:border-[#38bdf8] rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-[#737373] outline-none transition-colors"
             />
-            <Search className="w-4 h-4 text-[#737373] absolute left-2.5 top-2.5" />
+            <SearchNormalIcon className="w-4 h-4 text-[#737373] absolute left-2.5 top-2.5" />
           </div>
 
           {/* Quick Action: + New Link button */}
@@ -164,7 +169,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               }`}
             >
               <div className="flex items-center gap-2.5">
-                <Home className="w-4 h-4 text-[#38bdf8]" />
+                <HomeIcon className="w-4 h-4 text-[#38bdf8]" />
                 <span>Dashboard (Ana Sayfa)</span>
               </div>
             </button>
@@ -181,7 +186,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               }`}
             >
               <div className="flex items-center gap-2.5">
-                <LinkIcon className="w-4 h-4 text-neutral-400" />
+                <Link21Icon className="w-4 h-4 text-neutral-400" />
                 <span>Tüm Bağlantılar</span>
               </div>
               <span className="text-[11px] text-[#737373] font-mono">{counts.all}</span>
@@ -199,7 +204,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               }`}
             >
               <div className="flex items-center gap-2.5">
-                <Pin className="w-4 h-4 text-amber-400" />
+                <FolderFavoriteIcon className="w-4 h-4 text-amber-400" />
                 <span>Sabitlenenler</span>
               </div>
               <span className="text-[11px] text-[#737373] font-mono">{counts.pinned}</span>
@@ -231,7 +236,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               className="flex items-center justify-between px-2.5 py-1 text-[11px] font-bold text-[#737373] uppercase tracking-wider cursor-pointer hover:text-neutral-300 transition-colors"
             >
               <div className="flex items-center gap-1.5">
-                <Folder className="w-3.5 h-3.5 text-[#38bdf8]" />
+                <Folder2Icon className="w-3.5 h-3.5 text-[#38bdf8]" />
                 <span>Koleksiyonlar ({collections.length})</span>
               </div>
               {collectionsExpanded ? (
