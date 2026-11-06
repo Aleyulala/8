@@ -6,7 +6,7 @@ import {
   SunMoonIcon,
   GithubIcon
 } from './BloggerIcons';
-import { Plus, Bookmark, Globe } from 'lucide-react';
+import { Plus, Bookmark } from 'lucide-react';
 
 interface BloggerHeaderProps {
   onToggleSidebar: () => void;
@@ -18,6 +18,7 @@ interface BloggerHeaderProps {
   onOpenImportExport: () => void;
   onOpenSettings: () => void;
   onGoHome: () => void;
+  onOpenSearchModal?: () => void;
 }
 
 export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
@@ -29,14 +30,15 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
   onOpenNewLink,
   onOpenImportExport,
   onOpenSettings,
-  onGoHome
+  onGoHome,
+  onOpenSearchModal
 }) => {
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   return (
     <header className="sticky top-0 z-40 w-full h-14 bg-[#1e1e1e] border-b border-[rgba(255,255,255,0.08)] px-3 sm:px-5 flex items-center justify-between select-none shadow-sm">
       
-      {/* Sol Bölüm: Hamburger + NSONE Marka Başlığı */}
+      {/* Sol Bölüm: Hamburger + SAVED Marka Başlığı */}
       <div className="flex items-center gap-3 shrink-0">
         <button
           onClick={onToggleSidebar}
@@ -60,28 +62,36 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
 
       {/* Orta Bölüm: Blogger Hap Tasarımlı Arama Çubuğu (Bul...) */}
       <div className="flex-1 max-w-md mx-3 sm:mx-8">
-        <div className="relative flex items-center w-full">
+        <div 
+          onClick={onOpenSearchModal}
+          className="relative flex items-center w-full cursor-pointer group"
+          title="Gelişmiş Arama & Bul Paneli (Ctrl+K)"
+        >
           <input
             ref={searchInputRef}
             type="search"
             value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
+            readOnly
             placeholder="Bul..."
-            className="w-full bg-[#252526] hover:bg-[#28282b] focus:bg-[#2d2d30] border border-[#383838] focus:border-[#60cdff] rounded-full pl-9 pr-14 py-1.5 text-xs text-[#fffdfc] placeholder-[#989b9f] outline-none transition-all shadow-inner"
+            className="w-full bg-[#252526] group-hover:bg-[#28282b] focus:bg-[#2d2d30] border border-[#383838] group-hover:border-[#60cdff]/60 rounded-full pl-9 pr-14 py-1.5 text-xs text-[#fffdfc] placeholder-[#989b9f] outline-none transition-all shadow-inner cursor-pointer"
           />
-          <span className="absolute left-3 text-[#989b9f] pointer-events-none">
+          <span className="absolute left-3 text-[#989b9f] group-hover:text-[#60cdff] transition-colors pointer-events-none">
             <SearchNormalIcon className="w-3.5 h-3.5" />
           </span>
 
           {searchQuery ? (
             <button
-              onClick={() => onSearchChange('')}
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onSearchChange('');
+              }}
               className="absolute right-3 text-[#989b9f] hover:text-white transition-colors"
             >
               <CloseIcon className="w-3.5 h-3.5" />
             </button>
           ) : (
-            <kbd className="hidden sm:inline-block absolute right-3 px-1.5 py-0.5 rounded text-[9px] font-mono bg-[#1e1e1e] text-[#989b9f] border border-[#383838]">
+            <kbd className="hidden sm:inline-block absolute right-3 px-1.5 py-0.5 rounded text-[9px] font-mono bg-[#1e1e1e] text-[#989b9f] border border-[#383838] group-hover:border-[#60cdff]/40 group-hover:text-[#60cdff] transition-colors">
               Ctrl K
             </kbd>
           )}

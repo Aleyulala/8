@@ -11,12 +11,15 @@ import {
   Eye,
   ShieldCheck,
   Send,
-  Plus
+  Plus,
+  Code2
 } from 'lucide-react';
 import { 
   HomeIcon,
   FolderFavoriteIcon,
   SearchNormalIcon,
+  ArrowSwapHorizontalIcon,
+  SpeedometerIcon,
   CloseIcon,
   InstagramIcon, 
   TelegramIcon, 
@@ -49,6 +52,7 @@ interface BloggerDrawerProps {
   onOpenImportExport?: () => void;
   onOpenSettings?: () => void;
   onSearchSubmit?: (query: string) => void;
+  onOpenSearchModal?: () => void;
 }
 
 export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
@@ -58,10 +62,12 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
   onSelectTab,
   counts,
   onOpenNewLink,
-  onSearchSubmit
+  onSearchSubmit,
+  onOpenSearchModal
 }) => {
   const [hizmetlerOpen, setHizmetlerOpen] = useState(true);
   const [klasorOpen, setKlasorOpen] = useState(true);
+  const [gelistiriciOpen, setGelistiriciOpen] = useState(true);
   const [localSearch, setLocalSearch] = useState('');
 
   if (!isOpen) return null;
@@ -106,16 +112,24 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
         <div className="flex-1 overflow-y-auto p-3 space-y-4 text-xs">
           
           {/* Fast Search input */}
-          <div className="relative">
+          <div 
+            onClick={() => {
+              if (onOpenSearchModal) {
+                onClose();
+                onOpenSearchModal();
+              }
+            }}
+            className="relative cursor-pointer group"
+            title="Gelişmiş Arama & Bul Paneli (Ctrl+K)"
+          >
             <input
               type="text"
               value={localSearch}
-              onChange={(e) => setLocalSearch(e.target.value)}
-              onKeyDown={handleSearchKeyPress}
-              placeholder="Bul... (Enter)"
-              className="w-full bg-[#252526] border border-[#383838] focus:border-[#60cdff] rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-[#737373] outline-none transition-colors"
+              readOnly
+              placeholder="Bul... (Ctrl+K)"
+              className="w-full bg-[#252526] group-hover:bg-[#28282b] border border-[#383838] group-hover:border-[#60cdff]/60 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-[#737373] outline-none transition-colors cursor-pointer"
             />
-            <SearchNormalIcon className="w-4 h-4 text-[#737373] absolute left-2.5 top-2.5" />
+            <SearchNormalIcon className="w-4 h-4 text-[#737373] group-hover:text-[#60cdff] transition-colors absolute left-2.5 top-2.5 pointer-events-none" />
           </div>
 
           {/* + Yeni Bağlantı Ekle Butonu */}
@@ -294,6 +308,79 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
                       <div className="flex items-center gap-2">
                         <Send className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
                         <span>Geri Bildirim</span>
+                      </div>
+                      <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
+                    </a>
+                  </li>
+                </ul>
+              )}
+            </li>
+
+            {/* 4. KLASÖR 3: Geliştirici (theme-1915278968279215939.xml: 3 Buton) */}
+            <li className="pt-1">
+              <div 
+                onClick={() => setGelistiriciOpen(!gelistiriciOpen)}
+                className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold text-[#d4d4d4] hover:bg-[#252526] hover:text-white cursor-pointer transition-colors"
+              >
+                <div className="flex items-center gap-2.5">
+                  <Code2 className="w-4 h-4 text-[#60cdff]" />
+                  <span>Geliştirici</span>
+                </div>
+                <div className="flex items-center gap-1 text-[#989b9f]">
+                  {gelistiriciOpen ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
+                </div>
+              </div>
+
+              {gelistiriciOpen && (
+                <ul className="space-y-0.5 pl-3 border-l-2 border-[#383838] ml-4 mt-1">
+                  {/* 1. Ters Çevir (RTL / Yön Değiştirme) */}
+                  <li>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const current = document.documentElement.getAttribute('dir') || 'ltr';
+                        const next = current === 'rtl' ? 'ltr' : 'rtl';
+                        document.documentElement.setAttribute('dir', next);
+                      }}
+                      className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group cursor-pointer"
+                    >
+                      <div className="flex items-center gap-2">
+                        <ArrowSwapHorizontalIcon className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
+                        <span>Ters Çevir</span>
+                        <span className="px-1.5 py-0.2 rounded-full bg-cyan-950/80 text-[#60cdff] border border-cyan-500/40 text-[9px] font-bold">
+                          New!
+                        </span>
+                      </div>
+                    </button>
+                  </li>
+
+                  {/* 2. Detaylı Ara (Google Zengin Sonuçlar Testi) */}
+                  <li>
+                    <a
+                      href="https://search.google.com/test/rich-results"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+                    >
+                      <div className="flex items-center gap-2">
+                        <SearchNormalIcon className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
+                        <span>Detaylı Ara</span>
+                      </div>
+                      <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
+                    </a>
+                  </li>
+
+                  {/* 3. Hız Testi (Google PageSpeed Insights) */}
+                  <li>
+                    <a
+                      href="https://pagespeed.web.dev/analysis"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+                    >
+                      <div className="flex items-center gap-2">
+                        <SpeedometerIcon className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
+                        <span>Hız Testi</span>
                       </div>
                       <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
                     </a>

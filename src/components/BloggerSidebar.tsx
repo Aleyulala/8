@@ -11,11 +11,15 @@ import {
   ClipboardList,
   Eye,
   ShieldCheck,
-  Send
+  Send,
+  Code2
 } from 'lucide-react';
 import { 
   HomeIcon,
   FolderFavoriteIcon,
+  SearchNormalIcon,
+  ArrowSwapHorizontalIcon,
+  SpeedometerIcon,
   InstagramIcon, 
   TelegramIcon, 
   MailIcon, 
@@ -54,6 +58,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
 }) => {
   const [hizmetlerOpen, setHizmetlerOpen] = useState(true);
   const [klasorOpen, setKlasorOpen] = useState(true);
+  const [gelistiriciOpen, setGelistiriciOpen] = useState(true);
 
   return (
     <aside className="w-64 bg-[#1e1e1e] border-r border-[rgba(255,255,255,0.08)] flex flex-col justify-between h-[calc(100vh-56px)] shrink-0 text-xs select-none shadow-xs">
@@ -225,6 +230,79 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                     <div className="flex items-center gap-2">
                       <Send className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
                       <span>Geri Bildirim</span>
+                    </div>
+                    <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
+                  </a>
+                </li>
+              </ul>
+            )}
+          </li>
+
+          {/* 4. KLASÖR 3: Geliştirici (theme-1915278968279215939.xml: 3 Buton) */}
+          <li className="pt-1">
+            <div 
+              onClick={() => setGelistiriciOpen(!gelistiriciOpen)}
+              className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold text-[#d4d4d4] hover:bg-[#252526] hover:text-white cursor-pointer transition-colors"
+            >
+              <div className="flex items-center gap-2.5">
+                <Code2 className="w-4 h-4 text-[#60cdff]" />
+                <span>Geliştirici</span>
+              </div>
+              <div className="flex items-center gap-1 text-[#989b9f]">
+                {gelistiriciOpen ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
+              </div>
+            </div>
+
+            {gelistiriciOpen && (
+              <ul className="space-y-0.5 pl-3 border-l-2 border-[#383838] ml-4 mt-1">
+                {/* 1. Ters Çevir (RTL / Yön Değiştirme) */}
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const current = document.documentElement.getAttribute('dir') || 'ltr';
+                      const next = current === 'rtl' ? 'ltr' : 'rtl';
+                      document.documentElement.setAttribute('dir', next);
+                    }}
+                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2">
+                      <ArrowSwapHorizontalIcon className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
+                      <span>Ters Çevir</span>
+                      <span className="px-1.5 py-0.2 rounded-full bg-cyan-950/80 text-[#60cdff] border border-cyan-500/40 text-[9px] font-bold">
+                        New!
+                      </span>
+                    </div>
+                  </button>
+                </li>
+
+                {/* 2. Detaylı Ara (Google Zengin Sonuçlar Testi) */}
+                <li>
+                  <a
+                    href="https://search.google.com/test/rich-results"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+                  >
+                    <div className="flex items-center gap-2">
+                      <SearchNormalIcon className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
+                      <span>Detaylı Ara</span>
+                    </div>
+                    <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
+                  </a>
+                </li>
+
+                {/* 3. Hız Testi (Google PageSpeed Insights) */}
+                <li>
+                  <a
+                    href="https://pagespeed.web.dev/analysis"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+                  >
+                    <div className="flex items-center gap-2">
+                      <SpeedometerIcon className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
+                      <span>Hız Testi</span>
                     </div>
                     <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
                   </a>

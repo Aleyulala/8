@@ -8,6 +8,7 @@ import { BloggerRightSidebar } from './components/BloggerRightSidebar';
 import { BloggerMobileNav } from './components/BloggerMobileNav';
 import { BloggerDrawer } from './components/BloggerDrawer';
 import { FloatingMenu } from './components/FloatingMenu';
+import { SearchOverlayModal } from './components/SearchOverlayModal';
 import { DashboardView } from './components/DashboardView';
 import { LinksView } from './components/LinksView';
 import { CollectionsView } from './components/CollectionsView';
@@ -65,6 +66,22 @@ export const App: React.FC = () => {
   const [isTagsModalOpen, setIsTagsModalOpen] = useState(false);
   const [isImportExportOpen, setIsImportExportOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isSearchOverlayOpen, setIsSearchOverlayOpen] = useState(false);
+
+  // Global Keyboard Shortcuts (Ctrl+K, /, Ctrl+F for Search Overlay)
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K' || e.key === 'f' || e.key === 'F')) {
+        e.preventDefault();
+        setIsSearchOverlayOpen(prev => !prev);
+      } else if (e.key === '/' && !['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as HTMLElement)?.tagName)) {
+        e.preventDefault();
+        setIsSearchOverlayOpen(true);
+      }
+    };
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, []);
 
   // Initialize DB on start & check Bookmarklet query params
   useEffect(() => {
@@ -368,6 +385,7 @@ export const App: React.FC = () => {
           setActiveView('dashboard');
           setSearchQuery('');
         }}
+        onOpenSearchModal={() => setIsSearchOverlayOpen(true)}
       />
 
       {/* 2. ANA GÖVDE: SOL BAR + ORTA İÇERİK + SAĞ BAR */}
@@ -701,7 +719,7 @@ export const App: React.FC = () => {
         }}
         onOpenDrawer={() => setIsDrawerOpen(true)}
         onOpenSearch={() => {
-          setActiveView('links');
+          setIsSearchOverlayOpen(true);
         }}
       />
 
@@ -712,7 +730,7 @@ export const App: React.FC = () => {
           setIsAddModalOpen(true);
         }}
         onOpenSearch={() => {
-          setActiveView('links');
+          setIsSearchOverlayOpen(true);
         }}
         onOpenCollections={() => {
           setActiveView('collections_list');
@@ -767,6 +785,7 @@ export const App: React.FC = () => {
           setSearchQuery(q);
           setActiveView('links');
         }}
+        onOpenSearchModal={() => setIsSearchOverlayOpen(true)}
       />
 
       {/* Modals */}
@@ -827,6 +846,21 @@ export const App: React.FC = () => {
         totalCollections={collections.length}
         totalTags={tags.length}
         onRefreshData={updateStorage}
+      />
+
+      {/* Gelişmiş Arama / Bul Paneli (saved-main Search Overlay & Engine Switcher) */}
+      <SearchOverlayModal
+        isOpen={isSearchOverlayOpen}
+        onClose={() => setIsSearchOverlayOpen(false)}
+        initialQuery={searchQuery}
+        onApplySearchQuery={(q) => {
+          setSearchQuery(q);
+          setActiveView('links');
+        }}
+        onSelectLink={(link) => {
+          setSelectedPost(link);
+          setActiveView('post_detail');
+        }}
       />
 
     </div>
