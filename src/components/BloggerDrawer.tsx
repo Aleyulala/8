@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   ExternalLink,
   Layers,
@@ -12,7 +12,8 @@ import {
   Code2,
   BookOpen,
   Sparkles,
-  Phone
+  Phone,
+  Palette
 } from 'lucide-react';
 import { 
   HomeIcon,
@@ -72,6 +73,29 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
   const [plusUiOpen, setPlusUiOpen] = useState(false);
   const [socialExpanded, setSocialExpanded] = useState(false);
   const [localSearch, setLocalSearch] = useState('');
+  const [currentThemeColor, setCurrentThemeColor] = useState<string>('#38bdf8');
+
+  useEffect(() => {
+    const savedColor = localStorage.getItem('saved_theme_color') || '#38bdf8';
+    setCurrentThemeColor(savedColor);
+  }, [isOpen]);
+
+  const handleSelectThemeColor = (color: string) => {
+    setCurrentThemeColor(color);
+    document.documentElement.style.setProperty('--tv-nav-ring', color);
+    document.documentElement.style.setProperty('--linkB', color);
+    document.documentElement.style.setProperty('--linkC', color);
+    document.documentElement.style.setProperty('--text-primary', color);
+    document.documentElement.style.setProperty('--theme-color', color);
+    localStorage.setItem('saved_theme_color', color);
+  };
+
+  const THEME_PALETTE = [
+    '#38bdf8', '#0ea5e9', '#06b6d4', '#14b8a6', 
+    '#10b981', '#22c55e', '#84cc16', '#eab308', 
+    '#f59e0b', '#f97316', '#ef4444', '#f43f5e', 
+    '#ec4899', '#d946ef', '#a855f7', '#6366f1'
+  ];
 
   if (!isOpen) return null;
 
@@ -554,6 +578,35 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
             </li>
 
           </ul>
+
+          {/* Tema Vurgu Rengi Seçici (XML 1:1 .thmW) */}
+          <div className="mt-4 p-3 rounded-xl bg-[#252526] border border-white/5 space-y-2">
+            <div className="flex items-center justify-between text-xs font-bold text-white">
+              <div className="flex items-center gap-1.5">
+                <Palette className="w-3.5 h-3.5 text-[#60cdff]" />
+                <span>Tema Vurgu Rengi</span>
+              </div>
+              <span className="w-3 h-3 rounded-full border border-white/30" style={{ backgroundColor: currentThemeColor }} />
+            </div>
+            <div className="grid grid-cols-8 gap-1.5 pt-1">
+              {THEME_PALETTE.map(c => {
+                const isSelected = currentThemeColor.toLowerCase() === c.toLowerCase();
+                return (
+                  <button
+                    key={c}
+                    type="button"
+                    onClick={() => handleSelectThemeColor(c)}
+                    className={`w-6 h-6 rounded-full transition-transform hover:scale-125 cursor-pointer relative ${
+                      isSelected ? 'ring-2 ring-white scale-110 shadow-md' : 'opacity-80 hover:opacity-100'
+                    }`}
+                    style={{ backgroundColor: c }}
+                    title={c}
+                  />
+                );
+              })}
+            </div>
+          </div>
+
         </div>
 
         {/* Drawer Footer: Sosyal Medya & Topluluk İkonları (.mnMob / .mSoc + Genişletme) */}

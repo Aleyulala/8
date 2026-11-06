@@ -51,6 +51,9 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
   const tagsTrackRef = useRef<HTMLDivElement>(null);
   const [tagCanScrollLeft, setTagCanScrollLeft] = useState(false);
   const [tagCanScrollRight, setTagCanScrollRight] = useState(true);
+  const isDraggingTags = useRef(false);
+  const startTagsX = useRef(0);
+  const startScrollLeft = useRef(0);
 
   // Form states for "Bize Ulaşın"
   const [contactName, setContactName] = useState('');
@@ -68,6 +71,25 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
   useEffect(() => {
     checkTagScroll();
   }, [tags]);
+
+  const handleTagsMouseDown = (e: React.MouseEvent) => {
+    isDraggingTags.current = true;
+    startTagsX.current = e.pageX - (tagsTrackRef.current?.offsetLeft || 0);
+    startScrollLeft.current = tagsTrackRef.current?.scrollLeft || 0;
+  };
+
+  const handleTagsMouseMove = (e: React.MouseEvent) => {
+    if (!isDraggingTags.current || !tagsTrackRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - (tagsTrackRef.current.offsetLeft || 0);
+    const walk = (x - startTagsX.current) * 1.5;
+    tagsTrackRef.current.scrollLeft = startScrollLeft.current - walk;
+    checkTagScroll();
+  };
+
+  const handleTagsMouseUpOrLeave = () => {
+    isDraggingTags.current = false;
+  };
 
   const scrollTags = (direction: 'left' | 'right') => {
     if (!tagsTrackRef.current) return;
@@ -278,11 +300,15 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
           </div>
         </div>
 
-        {/* Yatay Kayar Etiket Çipleri (.lbL) */}
+        {/* Yatay Kayar Etiket Çipleri (.lbL - Fareyle Çekilebilir / Dokunmatik) */}
         <div 
           ref={tagsTrackRef}
           onScroll={checkTagScroll}
-          className="flex gap-2 overflow-x-auto pb-1 hide-scrollbar scroll-smooth"
+          onMouseDown={handleTagsMouseDown}
+          onMouseMove={handleTagsMouseMove}
+          onMouseUp={handleTagsMouseUpOrLeave}
+          onMouseLeave={handleTagsMouseUpOrLeave}
+          className="flex gap-2 overflow-x-auto pb-1 hide-scrollbar scroll-smooth cursor-grab active:cursor-grabbing select-none"
         >
           {tags.map((t) => {
             const count = counts.tags[t.name] || 0;
@@ -293,10 +319,10 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
                   onSelectTag(t.name);
                   if (onCloseDrawer) onCloseDrawer();
                 }}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#252526] hover:bg-[#2d2d30] text-[#d4d4d4] hover:text-[#60cdff] border border-transparent text-xs font-medium transition-all shrink-0 active:scale-95 shadow-sm"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#252526] hover:bg-[#2d2d30] text-[#d4d4d4] hover:text-[#60cdff] border border-transparent text-xs font-medium transition-all shrink-0 active:scale-95 shadow-sm cursor-pointer"
               >
                 <span>{t.name}</span>
-                <span className="text-[10px] text-[#71717a] font-mono">({count})</span>
+                <span className="text-[10px] text-[#71717a] font-mono px-1.5 py-0.2 rounded-md bg-[#1e1e1e]">({count})</span>
               </button>
             );
           })}
@@ -344,13 +370,35 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
                 placeholder="Mesajınız *"
                 value={contactMessage}
                 onChange={(e) => setContactMessage(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Tab') {
+                    e.stopPropagation();
+                    if (!e.shiftKey) {
+                      e.preventDefault();
+                      const submitBtn = e.currentTarget.form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+                      if (submitBtn) submitBtn.focus();
+                    } else {
+                      e.preventDefault();
+                      const emailInput = e.currentTarget.form?.querySelector<HTMLInputElement>('input[type="email"]');
+                      if (emailInput) emailInput.focus();
+                    }
+                  }
+                }}
                 rows={3}
-                className="w-full px-3 py-2 rounded-lg bg-[#1e1e1e] border border-transparent focus:border-[#60cdff]/50 text-white text-xs outline-none transition-colors resize-none"
+                className="w-full px-3 py-2 rounded-lg bg-[#1e1e1e] border border-transparent focus:border-[#60cdff]/50 text-white text-xs outline-none transition-colors resize-y min-h-[80px] max-h-[320px]"
                 required
               />
             </div>
             <button
               type="submit"
+              onKeyDown={(e) => {
+                if (e.key === 'Tab' && e.shiftKey) {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  const txt = e.currentTarget.form?.querySelector<HTMLTextAreaElement>('textarea');
+                  if (txt) txt.focus();
+                }
+              }}
               className="w-full flex items-center justify-center gap-1.5 py-2 px-4 rounded-lg bg-gradient-to-r from-[#38bdf8] to-[#0ea5e9] hover:from-[#7dd3fc] hover:to-[#38bdf8] text-[#0f172a] font-bold text-xs shadow-md shadow-sky-500/20 active:scale-98 transition-all cursor-pointer"
             >
               <Send className="w-3.5 h-3.5" />

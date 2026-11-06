@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { X, ExternalLink, MessageCircle } from 'lucide-react';
 import { MatrixIcon } from './BloggerIcons';
 
 export const BloggerNotificationBar: React.FC = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [activeSlide, setActiveSlide] = useState(0);
+  const touchStartX = useRef<number | null>(null);
 
   const totalSlides = 3;
 
@@ -15,11 +16,30 @@ export const BloggerNotificationBar: React.FC = () => {
     return () => clearInterval(timer);
   }, [totalSlides]);
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (diff > 35) {
+      setActiveSlide((prev) => (prev + 1) % totalSlides);
+    } else if (diff < -35) {
+      setActiveSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+    }
+    touchStartX.current = null;
+  };
+
   if (!isVisible) return null;
 
   return (
     <div className="w-full mb-4">
-      <div className="flex items-center justify-between gap-3 px-3.5 py-2 rounded-xl bg-[#252526] border border-transparent shadow-sm select-none min-h-[46px]">
+      <div 
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        className="flex items-center justify-between gap-3 px-3.5 py-2 rounded-xl bg-[#252526] border border-transparent shadow-sm select-none min-h-[46px] touch-pan-y"
+      >
         
         {/* Sol Kapat Butonu */}
         <button

@@ -171,6 +171,31 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
     touchEndX.current = null;
   };
 
+  // Mouse Drag handlers for desktop
+  const mouseStartX = useRef<number | null>(null);
+  const isMouseDown = useRef(false);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    isMouseDown.current = true;
+    mouseStartX.current = e.clientX;
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isMouseDown.current || mouseStartX.current === null) return;
+    const diff = mouseStartX.current - e.clientX;
+    if (Math.abs(diff) > 45) {
+      if (diff > 0) handleNext();
+      else handlePrev();
+      isMouseDown.current = false;
+      mouseStartX.current = null;
+    }
+  };
+
+  const handleMouseUp = () => {
+    isMouseDown.current = false;
+    mouseStartX.current = null;
+  };
+
   // Navigate to category/collection on click
   const handleCategoryClick = (e: React.MouseEvent, slide: BloggerSlide) => {
     e.stopPropagation();
@@ -191,12 +216,18 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
   return (
     <div className="w-full relative select-none">
       <div 
-        className="relative w-full overflow-hidden rounded-lg bg-[#18181b] shadow-md group aspect-[16/9] sm:aspect-[21/9] md:aspect-[2.4/1]"
+        className="relative w-full overflow-hidden rounded-lg bg-[#18181b] shadow-md group aspect-[16/9] sm:aspect-[21/9] md:aspect-[2.4/1] cursor-grab active:cursor-grabbing touch-pan-y"
         onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
+        onMouseLeave={() => {
+          setIsPaused(false);
+          handleMouseUp();
+        }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
       >
         {/* Slides list */}
         {BLOGGER_SLIDES.map((slide, idx) => {
@@ -214,6 +245,7 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
                 alt={slide.title}
                 className="w-full h-full object-cover object-center transform scale-100 transition-transform duration-1000 ease-out"
                 loading={idx === 0 ? 'eager' : 'lazy'}
+                draggable={false}
               />
 
               {/* Gradient overlay for contrast */}
@@ -227,7 +259,7 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
         <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 z-20">
           <button
             onClick={(e) => handleCategoryClick(e, activeSlide)}
-            className="group/badge inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/70 hover:bg-black/90 backdrop-blur-md text-white text-xs sm:text-sm font-medium transition-all duration-200 active:scale-95 shadow-lg cursor-pointer"
+            className="group/badge inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/70 hover:bg-black/90 backdrop-blur-md text-white text-xs sm:text-sm font-medium transition-all duration-200 active:scale-95 shadow-lg cursor-pointer"
             title={`${activeSlide.category} kategorisine git`}
           >
             <span className="text-white/80 group-hover/badge:text-[#60cdff] text-base leading-none font-bold">

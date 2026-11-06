@@ -197,7 +197,7 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
         <div className="flex items-center gap-2">
           {collection ? (
             <span 
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold border shadow-sm"
               style={{ 
                 backgroundColor: `${collection.color || '#38bdf8'}20`,
                 borderColor: `${collection.color || '#38bdf8'}40`,
@@ -211,13 +211,13 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
               <span>{collection.name}</span>
             </span>
           ) : (
-            <span className="px-3 py-1 rounded-full bg-[#252526] text-xs text-[#a1a1aa] border border-transparent">
+            <span className="px-3 py-1 rounded-lg bg-[#252526] text-xs text-[#a1a1aa] border border-transparent">
               Genel
             </span>
           )}
 
           {link.isPinned && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-transparent text-xs font-bold">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-transparent text-xs font-bold">
               <PulseIcon className="w-3 h-3" />
               <span>SABİTLENDİ</span>
             </span>

@@ -21,7 +21,7 @@ export const TagsView: React.FC<TagsViewProps> = ({
         <div className="flex items-center gap-2">
           <Hash className="w-5 h-5 text-[#38bdf8]" />
           <h1 className="text-xl font-light text-white tracking-tight">Tags</h1>
-          <span className="text-xs px-2 py-0.5 rounded-full bg-[#252526] text-[#a3a3a3] font-mono">
+          <span className="text-xs px-2.5 py-0.5 rounded-lg bg-[#252526] text-[#a3a3a3] font-mono">
             {tags.length}
           </span>
         </div>

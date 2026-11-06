@@ -13,7 +13,7 @@ interface SearchOverlayModalProps {
 }
 
 const SEARCH_ENGINES = [
-  { name: 'Blog Sayfasında Ara', url: 'blog' },
+  { name: 'Sayfada', url: 'blog' },
   { name: 'Google AI', url: 'https://www.google.com/search?udm=50&q=' },
   { name: 'Google', url: 'https://www.google.com/search?q=' },
   { name: 'GitHub', url: 'https://github.com/search?q=' },
@@ -28,9 +28,9 @@ const SEARCH_ENGINES = [
 ];
 
 const SHORTCUTS: Record<string, { label: string; url: string }> = {
-  blog: { label: 'Blog Sayfasında Ara', url: 'blog' },
-  saved: { label: 'Blog Sayfasında Ara', url: 'blog' },
-  b: { label: 'Blog Sayfasında Ara', url: 'blog' },
+  blog: { label: 'Sayfada', url: 'blog' },
+  saved: { label: 'Sayfada', url: 'blog' },
+  b: { label: 'Sayfada', url: 'blog' },
   yt: { label: 'YouTube', url: 'https://www.youtube.com/results?search_query=' },
   youtube: { label: 'YouTube', url: 'https://www.youtube.com/results?search_query=' },
   gh: { label: 'GitHub', url: 'https://github.com/search?q=' },
@@ -265,7 +265,7 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
           <select
             value={selectedEngine}
             onChange={(e) => setSelectedEngine(e.target.value)}
-            className="bg-[#1e1e1e] hover:bg-[#28282b] text-[#d4d4d4] text-xs font-semibold py-2 px-2.5 rounded-lg border border-transparent outline-none cursor-pointer shrink-0 max-w-[110px] sm:max-w-[130px] truncate"
+            className="bg-[#1e1e1e] hover:bg-[#28282b] text-[#d4d4d4] text-xs font-semibold py-2 px-2 rounded-lg border border-transparent outline-none cursor-pointer shrink-0 max-w-[90px] sm:max-w-[130px] truncate"
             title="Arama Motoru Seçin"
           >
             {SEARCH_ENGINES.map(eng => (
@@ -276,7 +276,7 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
           </select>
 
           {/* Arama Input */}
-          <div className="relative flex-1 flex items-center">
+          <div className="relative flex-1 flex items-center min-w-0">
             <span className="absolute left-2.5 text-[#989b9f] pointer-events-none">
               <SearchNormalIcon className="w-4 h-4" />
             </span>
@@ -286,8 +286,8 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="İnternette arayın, @kategori veya bir adres girin…"
-              className="w-full bg-transparent pl-9 pr-8 py-2 text-sm text-white placeholder-[#71717a] outline-none"
+              placeholder="Arayın, @kategori veya adres…"
+              className="w-full bg-transparent pl-8 sm:pl-9 pr-7 py-2 text-xs sm:text-sm text-white placeholder-[#71717a] outline-none"
               autoComplete="off"
               spellCheck="false"
             />
@@ -306,7 +306,7 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
           <button
             type="button"
             onClick={() => handleExecuteSearch()}
-            className="w-9 h-9 rounded-lg bg-gradient-to-r from-[#38bdf8] to-[#0ea5e9] hover:from-[#7dd3fc] hover:to-[#38bdf8] text-[#0f172a] flex items-center justify-center font-bold text-base shadow-md active:scale-95 transition-all cursor-pointer shrink-0"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-r from-[#38bdf8] to-[#0ea5e9] hover:from-[#7dd3fc] hover:to-[#38bdf8] text-[#0f172a] flex items-center justify-center font-bold text-base shadow-md active:scale-95 transition-all cursor-pointer shrink-0"
             title="Ara veya Git (Enter)"
           >
             <SearchNormalIcon className="w-4 h-4 stroke-[2.5]" />
@@ -314,7 +314,7 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
         </div>
 
         {/* Hızlı Arama Motoru Hap Butonları */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none select-none">
+        <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 scrollbar-none select-none touch-pan-x">
           {SEARCH_ENGINES.slice(0, 8).map(eng => {
             const isActive = selectedEngine === eng.url;
             return (
@@ -327,7 +327,7 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
                     handleExecuteSearch(eng.url);
                   }
                 }}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all cursor-pointer border ${
+                className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all cursor-pointer border ${
                   isActive
                     ? 'bg-[#60cdff]/15 text-[#60cdff] border-[#60cdff]/40 shadow-sm'
                     : 'bg-[#1e1e1e] hover:bg-[#28282b] text-[#a3a3a3] hover:text-white border-transparent'
