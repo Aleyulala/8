@@ -23,6 +23,8 @@ import {
   EyeIcon,
   MessageNotif1Icon,
   ArchiveIcon,
+  ArchiveAddIcon,
+  ArchiveTickIcon,
   RankingIcon,
   DocumentIcon
 } from './BloggerIcons';
@@ -257,15 +259,38 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 </div>
               </div>
 
-              {/* Sağ Üst: 💬 Yorumlar ve 🔖 Sabit */}
+              {/* Sağ Üst: 💬 Yorumlar ve 🔖 Yer İmi / Kaydet Butonu (.bm-button 1:1 LinkCard) */}
               <div className="absolute top-2.5 right-2.5 z-10 flex items-center gap-1.5">
                 <div className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-black/65 backdrop-blur-md text-white text-[10px] font-medium shadow-sm">
                   <MessageNotif1Icon className="w-3 h-3 text-white/90" />
                   <span>{pinnedPost.commentsCount !== undefined ? pinnedPost.commentsCount : 0}</span>
                 </div>
-                <div className="p-1 rounded-lg bg-amber-500/30 text-amber-300 shadow-sm">
-                  <ArchiveIcon className="w-3 h-3 text-amber-300" />
-                </div>
+
+                {/* Blogger XML 1:1 Yer İmleri / Kaydet Butonu (.bm-button) */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    if (onTogglePin && pinnedPost.id) {
+                      e.stopPropagation();
+                      onTogglePin(pinnedPost.id, pinnedPost.isPinned);
+                    }
+                  }}
+                  className={`tIc bm-button p-1.5 rounded-lg backdrop-blur-md shadow-sm transition-all duration-200 active:scale-90 cursor-pointer ${
+                    pinnedPost.isPinned 
+                      ? 'added bg-amber-500/25 text-amber-300 shadow-[0_0_8px_rgba(251,191,36,0.3)]' 
+                      : 'bg-black/65 text-white/80 hover:text-[#60cdff] hover:bg-black/85'
+                  }`}
+                  data-save="Kaydet"
+                  data-saved="Kaydedildi"
+                  title={pinnedPost.isPinned ? 'Kaydedildi' : 'Kaydet'}
+                  aria-label={pinnedPost.isPinned ? 'Kaydedildi' : 'Kaydet'}
+                >
+                  {pinnedPost.isPinned ? (
+                    <ArchiveTickIcon className="w-3.5 h-3.5 text-amber-300" />
+                  ) : (
+                    <ArchiveAddIcon className="w-3.5 h-3.5 text-white/90" />
+                  )}
+                </button>
               </div>
 
               {/* Sol Alt: SAVED ✔ Rozeti */}
