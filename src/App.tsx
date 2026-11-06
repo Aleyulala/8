@@ -551,7 +551,8 @@ export const App: React.FC = () => {
 
           {activeView === 'links' && (
             <LinksView
-              title="All Links"
+              title="Tüm Bağlantılar"
+              subtitle="Tüm kayıtlı web bağlantılarınız ve yer imleriniz"
               links={currentViewLinks}
               collections={collections}
               collectionMap={collectionMap}
@@ -579,7 +580,7 @@ export const App: React.FC = () => {
 
           {activeView === 'pinned' && (
             <LinksView
-              title="Pinned Links"
+              title="Etkileşimler"
               subtitle="Favori ve sabitlenmiş yer imleriniz"
               links={currentViewLinks}
               collections={collections}
