@@ -32,8 +32,8 @@ export async function seedSavedMainData(force = false) {
   const seedSetting = await db.settings.get('seed_version');
 
   // Trigger migration if empty, if it still contains dummy collection, if force is requested, or if seed version not recorded
-  if (collectionsCount === 0 || dummyCol || force || !seedSetting || seedSetting.value !== 'saved-main-352-v3') {
-    if (collectionsCount === 0 || dummyCol || force || collectionsCount < 14 || !seedSetting || seedSetting.value !== 'saved-main-352-v3') {
+  if (collectionsCount === 0 || dummyCol || force || !seedSetting || seedSetting.value !== 'saved-main-352-clean-v4') {
+    if (collectionsCount === 0 || dummyCol || force || collectionsCount < 14 || !seedSetting || seedSetting.value !== 'saved-main-352-clean-v4') {
       await db.transaction('rw', db.links, db.collections, db.tags, db.settings, async () => {
         // Clear previous dummy data
         await db.links.clear();
@@ -88,10 +88,10 @@ export async function seedSavedMainData(force = false) {
         });
 
         await db.links.bulkAdd(linksToAdd);
-        await db.settings.put({ key: 'seed_version', value: 'saved-main-352-v3' });
+        await db.settings.put({ key: 'seed_version', value: 'saved-main-352-clean-v4' });
       });
     } else {
-      await db.settings.put({ key: 'seed_version', value: 'saved-main-352-v3' });
+      await db.settings.put({ key: 'seed_version', value: 'saved-main-352-clean-v4' });
     }
   }
 }

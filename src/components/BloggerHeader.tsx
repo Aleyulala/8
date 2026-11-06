@@ -53,7 +53,7 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
           title="Ana Sayfaya Git"
         >
           <span className="font-extrabold text-base sm:text-lg tracking-wider text-white group-hover:text-[#60cdff] transition-colors uppercase">
-            NSONE
+            SAVED
           </span>
         </div>
       </div>

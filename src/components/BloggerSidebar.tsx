@@ -9,7 +9,15 @@ import {
   Globe, 
   ExternalLink,
   Settings as SettingsIcon,
-  FileUp
+  FileUp,
+  Layers,
+  Zap,
+  MessageSquare,
+  FileText,
+  ClipboardList,
+  Eye,
+  ShieldCheck,
+  Send
 } from 'lucide-react';
 import { 
   HomeIcon,
@@ -65,6 +73,8 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
 }) => {
   const [collectionsOpen, setCollectionsOpen] = useState(true);
   const [tagsOpen, setTagsOpen] = useState(false);
+  const [hizmetlerOpen, setHizmetlerOpen] = useState(true);
+  const [klasorOpen, setKlasorOpen] = useState(true);
 
   return (
     <aside className="w-64 bg-[#1e1e1e] border-r border-[rgba(255,255,255,0.08)] flex flex-col justify-between h-[calc(100vh-60px)] shrink-0 text-xs select-none shadow-xs">
@@ -145,6 +155,125 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
             </div>
             <span className="text-[11px] text-[#989b9f] font-mono">{counts.trash}</span>
           </button>
+        </div>
+
+        {/* KLASÖR 1: Hizmetler (3 Buton) */}
+        <div className="space-y-1">
+          <div 
+            onClick={() => setHizmetlerOpen(!hizmetlerOpen)}
+            className="flex items-center justify-between px-2.5 py-1 text-[11px] font-bold text-[#989b9f] uppercase tracking-wider cursor-pointer hover:text-white transition-colors"
+          >
+            <div className="flex items-center gap-2">
+              <Layers className="w-3.5 h-3.5 text-[#60cdff]" />
+              <span>Hizmetler</span>
+            </div>
+            <div className="flex items-center gap-1 text-[#989b9f]">
+              {hizmetlerOpen ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
+            </div>
+          </div>
+
+          {hizmetlerOpen && (
+            <div className="space-y-0.5 pl-2">
+              <a
+                href="https://negronshow.blogspot.com/p/muhabbet.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+              >
+                <div className="flex items-center gap-2">
+                  <MessageSquare className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
+                  <span>Etkileşimler</span>
+                </div>
+                <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
+              </a>
+
+              <a
+                href="https://notebooklm.google.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+              >
+                <div className="flex items-center gap-2">
+                  <FileText className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
+                  <span>Notlarınız</span>
+                </div>
+                <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
+              </a>
+
+              <a
+                href="https://docs.google.com/forms/u/0/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+              >
+                <div className="flex items-center gap-2">
+                  <ClipboardList className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
+                  <span>Forumlarınız</span>
+                </div>
+                <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
+              </a>
+            </div>
+          )}
+        </div>
+
+        {/* KLASÖR 2: Klasör (3 Buton + New! Rozeti) */}
+        <div className="space-y-1">
+          <div 
+            onClick={() => setKlasorOpen(!klasorOpen)}
+            className="flex items-center justify-between px-2.5 py-1 text-[11px] font-bold text-[#989b9f] uppercase tracking-wider cursor-pointer hover:text-white transition-colors"
+          >
+            <div className="flex items-center gap-2">
+              <Zap className="w-3.5 h-3.5 text-amber-400" />
+              <span>Klasör</span>
+              <span className="px-1.5 py-0.2 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-500/40 text-[9px] font-bold lowercase">
+                New!
+              </span>
+            </div>
+            <div className="flex items-center gap-1 text-[#989b9f]">
+              {klasorOpen ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
+            </div>
+          </div>
+
+          {klasorOpen && (
+            <div className="space-y-0.5 pl-2">
+              <button
+                onClick={() => onSelectTab('links')}
+                className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group text-left cursor-pointer"
+              >
+                <div className="flex items-center gap-2">
+                  <Eye className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
+                  <span>İlgi Alanları</span>
+                </div>
+                <span className="text-[10px] text-[#9ca3af] font-mono">{counts.all}</span>
+              </button>
+
+              <a
+                href="https://aleyulala.github.io/saved/privacy.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+              >
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
+                  <span>Politikalar</span>
+                </div>
+                <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
+              </a>
+
+              <a
+                href="https://github.com/Aleyulala/saved/discussions/?pli=1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+              >
+                <div className="flex items-center gap-2">
+                  <Send className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
+                  <span>Geri Bildirim</span>
+                </div>
+                <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
+              </a>
+            </div>
+          )}
         </div>
 
         {/* Bölüm 2: Koleksiyonlar (14 Kategori) */}

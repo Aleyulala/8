@@ -13,6 +13,7 @@ import {
   Newspaper
 } from 'lucide-react';
 import { CollectionItem, LinkItem } from '../types';
+import { formatDate, getDomain, getFaviconUrl } from '../utils/favicon';
 import { DashboardItem } from './DashboardItem';
 import { LinkCard } from './LinkCard';
 import { BloggerHeroSlider } from './BloggerHeroSlider';
@@ -263,40 +264,53 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   loading="lazy"
                 />
               ) : (
-                <div className="w-full h-full min-h-[220px] flex items-center justify-center bg-gradient-to-tr from-sky-950 via-[#1c2430] to-[#252526]">
-                  <span className="text-4xl">💻</span>
+                <div className="w-full h-full min-h-[220px] flex flex-col items-center justify-center bg-gradient-to-tr from-sky-950 via-[#1c2430] to-[#252526] p-6 relative">
+                  <div className="absolute inset-0 bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] [background-size:14px_14px]" />
+                  <div className="relative z-10 w-16 h-16 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-center p-3 shadow-xl mb-2 group-hover:scale-105 transition-transform">
+                    <img
+                      src={getFaviconUrl(pinnedPost.url)}
+                      alt={getDomain(pinnedPost.url)}
+                      className="w-8 h-8 object-contain"
+                      onError={(e) => {
+                        (e.target as HTMLElement).style.display = 'none';
+                      }}
+                    />
+                  </div>
+                  <span className="relative z-10 text-xs font-mono text-white/80 font-bold tracking-wider">
+                    {getDomain(pinnedPost.url)}
+                  </span>
                 </div>
               )}
 
               {/* Gradient Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/60 pointer-events-none" />
 
-              {/* Sol Üst: 👁 74 */}
+              {/* Sol Üst: 👁 Görüntülenme */}
               <div className="absolute top-2.5 left-2.5 z-10">
                 <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md text-white text-[10px] font-medium border border-white/10 shadow-sm">
                   <Eye className="w-3 h-3 text-[#60cdff]" />
-                  <span>{pinnedPost.views || 74}</span>
+                  <span>{pinnedPost.views || Math.abs(pinnedPost.title.length * 3 + 12)}</span>
                 </div>
               </div>
 
-              {/* Sağ Üst: 💬 6 ve 🔖 */}
+              {/* Sağ Üst: 💬 Yorumlar ve 🔖 Sabit */}
               <div className="absolute top-2.5 right-2.5 z-10 flex items-center gap-1.5">
                 <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md text-white text-[10px] font-medium border border-white/10 shadow-sm">
                   <MessageSquare className="w-2.5 h-2.5 text-white/90" />
-                  <span>{pinnedPost.commentsCount !== undefined ? pinnedPost.commentsCount : 6}</span>
+                  <span>{pinnedPost.commentsCount !== undefined ? pinnedPost.commentsCount : 0}</span>
                 </div>
                 <div className="p-1 rounded-md bg-amber-500/30 text-amber-300 border border-amber-500/50 shadow-sm">
                   <Bookmark className="w-3 h-3 fill-current text-amber-300" />
                 </div>
               </div>
 
-              {/* Sol Alt: AI ✔ */}
+              {/* Sol Alt: SAVED ✔ Rozeti */}
               <div className="absolute bottom-2.5 left-2.5 z-10">
                 <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md text-white text-[10px] font-bold border border-white/15 shadow-sm">
                   <span className="w-3.5 h-3.5 rounded-full bg-[#1e1e1e] flex items-center justify-center text-[7px] text-[#60cdff] font-extrabold border border-white/20">
-                    A
+                    S
                   </span>
-                  <span>{pinnedPost.authorName || 'AI'}</span>
+                  <span>{pinnedPost.authorName || 'SAVED'}</span>
                   <Verify1Icon className="w-3 h-3 text-[#60cdff]" />
                 </div>
               </div>
@@ -306,7 +320,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div className="p-4 sm:p-5 flex flex-col justify-between flex-1 gap-3">
               <div className="space-y-2">
                 <div className="text-[11px] text-[#9ca3af] lowercase font-medium">
-                  {pinnedPost.tags[0] || 'videolar'}
+                  {pinnedPost.tags[0] || (pinnedPost.collectionId ? collectionMap.get(pinnedPost.collectionId)?.name.toLowerCase() : 'genel')}
                 </div>
 
                 <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-[#60cdff] leading-snug transition-colors">
@@ -327,7 +341,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                     Yayınlandı!
                   </span>
-                  <span className="text-[11px] text-[#71717a]">Eki 29, 2026</span>
+                  <span className="text-[11px] text-[#71717a]">{formatDate(pinnedPost.createdAt)}</span>
                 </div>
 
                 <span className="text-xs text-[#60cdff] group-hover:underline font-medium">

@@ -13,6 +13,7 @@ import {
   MessageCircle
 } from 'lucide-react';
 import { CollectionItem, LinkItem, TagItem } from '../types';
+import { formatDate, getDomain, getFaviconUrl } from '../utils/favicon';
 
 interface BloggerRightSidebarProps {
   pinnedLinks: LinkItem[];
@@ -134,12 +135,28 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
           >
             {/* Büyük Thumbnail */}
             <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden bg-[#1e1e1e]">
-              <img
-                src={featuredFirst.thumbnail || "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiJhv3IYtlwon8oo7nnuC9EM4IlJ51X4im6kgttJGrLqim12ty5I1Y6tzvfDBmbg6qQi_qxy09MCU8nzxIdc43r0TmL_1EyE_sCdhWAic2ImYAW6IT5A0Dm3MjBvzUgRcWpqNLPcdmq9E0h_9zycwiTK5Sz0E15FDZkXCHH_UzakSP3ln854_yxLhdS61ap/s1600/Gemini_Generated_Image_jpdg1njpdg1njpdg.jpg"}
-                alt={featuredFirst.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                loading="lazy"
-              />
+              {featuredFirst.thumbnail ? (
+                <img
+                  src={featuredFirst.thumbnail}
+                  alt={featuredFirst.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                  loading="lazy"
+                />
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-tr from-sky-950 via-[#1c2430] to-[#252526] p-4 relative">
+                  <div className="w-10 h-10 rounded-xl bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center p-2 shadow-lg mb-1">
+                    <img
+                      src={getFaviconUrl(featuredFirst.url)}
+                      alt={getDomain(featuredFirst.url)}
+                      className="w-5 h-5 object-contain"
+                      onError={(e) => {
+                        (e.target as HTMLElement).style.display = 'none';
+                      }}
+                    />
+                  </div>
+                  <span className="text-[10px] text-white/70 font-mono">{getDomain(featuredFirst.url)}</span>
+                </div>
+              )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/60 pointer-events-none" />
 
               {/* Badges */}
@@ -153,7 +170,7 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
               <div className="absolute top-2 right-2 z-10 flex items-center gap-1.5">
                 <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md text-white text-[10px] font-medium border border-white/10">
                   <MessageSquare className="w-2.5 h-2.5 text-white/90" />
-                  <span>{featuredFirst.commentsCount !== undefined ? featuredFirst.commentsCount : 6}</span>
+                  <span>{featuredFirst.commentsCount !== undefined ? featuredFirst.commentsCount : 0}</span>
                 </div>
                 <div className="p-1 rounded-md bg-black/65 backdrop-blur-md text-white/80 border border-white/10">
                   <Bookmark className="w-3 h-3 fill-current text-amber-300" />
@@ -163,9 +180,9 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
               <div className="absolute bottom-2 left-2 z-10">
                 <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md text-white text-[10px] font-bold border border-white/15">
                   <span className="w-3 h-3 rounded-full bg-[#1e1e1e] flex items-center justify-center text-[7px] text-[#60cdff] font-extrabold">
-                    A
+                    S
                   </span>
-                  <span>AI</span>
+                  <span>SAVED</span>
                   <Verify1Icon className="w-3 h-3 text-[#60cdff]" />
                 </div>
               </div>
@@ -174,7 +191,7 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
             {/* Metin İçeriği */}
             <div className="space-y-1">
               <div className="text-[11px] text-[#9ca3af]">
-                Ek 29 — {featuredFirst.tags[0] || 'videolar'}
+                {formatDate(featuredFirst.createdAt)} — {featuredFirst.tags[0] || 'genel'}
               </div>
 
               <h3 className="font-bold text-sm text-white group-hover:text-[#60cdff] line-clamp-2 leading-snug transition-colors">
@@ -194,7 +211,7 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
         <div className="space-y-3 pt-1">
           {listPosts.map((post, idx) => {
             const rank = idx + 2;
-            const category = post.tags[0] || 'oyun';
+            const category = post.tags[0] || 'genel';
             return (
               <article
                 key={post.id || idx}
@@ -205,8 +222,7 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
                 className="group cursor-pointer space-y-1 border-b border-[#2d2d30] pb-3 last:border-b-0 transition-colors"
               >
                 <div className="text-[11px] text-[#71717a] font-medium">
-                  {idx === 0 ? 'Ek 22 — ' : idx === 1 ? 'Ek 13 — ' : idx === 2 ? 'Ağu 23 — ' : 'Oca 26 — '}
-                  <span className="text-[#9ca3af]">{category}</span>
+                  {formatDate(post.createdAt)} — <span className="text-[#9ca3af]">{category}</span>
                 </div>
 
                 <h4 className="font-semibold text-xs sm:text-sm text-white/90 group-hover:text-[#60cdff] leading-snug transition-colors line-clamp-2">
