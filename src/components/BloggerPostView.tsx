@@ -521,10 +521,9 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
               <span className="text-[11px] text-[#71717a]">{currentAuthor.role}</span>
             </div>
 
-            <div 
-              className="admA text-xs text-[#d4d4d4] leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: currentAuthor.bio + ` Soru, öneri ve sohbet için <a href="${currentAuthor.communityUrl}" target="_blank" rel="noopener noreferrer" class="text-[#60cdff] hover:underline font-semibold">Topluluk</a> kanalımıza katılabilirsiniz.` }}
-            />
+            <div className="admA text-xs text-[#d4d4d4] leading-relaxed">
+              {currentAuthor.bio}
+            </div>
 
             <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
               <a
