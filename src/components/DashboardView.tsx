@@ -17,6 +17,7 @@ import { DashboardItem } from './DashboardItem';
 import { LinkCard } from './LinkCard';
 import { BloggerHeroSlider } from './BloggerHeroSlider';
 import { BloggerNotificationBar } from './BloggerNotificationBar';
+import { MediaItem } from './UniversalMediaModal';
 import { 
   Link21Icon, 
   Folder2Icon, 
@@ -50,6 +51,7 @@ interface DashboardViewProps {
   onToggleArchive: (id: number, current: boolean) => void;
   onMoveToTrash: (id: number) => void;
   onEditLink: (link: LinkItem) => void;
+  onOpenMedia?: (items: MediaItem[], initialIndex?: number) => void;
 }
 
 // Reusable Category Card Slider Section (.cat-showcase-carousel)
@@ -174,7 +176,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onToggleRead,
   onToggleArchive,
   onMoveToTrash,
-  onEditLink
+  onEditLink,
+  onOpenMedia
 }) => {
   const activeLinks = links.filter(l => !l.isTrash && !l.isArchived);
   
@@ -339,6 +342,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           collections={collections}
           onSelectCollection={onViewCollection}
           onFilterTag={onSelectTag}
+          onOpenMedia={onOpenMedia}
         />
       </section>
 

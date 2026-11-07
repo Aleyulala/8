@@ -26,6 +26,7 @@ export const UniversalMediaModal: React.FC<UniversalMediaModalProps> = ({
   const [panPos, setPanPos] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const dragStartRef = useRef({ x: 0, y: 0, posX: 0, posY: 0 });
+  const didDragRef = useRef(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -33,6 +34,7 @@ export const UniversalMediaModal: React.FC<UniversalMediaModalProps> = ({
       setIsZoomed(false);
       setIsWidescreen(false);
       setPanPos({ x: 0, y: 0 });
+      didDragRef.current = false;
     }
   }, [isOpen, initialIndex, items]);
 
@@ -95,6 +97,7 @@ export const UniversalMediaModal: React.FC<UniversalMediaModalProps> = ({
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!isZoomed) return;
     setIsDragging(true);
+    didDragRef.current = false;
     dragStartRef.current = {
       x: e.clientX,
       y: e.clientY,
@@ -107,6 +110,9 @@ export const UniversalMediaModal: React.FC<UniversalMediaModalProps> = ({
     if (!isDragging || !isZoomed) return;
     const dx = e.clientX - dragStartRef.current.x;
     const dy = e.clientY - dragStartRef.current.y;
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+      didDragRef.current = true;
+    }
     setPanPos({
       x: dragStartRef.current.posX + dx,
       y: dragStartRef.current.posY + dy
@@ -115,6 +121,11 @@ export const UniversalMediaModal: React.FC<UniversalMediaModalProps> = ({
 
   const handleMouseUp = () => {
     setIsDragging(false);
+  };
+
+  const handleToggleZoom = () => {
+    setIsZoomed((prev) => !prev);
+    setPanPos({ x: 0, y: 0 });
   };
 
   // YouTube embed url formatter
@@ -261,12 +272,27 @@ export const UniversalMediaModal: React.FC<UniversalMediaModalProps> = ({
                     transform: `scale(1.85) translate(${panPos.x / 1.85}px, ${panPos.y / 1.85}px)`,
                     cursor: isDragging ? 'grabbing' : 'grab'
                   }
-                : undefined
+                : { cursor: 'zoom-in' }
             }
             onMouseDown={handleMouseDown}
-            onDoubleClick={() => {
-              setIsZoomed(prev => !prev);
-              setPanPos({ x: 0, y: 0 });
+            onClick={(e) => {
+              e.stopPropagation();
+              if (didDragRef.current) {
+                didDragRef.current = false;
+                return;
+              }
+              handleToggleZoom();
+            }}
+            onDoubleClick={(e) => {
+              e.stopPropagation();
+              handleToggleZoom();
+            }}
+            onWheel={(e) => {
+              if (e.deltaY < 0 && !isZoomed) {
+                handleToggleZoom();
+              } else if (e.deltaY > 0 && isZoomed) {
+                handleToggleZoom();
+              }
             }}
             draggable={false}
           />

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CollectionItem } from '../types';
 import { TagBloggerIcon } from './BloggerIcons';
+import { MediaItem } from './UniversalMediaModal';
 
 export interface BloggerSlide {
   id: string;
@@ -112,7 +113,7 @@ interface BloggerHeroSliderProps {
   collections?: CollectionItem[];
   onSelectCollection?: (id: number) => void;
   onFilterTag?: (tag: string) => void;
-  onOpenMedia?: (slide: BloggerSlide) => void;
+  onOpenMedia?: (items: MediaItem[], initialIndex?: number) => void;
 }
 
 export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
@@ -125,6 +126,7 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
   const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
+  const didDrag = useRef(false);
 
   const activeSlide = BLOGGER_SLIDES[currentIndex];
 
@@ -153,10 +155,14 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
     touchEndX.current = null;
+    didDrag.current = false;
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
     touchEndX.current = e.touches[0].clientX;
+    if (touchStartX.current !== null && Math.abs(touchStartX.current - touchEndX.current) > 10) {
+      didDrag.current = true;
+    }
   };
 
   const handleTouchEnd = () => {
@@ -181,11 +187,15 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
   const handleMouseDown = (e: React.MouseEvent) => {
     isMouseDown.current = true;
     mouseStartX.current = e.clientX;
+    didDrag.current = false;
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isMouseDown.current || mouseStartX.current === null) return;
     const diff = mouseStartX.current - e.clientX;
+    if (Math.abs(diff) > 10) {
+      didDrag.current = true;
+    }
     if (Math.abs(diff) > 45) {
       if (diff > 0) handleNext();
       else handlePrev();
@@ -197,6 +207,22 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
   const handleMouseUp = () => {
     isMouseDown.current = false;
     mouseStartX.current = null;
+  };
+
+  const handleOpenViewer = (index: number) => {
+    if (onOpenMedia) {
+      const items: MediaItem[] = BLOGGER_SLIDES.map((s) => ({
+        type: 'image',
+        url: s.imageUrl,
+        title: s.title
+      }));
+      onOpenMedia(items, index);
+    }
+  };
+
+  const handleSlideClick = (index: number) => {
+    if (didDrag.current) return;
+    handleOpenViewer(index);
   };
 
   // Navigate to category/collection on click
@@ -219,7 +245,7 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
   return (
     <div className="w-full relative select-none">
       <div 
-        className="relative w-full overflow-hidden rounded-lg bg-[#18181b] shadow-md group aspect-[16/9] sm:aspect-[21/9] md:aspect-[2.4/1] cursor-grab active:cursor-grabbing touch-pan-y"
+        className="relative w-full overflow-hidden rounded-lg bg-[#18181b] shadow-md group aspect-[16/9] sm:aspect-[21/9] md:aspect-[2.4/1] cursor-pointer touch-pan-y"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => {
           setIsPaused(false);
@@ -231,6 +257,7 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
+        onClick={() => handleSlideClick(currentIndex)}
       >
         {/* Slides list */}
         {BLOGGER_SLIDES.map((slide, idx) => {
@@ -246,7 +273,7 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
               <img
                 src={slide.imageUrl}
                 alt={slide.title}
-                className="w-full h-full object-cover object-center transform scale-100 transition-transform duration-1000 ease-out"
+                className="w-full h-full object-cover object-center transform scale-100 group-hover:scale-102 transition-transform duration-700 ease-out"
                 loading={idx === 0 ? 'eager' : 'lazy'}
                 draggable={false}
                 onError={(e) => {
@@ -263,6 +290,27 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
             </div>
           );
         })}
+
+        {/* Top-Right: Fullscreen / Zoom Lightbox Action Button */}
+        <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleOpenViewer(currentIndex);
+            }}
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 hover:bg-black/90 backdrop-blur-md text-white/90 hover:text-white flex items-center justify-center transition-all duration-200 active:scale-95 shadow-lg border border-white/10 hover:border-white/25 cursor-pointer"
+            title="Görseli Yakınlaştır ve Tam Ekranda Görüntüle (Zoom)"
+            aria-label="Tam Ekran Vitrini"
+          >
+            <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              <line x1="11" y1="8" x2="11" y2="14" />
+              <line x1="8" y1="11" x2="14" y2="11" />
+            </svg>
+          </button>
+        </div>
 
         {/* Bottom-Left: Blogger Category Badge (.sldT - e.g. "◎ Programlama") */}
         <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 z-20">

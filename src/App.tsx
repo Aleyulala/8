@@ -615,6 +615,7 @@ export const App: React.FC = () => {
                       setEditingLink(link);
                       setIsAddModalOpen(true);
                     }}
+                    onOpenMedia={handleOpenMedia}
                   />
                 )}
 
