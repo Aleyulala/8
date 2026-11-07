@@ -42,7 +42,7 @@ export const TagsView: React.FC<TagsViewProps> = ({
             <button
               key={tag.name}
               onClick={() => onSelectTag(tag.name)}
-              className="p-3.5 rounded-lg bg-[#252526] hover:bg-[#28282b] border border-transparent cursor-pointer transition-all flex items-center justify-between text-left group shadow-sm"
+              className="p-3.5 rounded-lg bg-[#252526] hover:bg-[#28282b] border border-transparent cursor-pointer transition-all flex items-center justify-between text-left group shadow-none"
             >
               <div className="flex items-center gap-2 truncate">
                 <span className="text-neutral-500 font-mono">#</span>
@@ -50,8 +50,8 @@ export const TagsView: React.FC<TagsViewProps> = ({
                   {tag.name}
                 </span>
               </div>
-              <span className="text-xs font-mono font-medium px-2 py-0.5 rounded-md bg-[#1f1f1f] text-[#a3a3a3] shrink-0 ml-2">
-                {count}
+              <span className="text-xs font-normal text-[#9ca3af] opacity-80 shrink-0 ml-2 shadow-none bg-transparent">
+                ({count})
               </span>
             </button>
           );

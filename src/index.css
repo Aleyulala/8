@@ -67,9 +67,22 @@ textarea {
   min-height: 80px;
 }
 
-/* Blogger XML Etiketler (.lbL, .pLbls) Corner & Radius Tutarlılığı (8px) */
-.pLbls a, .lbL > *, .c-tag {
+/* Blogger XML Etiketler (.lbL, .pLbls) ve .pGV (Views, Selamlama) Corner & Radius Tutarlılığı (8px) */
+.pLbls a, .lbL > *, .c-tag, .pGV > * {
   border-radius: 8px !important;
+}
+
+/* Etiketlerde ve etiket rakamlarında/sayaçlarında shadow tamamen sıfırlandı */
+.lbL > *,
+#Label01 .lbL > *,
+.c-tag,
+.tag-badge,
+.tag-count,
+.pLbls a,
+.pGV > * {
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
 }
 
 /* Tarayıcı varsayılan ekstra outline'ını sıfırla - Tek odak göstergesi: #tv-focus-dot */

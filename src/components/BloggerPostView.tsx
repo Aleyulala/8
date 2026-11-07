@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { 
-  ArrowLeft, 
   ExternalLink, 
   Star, 
   Calendar, 
@@ -188,9 +187,9 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
         </div>
       )}
 
-      {/* 2. Page Views & Greetings Rozetleri (.pGV - XML 1:1 Fotoğraftaki Birebir Konum) */}
+      {/* 2. Page Views & Greetings Rozetleri (.pGV - XML 1:1 Fotoğraftaki Birebir Konum, Etiketlerle Aynı Köşe Yuvarlaklığı) */}
       <div className="pGV flex items-center gap-2 pt-0.5">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#252526] hover:bg-[#333333] border border-white/5 text-xs text-[#d4d4d4] font-medium transition-colors shadow-sm select-none">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#252526] hover:bg-[#333333] border border-white/5 text-xs text-[#d4d4d4] font-medium transition-colors select-none shadow-none">
           <BloggerEyeIcon className="w-3.5 h-3.5 text-[#38bdf8]" />
           <span>{link.views || 76} views</span>
         </div>
@@ -198,7 +197,7 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
         <button 
           type="button"
           onClick={handleToggleGreeting}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#252526] hover:bg-[#333333] border border-white/5 text-xs text-[#d4d4d4] font-medium transition-colors cursor-pointer shadow-sm select-none active:scale-95"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#252526] hover:bg-[#333333] border border-white/5 text-xs text-[#d4d4d4] font-medium transition-colors cursor-pointer select-none active:scale-95 shadow-none"
           title="Selamlama Değiştir"
         >
           <EmojiHappyIcon className="w-3.5 h-3.5 text-amber-400" />
@@ -226,17 +225,8 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
           </span>
         </div>
 
-        {/* Sağ Taraf Aksiyon Butonları & Geri Dön */}
+        {/* Sağ Taraf Aksiyon Butonları */}
         <div className="flex items-center gap-1.5">
-          <button
-            onClick={onBack}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#252526] hover:bg-[#333333] text-white text-xs font-medium transition-colors active:scale-95 cursor-pointer"
-            title="Listeye Geri Dön"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Geri Dön</span>
-          </button>
-
           {/* Blogger XML 1:1 Yer İmleri / Kaydet Butonu (.bm-button) */}
           <button
             type="button"
@@ -480,7 +470,7 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
 
       {/* 5. Etiketler (.lbHt - Blogger Stili) */}
       {link.tags && link.tags.length > 0 && (
-        <div className="rounded-lg bg-[#252526] border border-transparent p-5 space-y-2.5 shadow-md">
+        <div className="rounded-lg bg-[#252526] border border-transparent p-5 space-y-2.5 shadow-none">
           <h4 className="text-xs font-bold uppercase tracking-wider text-[#989b9f]">
             İlgili Etiketler
           </h4>
@@ -488,7 +478,7 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
             {link.tags.map((tag) => (
               <span
                 key={tag}
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#38bdf8] text-[#d4d4d4] hover:text-[#0f172a] border border-transparent hover:border-[#38bdf8] text-xs font-medium transition-all"
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#38bdf8] text-[#d4d4d4] hover:text-[#0f172a] border border-transparent hover:border-[#38bdf8] text-xs font-medium transition-all shadow-none"
               >
                 <span>#{tag}</span>
               </span>

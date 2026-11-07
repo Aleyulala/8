@@ -468,10 +468,10 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
                   onSelectTag(t.name);
                   if (onCloseDrawer) onCloseDrawer();
                 }}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#252526] hover:bg-[#2d2d30] text-[#d4d4d4] hover:text-[#60cdff] border border-transparent text-xs font-medium transition-all shrink-0 active:scale-95 shadow-sm cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#252526] hover:bg-[#2d2d30] text-[#d4d4d4] hover:text-[#60cdff] border border-transparent text-xs font-medium transition-all shrink-0 active:scale-95 shadow-none cursor-pointer"
               >
                 <span>{t.name}</span>
-                <span className="text-[10px] text-[#71717a] font-mono px-1.5 py-0.2 rounded-md bg-[#1e1e1e]">({count})</span>
+                <span className="text-[11px] text-[#9ca3af] opacity-80 font-normal ml-0.5 shadow-none bg-transparent">({count})</span>
               </button>
             );
           })}
