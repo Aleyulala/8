@@ -79,7 +79,7 @@ export const BloggerFooter: React.FC<BloggerFooterProps> = ({
                   href="https://negronshow.blogspot.com/feeds/posts/default?alt=rss"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs text-[#989b9f] hover:text-[#60cdff] transition-colors"
+                  className="inline-flex items-center gap-1.5 text-xs text-[#989b9f] hover:text-[var(--linkC,#9aa0a6)] transition-colors"
                   title="Feed"
                 >
                   <Rss className="w-3.5 h-3.5" />

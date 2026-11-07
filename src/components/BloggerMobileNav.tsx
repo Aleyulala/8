@@ -82,9 +82,9 @@ export const BloggerMobileNav: React.FC<BloggerMobileNavProps> = ({
                   title={item.label}
                   className={`group relative inline-flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200 active:scale-95 ${
                     item.isActive
-                      ? 'bg-[#38bdf8]/15 text-[#38bdf8] font-bold shadow-inner'
+                      ? 'bg-[var(--linkC,#9aa0a6)]/15 text-[var(--linkC,#9aa0a6)] font-bold shadow-inner'
                       : item.isSpecial
-                        ? 'text-white hover:text-[#38bdf8] hover:bg-[#27272a]'
+                        ? 'text-white hover:text-[var(--linkC,#9aa0a6)] hover:bg-[#27272a]'
                         : 'text-[#a1a1aa] hover:text-white hover:bg-[#27272a]'
                   }`}
                 >

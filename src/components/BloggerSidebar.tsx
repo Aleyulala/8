@@ -13,7 +13,6 @@ import {
   ArrowSwapHorizontalIcon,
   SearchNormalIcon,
   SpeedometerIcon,
-  CloseIcon,
   ChevronDownIcon,
   PlusNavIcon,
   InstagramIcon, 
@@ -76,11 +75,11 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
               <li className="relative group flex justify-center">
                 <button
                   onClick={() => onSelectTab('dashboard')}
-                  className="w-11 h-11 flex items-center justify-center rounded-xl transition-all cursor-pointer text-[#9ca3af] hover:bg-[#252526] hover:text-white"
+                  className="w-11 h-11 flex items-center justify-center rounded-xl transition-all cursor-pointer text-[#9ca3af] hover:bg-[#252526] hover:text-[var(--linkC,#9aa0a6)]"
                   title="Ana Sayfa"
                   aria-label="Ana Sayfa"
                 >
-                  <HomeIcon className="w-5 h-5 text-[#38bdf8]" />
+                  <HomeIcon className="w-5 h-5 text-[var(--linkC,#9aa0a6)]" />
                 </button>
                 {/* Uçan Etiket (Flyout Tooltip) */}
                 <div className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2.5 py-1.5 rounded-lg bg-[#252526] border border-white/10 text-white text-xs font-semibold whitespace-nowrap shadow-2xl opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50">
@@ -95,19 +94,19 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                 onClick={() => onSelectTab('pinned')}
                 className={`w-11 h-11 flex items-center justify-center rounded-xl transition-all cursor-pointer relative ${
                   currentTab === 'pinned'
-                    ? 'bg-[#252526] text-[#60cdff] shadow-sm ring-1 ring-[#60cdff]/30'
-                    : 'text-[#9ca3af] hover:bg-[#252526] hover:text-[#60cdff]'
+                    ? 'bg-[#252526] text-[var(--linkC,#9aa0a6)] shadow-sm ring-1 ring-[var(--linkC,#9aa0a6)]/30'
+                    : 'text-[#9ca3af] hover:bg-[#252526] hover:text-[var(--linkC,#9aa0a6)]'
                 }`}
                 title="Hizmetler"
                 aria-label="Hizmetler"
               >
-                <Hierarchy4Icon className="w-5 h-5 text-[#60cdff]" />
+                <Hierarchy4Icon className="w-5 h-5 text-[var(--linkC,#9aa0a6)]" />
                 {/* xml 1:1 li.nt bildirim noktası */}
-                <span className="absolute top-2 left-2 w-2 h-2 rounded-full bg-[#60cdff] shadow-[0_0_8px_#60cdff]" />
+                <span className="absolute top-2 left-2 w-2 h-2 rounded-full bg-[var(--linkC,#9aa0a6)] shadow-[0_0_8px_var(--linkC,#9aa0a6)]" />
               </button>
               {/* Uçan Menü (Flyout Submenu) */}
               <div className="absolute left-full top-0 ml-2 w-52 p-2 rounded-xl bg-[#252526] border border-white/10 shadow-2xl opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-150 z-50 space-y-1">
-                <div className="px-2.5 py-1 text-xs font-bold text-[#60cdff] border-b border-white/10 flex items-center gap-2">
+                <div className="px-2.5 py-1 text-xs font-bold text-[var(--linkC,#9aa0a6)] border-b border-white/10 flex items-center gap-2">
                   <Hierarchy4Icon className="w-4 h-4" />
                   <span>Hizmetler</span>
                 </div>
@@ -115,11 +114,11 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                 <button
                   onClick={() => onSelectTab('pinned')}
                   className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs transition-colors cursor-pointer ${
-                    currentTab === 'pinned' ? 'bg-[#1e1e1e] text-[#38bdf8] font-bold' : 'text-[#d4d4d4] hover:bg-[#1e1e1e] hover:text-[#38bdf8]'
+                    currentTab === 'pinned' ? 'bg-[#1e1e1e] text-[var(--linkC,#9aa0a6)] font-bold' : 'text-[#d4d4d4] hover:bg-[#1e1e1e] hover:text-[var(--linkC,#9aa0a6)]'
                   }`}
                 >
                   <span className="flex items-center gap-2">
-                    <MessageNotif1Icon className="w-4 h-4 text-[#60cdff]" />
+                    <MessageNotif1Icon className="w-4 h-4 text-[var(--linkC,#9aa0a6)]" />
                     Etkileşimler
                   </span>
                   <span className="text-[10px] text-[#9ca3af] font-mono">{counts.pinned}</span>
@@ -129,7 +128,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                   href="https://notebooklm.google.com/"
                   target="_blank"
                   rel="nofollow noreferrer noopener"
-                  className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#1e1e1e] hover:text-[#60cdff] transition-colors"
+                  className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#1e1e1e] hover:text-[var(--linkC,#9aa0a6)] transition-colors"
                 >
                   <span className="flex items-center gap-2">
                     <Edit3Icon className="w-4 h-4 text-[#9ca3af]" />
@@ -141,7 +140,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                   href="https://docs.google.com/forms/u/0/"
                   target="_blank"
                   rel="nofollow noreferrer noopener"
-                  className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#1e1e1e] hover:text-[#60cdff] transition-colors"
+                  className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#1e1e1e] hover:text-[var(--linkC,#9aa0a6)] transition-colors"
                 >
                   <span className="flex items-center gap-2">
                     <Profile2UserIcon className="w-4 h-4 text-[#9ca3af]" />
@@ -157,27 +156,27 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                 onClick={() => onSelectTab('links')}
                 className={`w-11 h-11 flex items-center justify-center rounded-xl transition-all cursor-pointer relative ${
                   currentTab === 'links' || currentTab === 'privacy'
-                    ? 'bg-[#252526] text-amber-400 shadow-sm ring-1 ring-amber-400/30'
-                    : 'text-[#9ca3af] hover:bg-[#252526] hover:text-amber-400'
+                    ? 'bg-[#252526] text-[var(--linkC,#9aa0a6)] shadow-sm ring-1 ring-[var(--linkC,#9aa0a6)]/30'
+                    : 'text-[#9ca3af] hover:bg-[#252526] hover:text-[var(--linkC,#9aa0a6)]'
                 }`}
                 title="Klasör"
                 aria-label="Klasör"
               >
-                <FlashIcon className="w-5 h-5 text-amber-400" />
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
+                <FlashIcon className="w-5 h-5 text-[var(--linkC,#9aa0a6)]" />
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[var(--linkC,#9aa0a6)] shadow-[0_0_6px_var(--linkC,#9aa0a6)]" />
               </button>
               {/* Uçan Menü (Flyout Submenu) */}
               <div className="absolute left-full top-0 ml-2 w-52 p-2 rounded-xl bg-[#252526] border border-white/10 shadow-2xl opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-150 z-50 space-y-1">
-                <div className="px-2.5 py-1 text-xs font-bold text-amber-400 border-b border-white/10 flex items-center gap-2">
+                <div className="px-2.5 py-1 text-xs font-bold text-[var(--linkC,#9aa0a6)] border-b border-white/10 flex items-center gap-2">
                   <FlashIcon className="w-4 h-4" />
                   <span>Klasör</span>
-                  <span className="ml-auto text-[#60cdff] text-[11px] font-bold">New!</span>
+                  <span className="ml-auto text-[var(--linkC,#9aa0a6)] text-[11px] font-bold">New!</span>
                 </div>
                 {/* 1. İlgi Alanları */}
                 <button
                   onClick={() => onSelectTab('links')}
                   className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs transition-colors cursor-pointer ${
-                    currentTab === 'links' ? 'bg-[#1e1e1e] text-[#38bdf8] font-bold' : 'text-[#d4d4d4] hover:bg-[#1e1e1e] hover:text-[#38bdf8]'
+                    currentTab === 'links' ? 'bg-[#1e1e1e] text-[var(--linkC,#9aa0a6)] font-bold' : 'text-[#d4d4d4] hover:bg-[#1e1e1e] hover:text-[var(--linkC,#9aa0a6)]'
                   }`}
                 >
                   <span className="flex items-center gap-2">
@@ -190,7 +189,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                 <button
                   onClick={() => onSelectTab('privacy')}
                   className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs transition-colors cursor-pointer ${
-                    currentTab === 'privacy' ? 'bg-[#1e1e1e] text-[#38bdf8] font-bold' : 'text-[#d4d4d4] hover:bg-[#1e1e1e] hover:text-[#38bdf8]'
+                    currentTab === 'privacy' ? 'bg-[#1e1e1e] text-[var(--linkC,#9aa0a6)] font-bold' : 'text-[#d4d4d4] hover:bg-[#1e1e1e] hover:text-[var(--linkC,#9aa0a6)]'
                   }`}
                 >
                   <span className="flex items-center gap-2">
@@ -204,7 +203,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                   href="https://github.com/Aleyulala/saved/discussions/?pli=1"
                   target="_blank"
                   rel="nofollow noreferrer noopener"
-                  className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#1e1e1e] hover:text-[#60cdff] transition-colors"
+                  className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#1e1e1e] hover:text-[var(--linkC,#9aa0a6)] transition-colors"
                 >
                   <span className="flex items-center gap-2">
                     <SmsEditIcon className="w-4 h-4 text-[#9ca3af]" />
@@ -223,15 +222,15 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
             <li className="relative group flex justify-center">
               <button
                 onClick={() => setGelistiriciOpen(!gelistiriciOpen)}
-                className="w-11 h-11 flex items-center justify-center rounded-xl transition-all cursor-pointer text-[#9ca3af] hover:bg-[#252526] hover:text-[#60cdff]"
+                className="w-11 h-11 flex items-center justify-center rounded-xl transition-all cursor-pointer text-[#9ca3af] hover:bg-[#252526] hover:text-[var(--linkC,#9aa0a6)]"
                 title="Geliştiriciler"
                 aria-label="Geliştiriciler"
               >
-                <FolderCodeIcon className="w-5 h-5 text-[#60cdff]" />
+                <FolderCodeIcon className="w-5 h-5 text-[var(--linkC,#9aa0a6)]" />
               </button>
               {/* Uçan Menü (Flyout Submenu) */}
               <div className="absolute left-full top-0 ml-2 w-52 p-2 rounded-xl bg-[#252526] border border-white/10 shadow-2xl opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-150 z-50 space-y-1">
-                <div className="px-2.5 py-1 text-xs font-bold text-[#60cdff] border-b border-white/10 flex items-center gap-2">
+                <div className="px-2.5 py-1 text-xs font-bold text-[var(--linkC,#9aa0a6)] border-b border-white/10 flex items-center gap-2">
                   <FolderCodeIcon className="w-4 h-4" />
                   <span>Geliştiriciler</span>
                 </div>
@@ -243,20 +242,20 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                     const next = current === 'rtl' ? 'ltr' : 'rtl';
                     document.documentElement.setAttribute('dir', next);
                   }}
-                  className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#1e1e1e] hover:text-[#60cdff] transition-colors cursor-pointer"
+                  className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#1e1e1e] hover:text-[var(--linkC,#9aa0a6)] transition-colors cursor-pointer"
                 >
                   <span className="flex items-center gap-2">
                     <ArrowSwapHorizontalIcon className="w-4 h-4 text-[#9ca3af]" />
                     Ters Çevir
                   </span>
-                  <span className="text-[#60cdff] text-[10px] font-bold">New!</span>
+                  <span className="text-[var(--linkC,#9aa0a6)] text-[10px] font-bold">New!</span>
                 </button>
                 {/* 2. Detaylı Ara */}
                 <a
                   href="https://search.google.com/test/rich-results"
                   target="_blank"
                   rel="nofollow noreferrer noopener"
-                  className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#1e1e1e] hover:text-[#60cdff] transition-colors"
+                  className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#1e1e1e] hover:text-[var(--linkC,#9aa0a6)] transition-colors"
                 >
                   <span className="flex items-center gap-2">
                     <SearchNormalIcon className="w-4 h-4 text-[#9ca3af]" />
@@ -268,7 +267,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                   href="https://pagespeed.web.dev/analysis"
                   target="_blank"
                   rel="nofollow noreferrer noopener"
-                  className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#1e1e1e] hover:text-[#60cdff] transition-colors"
+                  className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#1e1e1e] hover:text-[var(--linkC,#9aa0a6)] transition-colors"
                 >
                   <span className="flex items-center gap-2">
                     <SpeedometerIcon className="w-4 h-4 text-[#9ca3af]" />
@@ -298,25 +297,10 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
     );
   }
 
-  // 2. ÇEKMECE AÇIKKEN: Genişletilmiş 230px Tam Menü (negronn.xml 1:1)
+  // 2. ÇEKMECE AÇIKKEN: Genişletilmiş 230px Tam Menü (negronn.xml 1:1 - Kapat butonu kaldırıldı)
   return (
     <aside className="w-[230px] bg-[#1e1e1e] border-r border-[#252526] flex flex-col justify-between h-[calc(100vh-60px)] shrink-0 text-xs select-none shadow-xs transition-all duration-300 ease-in-out">
       
-      {/* Üst Kapatma Başlığı (.mnH - XML 1:1) */}
-      {onToggleSidebar && (
-        <div className="px-4 py-2.5 border-b border-[#252526] flex items-center">
-          <button
-            onClick={onToggleSidebar}
-            className="inline-flex items-center gap-2 text-[#989b9f] hover:text-white transition-colors cursor-pointer"
-            title="Kapat"
-            aria-label="Kapat"
-          >
-            <CloseIcon className="w-4 h-4" />
-            <span className="text-[11px] opacity-70">Kapat</span>
-          </button>
-        </div>
-      )}
-
       {/* Menü Öğeleri (.mnMen) */}
       <div className="p-3 space-y-4 overflow-y-auto flex-1">
         
@@ -331,7 +315,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                 className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium transition-colors cursor-pointer text-[#d4d4d4] hover:bg-[#252526]/70 hover:text-white"
               >
                 <div className="flex items-center gap-2.5">
-                  <HomeIcon className="w-4 h-4 text-[#38bdf8]" />
+                  <HomeIcon className="w-4 h-4 text-[var(--linkC,#9aa0a6)]" />
                   <span className="font-semibold text-xs">Ana Sayfa</span>
                 </div>
               </button>
@@ -345,11 +329,11 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
               className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-[#d4d4d4] hover:bg-[#252526] hover:text-white cursor-pointer transition-colors relative"
             >
               <div className="flex items-center gap-2.5">
-                <Hierarchy4Icon className="w-4 h-4 text-[#60cdff]" />
+                <Hierarchy4Icon className="w-4 h-4 text-[var(--linkC,#9aa0a6)]" />
                 <span>Hizmetler</span>
               </div>
               {/* xml 1:1 li.nt bildirim noktası */}
-              <span className="absolute top-2 left-2 w-2 h-2 rounded-full bg-[#60cdff] shadow-[0_0_8px_#60cdff]" />
+              <span className="absolute top-2 left-2 w-2 h-2 rounded-full bg-[var(--linkC,#9aa0a6)] shadow-[0_0_8px_var(--linkC,#9aa0a6)]" />
               
               <ChevronDownIcon className={`w-3.5 h-3.5 text-[#989b9f] transition-transform duration-300 ${hizmetlerOpen ? 'rotate-180' : ''}`} />
             </div>
@@ -362,12 +346,12 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                     onClick={() => onSelectTab('pinned')}
                     className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs transition-colors cursor-pointer ${
                       currentTab === 'pinned'
-                        ? 'bg-[#252526] text-[#38bdf8] font-bold'
-                        : 'text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff]'
+                        ? 'bg-[#252526] text-[var(--linkC,#9aa0a6)] font-bold'
+                        : 'text-[#d4d4d4] hover:bg-[#252526] hover:text-[var(--linkC,#9aa0a6)]'
                     }`}
                   >
                     <div className="flex items-center gap-2">
-                      <MessageNotif1Icon className="w-3.5 h-3.5 text-[#60cdff]" />
+                      <MessageNotif1Icon className="w-3.5 h-3.5 text-[var(--linkC,#9aa0a6)]" />
                       <span>Etkileşimler</span>
                     </div>
                     <span className="text-[10px] text-[#9ca3af] font-mono">{counts.pinned}</span>
@@ -380,7 +364,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                     href="https://notebooklm.google.com/"
                     target="_blank"
                     rel="nofollow noreferrer noopener"
-                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors"
+                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[var(--linkC,#9aa0a6)] transition-colors"
                   >
                     <div className="flex items-center gap-2">
                       <Edit3Icon className="w-3.5 h-3.5 text-[#9ca3af]" />
@@ -395,7 +379,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                     href="https://docs.google.com/forms/u/0/"
                     target="_blank"
                     rel="nofollow noreferrer noopener"
-                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors"
+                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[var(--linkC,#9aa0a6)] transition-colors"
                   >
                     <div className="flex items-center gap-2">
                       <Profile2UserIcon className="w-3.5 h-3.5 text-[#9ca3af]" />
@@ -414,9 +398,9 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
               className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-[#d4d4d4] hover:bg-[#252526] hover:text-white cursor-pointer transition-colors"
             >
               <div className="flex items-center gap-2.5">
-                <FlashIcon className="w-4 h-4 text-amber-400" />
+                <FlashIcon className="w-4 h-4 text-[var(--linkC,#9aa0a6)]" />
                 <span>Klasör</span>
-                <span className="badge-new text-[#60cdff] text-[11px] font-bold ml-1">
+                <span className="badge-new text-[var(--linkC,#9aa0a6)] text-[11px] font-bold ml-1">
                   New!
                 </span>
               </div>
@@ -431,8 +415,8 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                     onClick={() => onSelectTab('links')}
                     className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs transition-colors cursor-pointer ${
                       currentTab === 'links'
-                        ? 'bg-[#252526] text-[#38bdf8] font-bold'
-                        : 'text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff]'
+                        ? 'bg-[#252526] text-[var(--linkC,#9aa0a6)] font-bold'
+                        : 'text-[#d4d4d4] hover:bg-[#252526] hover:text-[var(--linkC,#9aa0a6)]'
                     }`}
                   >
                     <div className="flex items-center gap-2">
@@ -449,8 +433,8 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                     onClick={() => onSelectTab('privacy')}
                     className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs transition-colors cursor-pointer ${
                       currentTab === 'privacy'
-                        ? 'bg-[#252526] text-[#38bdf8] font-bold'
-                        : 'text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff]'
+                        ? 'bg-[#252526] text-[var(--linkC,#9aa0a6)] font-bold'
+                        : 'text-[#d4d4d4] hover:bg-[#252526] hover:text-[var(--linkC,#9aa0a6)]'
                     }`}
                   >
                     <div className="flex items-center gap-2">
@@ -467,7 +451,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                     href="https://github.com/Aleyulala/saved/discussions/?pli=1"
                     target="_blank"
                     rel="nofollow noreferrer noopener"
-                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors"
+                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#1e1e1e] hover:text-[var(--linkC,#9aa0a6)] transition-colors"
                   >
                     <div className="flex items-center gap-2">
                       <SmsEditIcon className="w-3.5 h-3.5 text-[#9ca3af]" />
@@ -491,7 +475,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
               className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-[#d4d4d4] hover:bg-[#252526] hover:text-white cursor-pointer transition-colors"
             >
               <div className="flex items-center gap-2.5">
-                <FolderCodeIcon className="w-4 h-4 text-[#60cdff]" />
+                <FolderCodeIcon className="w-4 h-4 text-[var(--linkC,#9aa0a6)]" />
                 <span>Geliştiriciler</span>
               </div>
               <ChevronDownIcon className={`w-3.5 h-3.5 text-[#989b9f] transition-transform duration-300 ${gelistiriciOpen ? 'rotate-180' : ''}`} />
@@ -508,12 +492,12 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                       const next = current === 'rtl' ? 'ltr' : 'rtl';
                       document.documentElement.setAttribute('dir', next);
                     }}
-                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors cursor-pointer"
+                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#1e1e1e] hover:text-[var(--linkC,#9aa0a6)] transition-colors cursor-pointer"
                   >
                     <div className="flex items-center gap-2">
                       <ArrowSwapHorizontalIcon className="w-3.5 h-3.5 text-[#9ca3af]" />
                       <span>Ters Çevir</span>
-                      <span className="text-[#60cdff] text-[10px] font-bold">New!</span>
+                      <span className="text-[var(--linkC,#9aa0a6)] text-[10px] font-bold">New!</span>
                     </div>
                   </button>
                 </li>
@@ -524,7 +508,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                     href="https://search.google.com/test/rich-results"
                     target="_blank"
                     rel="nofollow noreferrer noopener"
-                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors"
+                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#1e1e1e] hover:text-[var(--linkC,#9aa0a6)] transition-colors"
                   >
                     <div className="flex items-center gap-2">
                       <SearchNormalIcon className="w-3.5 h-3.5 text-[#9ca3af]" />
@@ -539,7 +523,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
                     href="https://pagespeed.web.dev/analysis"
                     target="_blank"
                     rel="nofollow noreferrer noopener"
-                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors"
+                    className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#1e1e1e] hover:text-[var(--linkC,#9aa0a6)] transition-colors"
                   >
                     <div className="flex items-center gap-2">
                       <SpeedometerIcon className="w-3.5 h-3.5 text-[#9ca3af]" />
@@ -560,7 +544,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
         <div className="text-center">
           <a
             href="mailto:mrstar14155@gmail.com"
-            className="text-[11px] text-[#989b9f] hover:text-[#60cdff] transition-colors font-mono tracking-wider"
+            className="text-[11px] text-[#989b9f] hover:text-[var(--linkC,#9aa0a6)] transition-colors font-mono tracking-wider"
           >
             ────Epostaৎ────
           </a>
@@ -595,7 +579,7 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
             href="https://matrix.to/#/#negronn-show:matrix.org"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[#38bdf8] hover:text-black flex items-center justify-center transition-all duration-200"
+            className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[var(--linkC,#9aa0a6)] hover:text-black flex items-center justify-center transition-all duration-200"
             title="Element.io / Matrix: @negronn:matrix.org"
           >
             <MatrixIcon className="w-3.5 h-3.5" />

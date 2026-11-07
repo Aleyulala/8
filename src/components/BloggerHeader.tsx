@@ -5,7 +5,6 @@ import {
   SearchNormalIcon, 
   CloseIcon, 
   SunMoonIcon,
-  GithubIcon,
   TranslateIcon,
   ArchiveIcon,
   Profile1Icon,
@@ -18,7 +17,7 @@ import {
 import { BLOGGER_AUTHORS, getAuthorData } from '../utils/bloggerAuthors';
 
 const THEME_COLORS = [
-  { id: 0, hex: '#5f6368', name: 'Gri (Varsayılan)' },
+  { id: 0, hex: '#9aa0a6', name: 'Gri (Varsayılan)' },
   { id: 1, hex: '#ea4335', name: 'Kırmızı' },
   { id: 2, hex: '#1e8e3e', name: 'Yeşil' },
   { id: 3, hex: '#4285f4', name: 'Mavi' },
@@ -86,7 +85,7 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
   const [isThemePaletteOpen, setIsThemePaletteOpen] = useState(false);
   const [currentMode, setCurrentMode] = useState<'dark' | 'light' | 'system'>('dark');
   const [currentThemeIndex, setCurrentThemeIndex] = useState<number>(0);
-  const [currentThemeColor, setCurrentThemeColor] = useState<string>('#5f6368');
+  const [currentThemeColor, setCurrentThemeColor] = useState<string>('#9aa0a6');
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [selectedAuthorKey, setSelectedAuthorKey] = useState<string>('NEGRONN');
   const translateRef = useRef<HTMLDivElement>(null);
@@ -107,7 +106,12 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
     const root = document.documentElement;
     const existingTh = root.className.match(/th\d+\b/g);
     if (existingTh) root.classList.remove(...existingTh);
-    root.classList.add(`th${themeId}`, 'thS');
+    root.classList.add(`th${themeId}`);
+    if (themeId !== 0) {
+      root.classList.add('thS');
+    } else {
+      root.classList.remove('thS');
+    }
 
     // Save in PLUS_UI_APPEARANCE and saved_theme_color
     try {
@@ -156,21 +160,24 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
         } else {
           applyThemeMode('dark');
         }
-        if (typeof parsed.theme === 'number' && THEME_COLORS[parsed.theme]) {
+        if (typeof parsed.theme === 'number' && parsed.theme !== 0 && THEME_COLORS[parsed.theme]) {
           applyThemeColor(THEME_COLORS[parsed.theme].hex, parsed.theme);
         } else {
-          applyThemeColor('#5f6368', 0);
+          applyThemeColor('#9aa0a6', 0);
         }
       } else {
         const savedMode = (localStorage.getItem('saved_theme') as any) || 'dark';
         applyThemeMode(savedMode);
-        const savedColor = localStorage.getItem('saved_theme_color') || '#5f6368';
-        const foundIndex = THEME_COLORS.findIndex(c => c.hex.toLowerCase() === savedColor.toLowerCase());
-        applyThemeColor(savedColor, foundIndex >= 0 ? foundIndex : 0);
+        const savedId = localStorage.getItem('saved_theme_id');
+        if (savedId !== null && Number(savedId) > 0 && THEME_COLORS[Number(savedId)]) {
+          applyThemeColor(THEME_COLORS[Number(savedId)].hex, Number(savedId));
+        } else {
+          applyThemeColor('#9aa0a6', 0);
+        }
       }
     } catch {
       applyThemeMode('dark');
-      applyThemeColor('#5f6368', 0);
+      applyThemeColor('#9aa0a6', 0);
     }
 
     // Check existing Google Translate cookie
@@ -261,25 +268,25 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full h-[60px] bg-[#1e1e1e] border-b border-[#252526] px-3 sm:px-6 flex items-center justify-between select-none shadow-sm">
+    <header className="sticky top-0 z-40 w-full h-[60px] bg-[#1e1e1e] border-b border-[#252526] px-3 sm:px-6 flex items-center justify-between select-none">
       
-      {/* Sol Bölüm: Hamburger Menü Butonu + SAVED Marka Logosu */}
-      <div className="flex items-center gap-3 shrink-0">
+      {/* Sol Bölüm: Hamburger Menü Butonu (.tIc XML 1:1) + SAVED Marka Logosu */}
+      <div className="flex items-center gap-2.5 shrink-0">
         <button
           onClick={onToggleSidebar}
-          className="p-2 rounded-lg text-[#989b9f] hover:text-[#fffdfc] hover:bg-[#252526] transition-colors cursor-pointer flex items-center justify-center"
+          className="w-8 h-8 rounded-full text-[#989b9f] hover:text-[#fffdfc] hover:bg-white/10 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center border-none outline-none"
           aria-label="Menüyü Aç/Kapat"
           title="Menüyü Aç/Kapat"
         >
-          <MenuHamburgerIcon className="w-5 h-5" />
+          <MenuHamburgerIcon className="w-4 h-4" />
         </button>
 
         <div 
           onClick={onGoHome}
-          className="cursor-pointer flex items-center gap-2 group select-none"
+          className="cursor-pointer flex items-center gap-2 group select-none ml-1"
           title="Ana Sayfaya Git"
         >
-          <span className="font-extrabold text-base sm:text-lg tracking-wider text-white group-hover:text-[#60cdff] transition-colors uppercase font-mono">
+          <span className="font-extrabold text-base sm:text-lg tracking-wider text-white group-hover:text-[var(--linkC,#9aa0a6)] transition-colors uppercase font-mono">
             SAVED
           </span>
         </div>
@@ -298,9 +305,9 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
             value={searchQuery}
             readOnly
             placeholder="Bul..."
-            className="w-full bg-[#252526] group-hover:bg-[#28282b] focus:bg-[#2d2d30] border border-transparent group-hover:border-[#60cdff]/30 rounded-full pl-9 pr-14 py-1.5 text-xs text-[#fffdfc] placeholder-[#989b9f] outline-none transition-all shadow-inner cursor-pointer"
+            className="w-full bg-[#252526] hover:bg-[#28282b] focus:bg-[#2d2d30] border border-white/5 hover:border-[var(--linkC,#9aa0a6)]/30 rounded-full pl-9 pr-14 py-1.5 text-xs text-[#fffdfc] placeholder-[#989b9f] outline-none transition-all cursor-pointer"
           />
-          <span className="absolute left-3 text-[#989b9f] group-hover:text-[#60cdff] transition-colors pointer-events-none">
+          <span className="absolute left-3 text-[#989b9f] group-hover:text-[var(--linkC,#9aa0a6)] transition-colors pointer-events-none">
             <SearchNormalIcon className="w-3.5 h-3.5" />
           </span>
 
@@ -316,73 +323,204 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
               <CloseIcon className="w-3.5 h-3.5" />
             </button>
           ) : (
-            <kbd className="hidden sm:inline-block absolute right-3 px-1.5 py-0.5 rounded text-[9px] font-mono bg-[#1e1e1e] text-[#989b9f] group-hover:text-[#60cdff] transition-colors">
+            <kbd className="hidden sm:inline-block absolute right-3 px-1.5 py-0.5 rounded text-[9px] font-mono bg-[#1e1e1e] text-[#989b9f] group-hover:text-[var(--linkC,#9aa0a6)] transition-colors">
               Ctrl K
             </kbd>
           )}
         </div>
       </div>
 
-      {/* Sağ Bölüm: Blogger XML 1:1 .headIc Butonları */}
-      <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+      {/* Sağ Bölüm: Blogger XML 1:1 .headIc Butonları (1: Yazarlar, 2: Yer İmleri, 3: Ay, 4: Google Translate) */}
+      <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
         
-        {/* 1. Otomatik Çeviri Butonu (.isTrans - svg.translate-1) */}
-        <div className="relative" ref={translateRef}>
+        {/* 1. Buton: Yazarlar & Profil (.isPrf - Profile1Icon & .wPrf) */}
+        <div className="relative" ref={profileRef}>
           <button
-            onClick={() => setIsTranslateOpen(prev => !prev)}
-            className={`p-2 rounded-lg transition-colors cursor-pointer flex items-center justify-center ${
-              isTranslateOpen || selectedLang !== 'tr'
-                ? 'bg-[#252526] text-[#60cdff]'
-                : 'text-[#989b9f] hover:text-[#fffdfc] hover:bg-[#252526]'
+            onClick={() => setIsProfileOpen(prev => !prev)}
+            className={`w-8 h-8 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center border-none outline-none ${
+              isProfileOpen 
+                ? 'bg-white/10 text-[var(--linkC,#9aa0a6)]' 
+                : 'text-[#989b9f] hover:text-[#fffdfc] hover:bg-white/10 active:scale-95'
             }`}
-            title="Otomatik Çeviri (Google Translate)"
-            aria-label="Dili Değiştir"
+            title="Yazarlar &amp; Profil"
+            aria-label="Yazarlar"
           >
-            <TranslateIcon className="w-4 h-4" />
+            <Profile1Icon className="w-4 h-4" />
           </button>
 
-          {/* Blogger XML .wTrans Açılır Menüsü */}
-          {isTranslateOpen && (
-            <div className="absolute right-0 top-[calc(100%+8px)] w-48 max-h-72 overflow-y-auto bg-[#1f1f1f] border border-[#2d2d30] rounded-lg shadow-2xl p-1.5 z-50 text-xs animate-in fade-in zoom-in-95 duration-150">
-              <div className="px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#71717a] border-b border-white/5 mb-1 flex items-center justify-between">
-                <span>Diller</span>
-                {selectedLang !== 'tr' && (
+          {/* Blogger XML 1:1 Profil / Yazarlar Açılır Kartı (.wPrf.fixLs) */}
+          {isProfileOpen && (() => {
+            const currentProfile = getAuthorData(selectedAuthorKey);
+            return (
+              <div className="wPrf fixLs tm animate-in fade-in duration-200 w-72 max-w-[calc(100vw-24px)] shadow-2xl">
+                <div className="prfH fixH fixT flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs font-bold text-[#d4d4d4]">Yazarlar</span>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/10 text-[var(--linkC,#9aa0a6)] font-semibold">2</span>
+                  </div>
                   <button
-                    onClick={() => handleSelectLanguage('tr')}
-                    className="text-[#60cdff] hover:underline cursor-pointer lowercase"
+                    onClick={() => setIsProfileOpen(false)}
+                    className="text-[#989b9f] hover:text-white p-0.5 rounded cursor-pointer"
+                    title="Kapat"
                   >
-                    sıfırla
+                    <CloseIcon className="w-3.5 h-3.5" />
                   </button>
-                )}
+                </div>
+
+                {/* Ekip Yazarları Listesi (.prfL - Blogger XML 1:1) */}
+                <div className="p-2 border-b border-[#333333] flex items-center gap-1.5 bg-[#1e1e1e]">
+                  {Object.values(BLOGGER_AUTHORS).map((author) => {
+                    const isSelected = selectedAuthorKey.toLowerCase() === author.name.toLowerCase();
+                    return (
+                      <button
+                        key={author.name}
+                        type="button"
+                        onClick={() => setSelectedAuthorKey(author.name)}
+                        className={`flex-1 flex items-center gap-2 p-1.5 rounded-lg text-left transition-all cursor-pointer ${
+                          isSelected
+                            ? 'bg-[#2a2d2e] ring-1 ring-[var(--linkC,#9aa0a6)]/50 text-white shadow-sm'
+                            : 'hover:bg-white/5 text-[#a1a1aa] hover:text-white'
+                        }`}
+                      >
+                        <img
+                          src={author.avatar}
+                          alt={author.name}
+                          className="w-7 h-7 rounded-full object-cover shrink-0 ring-1 ring-white/10"
+                        />
+                        <div className="min-w-0 flex-1">
+                          <div className="text-xs font-bold truncate flex items-center gap-1">
+                            <span>{author.name}</span>
+                            <Verify1Icon className="w-2.5 h-2.5 text-[var(--linkC,#9aa0a6)] shrink-0" />
+                          </div>
+                          <div className="text-[10px] text-[#71717a] truncate">{author.role}</div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Seçilen Yazarın Detay Kartı (.prfC fixC) */}
+                <div className="prfC fixC">
+                  <div className="sImg">
+                    <div className="im relative w-16 h-16 rounded-2xl overflow-hidden ring-2 ring-white/10 shadow-lg mx-auto mb-2.5 bg-[#1e1e1e]">
+                      <img
+                        src={currentProfile.avatar}
+                        alt={currentProfile.name}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLElement).style.display = 'none';
+                        }}
+                      />
+                      <div className="absolute -bottom-0.5 -right-0.5 bg-[#1e1e1e] rounded-full p-0.5">
+                        <Verify1Icon className="w-3.5 h-3.5 text-[var(--linkC,#9aa0a6)]" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <dl className="sInf space-y-1.5">
+                    <dt className="sDt">
+                      <a 
+                        href={currentProfile.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="l extL inline-flex items-center gap-1.5 font-bold text-sm text-white hover:text-[var(--linkC,#9aa0a6)] transition-colors"
+                      >
+                        <bdi>{currentProfile.name}</bdi>
+                        <Verify1Icon className="w-3.5 h-3.5 text-[var(--linkC,#9aa0a6)]" />
+                      </a>
+                    </dt>
+                    <dd className="text-[11px] text-[var(--linkC,#9aa0a6)] font-medium">
+                      {currentProfile.role}
+                    </dd>
+                    <dd className="sTxt text-xs text-[#a1a1aa] leading-relaxed line-clamp-3">
+                      {currentProfile.bio}
+                    </dd>
+                    <dd className="lc flex items-center justify-center gap-1 text-[11px] text-[#71717a]">
+                      <MapPin className="w-3 h-3 text-rose-400" />
+                      <span>{currentProfile.location}</span>
+                    </dd>
+                  </dl>
+
+                  {/* Yazar Sosyal Bağlantıları */}
+                  <div className="flex items-center justify-center gap-1.5 mt-3 pt-3 border-t border-[#333333]">
+                    <a
+                      href={currentProfile.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#d4d4d4] hover:text-white transition-colors"
+                      title="Blogger Profil"
+                    >
+                      <BloggerBIcon className="w-3.5 h-3.5 text-amber-500" />
+                    </a>
+                    <a
+                      href={currentProfile.communityUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[var(--linkC,#9aa0a6)] hover:text-white transition-colors border border-[var(--linkC,#9aa0a6)]/20 hover:border-[var(--linkC,#9aa0a6)]/50"
+                      title="Matrix Topluluk (#negronn-show:matrix.org)"
+                    >
+                      <MatrixIcon className="w-3.5 h-3.5 text-[var(--linkC,#9aa0a6)]" />
+                    </a>
+                    <a
+                      href={currentProfile.telegram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#229ed9] text-[#d4d4d4] hover:text-white transition-colors"
+                      title="Telegram"
+                    >
+                      <TelegramIcon className="w-3.5 h-3.5 text-sky-400" />
+                    </a>
+                    <a
+                      href={currentProfile.vk}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#4680c2] text-[#d4d4d4] hover:text-white transition-colors"
+                      title="VKontakte (VK)"
+                    >
+                      <VkIcon className="w-3.5 h-3.5 text-[#4680c2]" />
+                    </a>
+                  </div>
+
+                  {/* Ayarlar & Yönetim Butonu */}
+                  <div className="mt-3 pt-2 border-t border-[#333333]">
+                    <button
+                      onClick={() => {
+                        setIsProfileOpen(false);
+                        onOpenSettings();
+                      }}
+                      className="w-full py-1.5 px-3 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-xs font-semibold text-[var(--linkC,#9aa0a6)] hover:text-white flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    >
+                      <SettingsIcon className="w-3.5 h-3.5" />
+                      <span>Ayarlar &amp; Depolama</span>
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div className="space-y-0.5">
-                {LANGUAGES.map(lang => (
-                  <button
-                    key={lang.code}
-                    onClick={() => handleSelectLanguage(lang.code)}
-                    className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-left transition-colors cursor-pointer ${
-                      selectedLang === lang.code
-                        ? 'bg-[#252526] text-[#60cdff] font-bold'
-                        : 'text-[#d4d4d4] hover:bg-[#252526] hover:text-white'
-                    }`}
-                  >
-                    <span>{lang.name}</span>
-                    <span className="text-[10px] text-[#71717a] uppercase font-mono">{lang.code}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+            );
+          })()}
         </div>
 
-        {/* 2. Görünüm (Açık/Koyu/Sistem ve Tema Rengi) Butonu & Context Menüsü (.isMode - XML 1:1 .aprW & .thmW) */}
+        {/* 2. Buton: Yer İmleri (.isBkm - svg.archive) */}
+        <button
+          onClick={() => {
+            if (onOpenPinned) onOpenPinned();
+            else onGoHome();
+          }}
+          className="w-8 h-8 rounded-full text-[#989b9f] hover:text-[#fffdfc] hover:bg-white/10 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center border-none outline-none"
+          title="Sabitlenenler &amp; Yer İmleri"
+          aria-label="Yer İmleri"
+        >
+          <ArchiveIcon className="w-4 h-4" />
+        </button>
+
+        {/* 3. Buton: Ay / Görünüm & Tema (.isMode - svg.moon-sun-icon & .aprW & .thmW) */}
         <div className="relative" ref={appearanceRef}>
           <button
             onClick={() => setIsAppearanceOpen(prev => !prev)}
-            className={`p-2 rounded-lg transition-colors cursor-pointer flex items-center justify-center ${
+            className={`w-8 h-8 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center border-none outline-none ${
               isAppearanceOpen
-                ? 'bg-[#252526] text-white shadow-sm'
-                : 'text-[#989b9f] hover:text-[#fffdfc] hover:bg-[#252526]'
+                ? 'bg-white/10 text-[var(--linkC,#9aa0a6)]'
+                : 'text-[#989b9f] hover:text-[#fffdfc] hover:bg-white/10 active:scale-95'
             }`}
             title="Görünüm ve Tema Ayarları"
             aria-label="Görünüm ve Tema Modu"
@@ -418,7 +556,7 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
                     <Sun className="w-4 h-4 text-amber-400" />
                     <span>Açık</span>
                   </div>
-                  {currentMode === 'light' && <Check className="w-3.5 h-3.5 text-[#60cdff]" />}
+                  {currentMode === 'light' && <Check className="w-3.5 h-3.5 text-[var(--linkC,#9aa0a6)]" />}
                 </button>
 
                 <button
@@ -429,10 +567,10 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
                   }`}
                 >
                   <div className="flex items-center gap-2.5">
-                    <Moon className="w-4 h-4 text-[#60cdff]" />
+                    <Moon className="w-4 h-4 text-[var(--linkC,#9aa0a6)]" />
                     <span>Koyu</span>
                   </div>
-                  {currentMode === 'dark' && <Check className="w-3.5 h-3.5 text-[#60cdff]" />}
+                  {currentMode === 'dark' && <Check className="w-3.5 h-3.5 text-[var(--linkC,#9aa0a6)]" />}
                 </button>
 
                 <button
@@ -446,7 +584,7 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
                     <Laptop className="w-4 h-4 text-[#989b9f]" />
                     <span>Sistem</span>
                   </div>
-                  {currentMode === 'system' && <Check className="w-3.5 h-3.5 text-[#60cdff]" />}
+                  {currentMode === 'system' && <Check className="w-3.5 h-3.5 text-[var(--linkC,#9aa0a6)]" />}
                 </button>
               </div>
 
@@ -469,7 +607,7 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
 
                 {/* 16 Renk Paleti (.thmP) */}
                 {isThemePaletteOpen && (
-                  <div className="thmP grid grid-cols-4 gap-2.5 p-2 mt-1 bg-[#1e1e1e] rounded-lg animate-in fade-in duration-150">
+                  <div className="thmP grid grid-cols-4 gap-2.5 p-2 mt-1.5 bg-[#1e1e1e] rounded-lg border border-white/5 animate-in fade-in duration-150">
                     {THEME_COLORS.map(c => {
                       const isSelected = currentThemeIndex === c.id;
                       return (
@@ -483,7 +621,7 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
                           style={{ backgroundColor: c.hex }}
                           title={c.name}
                         >
-                          {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-white" />}
+                          {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-white shadow-xs" />}
                         </button>
                       );
                     })}
@@ -495,182 +633,53 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
           )}
         </div>
 
-        {/* 3. Yer İmleri Butonu (.isBkm - svg.archive) */}
-        <button
-          onClick={() => {
-            if (onOpenPinned) onOpenPinned();
-            else onGoHome();
-          }}
-          className="p-2 rounded-lg text-[#989b9f] hover:text-[#fffdfc] hover:bg-[#252526] transition-colors cursor-pointer flex items-center justify-center"
-          title="Sabitlenenler & Yer İmleri"
-          aria-label="Yer İmleri"
-        >
-          <ArchiveIcon className="w-4 h-4" />
-        </button>
-
-        {/* Profil / Yazarlar Butonu & Kartı (.isPrf - Profile01 .wPrf XML 1:1) */}
-        <div className="relative" ref={profileRef}>
+        {/* 4. Buton: Otomatik Çeviri (.isTrans - svg.translate-1 & .wTrans) */}
+        <div className="relative" ref={translateRef}>
           <button
-            onClick={() => setIsProfileOpen(prev => !prev)}
-            className={`p-2 rounded-lg transition-colors cursor-pointer flex items-center justify-center ${
-              isProfileOpen ? 'bg-[#252526] text-[#60cdff]' : 'text-[#989b9f] hover:text-[#fffdfc] hover:bg-[#252526]'
+            onClick={() => setIsTranslateOpen(prev => !prev)}
+            className={`w-8 h-8 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center border-none outline-none ${
+              isTranslateOpen || selectedLang !== 'tr'
+                ? 'bg-white/10 text-[var(--linkC,#9aa0a6)]'
+                : 'text-[#989b9f] hover:text-[#fffdfc] hover:bg-white/10 active:scale-95'
             }`}
-            title="Yazarlar &amp; Profil"
-            aria-label="Yazarlar"
+            title="Otomatik Çeviri (Google Translate)"
+            aria-label="Dili Değiştir"
           >
-            <Profile1Icon className="w-4 h-4" />
+            <TranslateIcon className="w-4 h-4" />
           </button>
 
-          {/* Blogger XML 1:1 Profil / Yazarlar Açılır Kartı (.wPrf.fixLs) */}
-          {isProfileOpen && (() => {
-            const currentProfile = getAuthorData(selectedAuthorKey);
-            return (
-              <div className="wPrf fixLs tm animate-in fade-in duration-200 w-72 max-w-[calc(100vw-24px)] shadow-2xl">
-                <div className="prfH fixH fixT flex items-center justify-between">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-bold text-[#d4d4d4]">Yazarlar</span>
-                    <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/10 text-[#60cdff] font-semibold">2</span>
-                  </div>
+          {/* Blogger XML .wTrans Açılır Menüsü */}
+          {isTranslateOpen && (
+            <div className="absolute right-0 top-[calc(100%+8px)] w-48 max-h-72 overflow-y-auto bg-[#1f1f1f] border border-[#2d2d30] rounded-lg shadow-2xl p-1.5 z-50 text-xs animate-in fade-in zoom-in-95 duration-150">
+              <div className="px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#71717a] border-b border-white/5 mb-1 flex items-center justify-between">
+                <span>Diller</span>
+                {selectedLang !== 'tr' && (
                   <button
-                    onClick={() => setIsProfileOpen(false)}
-                    className="text-[#989b9f] hover:text-white p-0.5 rounded cursor-pointer"
-                    title="Kapat"
+                    onClick={() => handleSelectLanguage('tr')}
+                    className="text-[var(--linkC,#9aa0a6)] hover:underline cursor-pointer lowercase"
                   >
-                    <CloseIcon className="w-3.5 h-3.5" />
+                    sıfırla
                   </button>
-                </div>
-
-                {/* Ekip Yazarları Listesi (.prfL - Blogger XML 1:1) */}
-                <div className="p-2 border-b border-[#333333] flex items-center gap-1.5 bg-[#1e1e1e]">
-                  {Object.values(BLOGGER_AUTHORS).map((author) => {
-                    const isSelected = selectedAuthorKey.toLowerCase() === author.name.toLowerCase();
-                    return (
-                      <button
-                        key={author.name}
-                        type="button"
-                        onClick={() => setSelectedAuthorKey(author.name)}
-                        className={`flex-1 flex items-center gap-2 p-1.5 rounded-lg text-left transition-all cursor-pointer ${
-                          isSelected
-                            ? 'bg-[#2a2d2e] ring-1 ring-[#38bdf8]/50 text-white shadow-sm'
-                            : 'hover:bg-white/5 text-[#a1a1aa] hover:text-white'
-                        }`}
-                      >
-                        <img
-                          src={author.avatar}
-                          alt={author.name}
-                          className="w-7 h-7 rounded-full object-cover shrink-0 ring-1 ring-white/10"
-                        />
-                        <div className="min-w-0 flex-1">
-                          <div className="text-xs font-bold truncate flex items-center gap-1">
-                            <span>{author.name}</span>
-                            <Verify1Icon className="w-2.5 h-2.5 text-[#38bdf8] shrink-0" />
-                          </div>
-                          <div className="text-[10px] text-[#71717a] truncate">{author.role}</div>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Seçilen Yazarın Detay Kartı (.prfC fixC) */}
-                <div className="prfC fixC">
-                  <div className="sImg">
-                    <div className="im relative w-16 h-16 rounded-2xl overflow-hidden ring-2 ring-white/10 shadow-lg mx-auto mb-2.5 bg-[#1e1e1e]">
-                      <img
-                        src={currentProfile.avatar}
-                        alt={currentProfile.name}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          (e.target as HTMLElement).style.display = 'none';
-                        }}
-                      />
-                      <div className="absolute -bottom-0.5 -right-0.5 bg-[#1e1e1e] rounded-full p-0.5">
-                        <Verify1Icon className="w-3.5 h-3.5 text-[#38bdf8]" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <dl className="sInf space-y-1.5">
-                    <dt className="sDt">
-                      <a 
-                        href={currentProfile.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="l extL inline-flex items-center gap-1.5 font-bold text-sm text-white hover:text-[#60cdff] transition-colors"
-                      >
-                        <bdi>{currentProfile.name}</bdi>
-                        <Verify1Icon className="w-3.5 h-3.5 text-[#38bdf8]" />
-                      </a>
-                    </dt>
-                    <dd className="text-[11px] text-[#60cdff] font-medium">
-                      {currentProfile.role}
-                    </dd>
-                    <dd className="sTxt text-xs text-[#a1a1aa] leading-relaxed line-clamp-3">
-                      {currentProfile.bio}
-                    </dd>
-                    <dd className="lc flex items-center justify-center gap-1 text-[11px] text-[#71717a]">
-                      <MapPin className="w-3 h-3 text-rose-400" />
-                      <span>{currentProfile.location}</span>
-                    </dd>
-                  </dl>
-
-                  {/* Yazar Sosyal Bağlantıları */}
-                  <div className="flex items-center justify-center gap-1.5 mt-3 pt-3 border-t border-[#333333]">
-                    <a
-                      href={currentProfile.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#d4d4d4] hover:text-white transition-colors"
-                      title="Blogger Profil"
-                    >
-                      <BloggerBIcon className="w-3.5 h-3.5 text-amber-500" />
-                    </a>
-                    <a
-                      href={currentProfile.communityUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#60cdff] hover:text-white transition-colors border border-[#60cdff]/20 hover:border-[#60cdff]/50"
-                      title="Matrix Topluluk (#negronn-show:matrix.org)"
-                    >
-                      <MatrixIcon className="w-3.5 h-3.5 text-[#60cdff]" />
-                    </a>
-                    <a
-                      href={currentProfile.telegram}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#229ed9] text-[#d4d4d4] hover:text-white transition-colors"
-                      title="Telegram"
-                    >
-                      <TelegramIcon className="w-3.5 h-3.5 text-sky-400" />
-                    </a>
-                    <a
-                      href={currentProfile.vk}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#4680c2] text-[#d4d4d4] hover:text-white transition-colors"
-                      title="VKontakte (VK)"
-                    >
-                      <VkIcon className="w-3.5 h-3.5 text-[#4680c2]" />
-                    </a>
-                  </div>
-
-                  {/* Ayarlar & Yönetim Butonu */}
-                  <div className="mt-3 pt-2 border-t border-[#333333]">
-                    <button
-                      onClick={() => {
-                        setIsProfileOpen(false);
-                        onOpenSettings();
-                      }}
-                      className="w-full py-1.5 px-3 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-xs font-semibold text-[#60cdff] hover:text-white flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-                    >
-                      <SettingsIcon className="w-3.5 h-3.5" />
-                      <span>Ayarlar &amp; Depolama</span>
-                    </button>
-                  </div>
-                </div>
+                )}
               </div>
-            );
-          })()}
+              <div className="space-y-0.5">
+                {LANGUAGES.map(lang => (
+                  <button
+                    key={lang.code}
+                    onClick={() => handleSelectLanguage(lang.code)}
+                    className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-left transition-colors cursor-pointer ${
+                      selectedLang === lang.code
+                        ? 'bg-[#252526] text-[var(--linkC,#9aa0a6)] font-bold'
+                        : 'text-[#d4d4d4] hover:bg-[#252526] hover:text-white'
+                    }`}
+                  >
+                    <span>{lang.name}</span>
+                    <span className="text-[10px] text-[#71717a] uppercase font-mono">{lang.code}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
       </div>

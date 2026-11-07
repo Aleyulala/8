@@ -65,14 +65,14 @@ export const BloggerNotificationBar: React.FC = () => {
                 href="https://aleyulala.blogspot.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="ali-nsone-slide-btn font-extrabold text-[15px] sm:text-[16px] tracking-[6px] uppercase text-white hover:text-[#60cdff] transition-colors cursor-pointer"
+                className="ali-nsone-slide-btn font-extrabold text-[15px] sm:text-[16px] tracking-[6px] uppercase text-white hover:text-[var(--linkC,#9aa0a6)] transition-colors cursor-pointer"
                 title="ALİ"
               >
                 ALİ
               </a>
               <a
                 href="https://aleyulala.github.io/saved/"
-                className="ali-nsone-amp font-bold text-[15px] sm:text-[16px] text-[#60cdff] px-2 py-0.5 rounded-md hover:bg-white/10 transition-all cursor-pointer"
+                className="ali-nsone-amp font-bold text-[15px] sm:text-[16px] text-[var(--linkC,#9aa0a6)] px-2 py-0.5 rounded-md hover:bg-white/10 transition-all cursor-pointer"
                 title="ALİ &amp; NSONE"
               >
                 &amp;
@@ -81,7 +81,7 @@ export const BloggerNotificationBar: React.FC = () => {
                 href="https://negronshow.blogspot.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="ali-nsone-slide-btn font-extrabold text-[15px] sm:text-[16px] tracking-[6px] uppercase text-white hover:text-[#60cdff] transition-colors cursor-pointer"
+                className="ali-nsone-slide-btn font-extrabold text-[15px] sm:text-[16px] tracking-[6px] uppercase text-white hover:text-[var(--linkC,#9aa0a6)] transition-colors cursor-pointer"
                 title="NSONE"
               >
                 NSONE
@@ -96,10 +96,10 @@ export const BloggerNotificationBar: React.FC = () => {
                 href="https://matrix.to/#/#negronn-show:matrix.org"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-[#60cdff] hover:text-white hover:underline transition-colors font-semibold"
+                className="inline-flex items-center gap-1.5 text-[var(--linkC,#9aa0a6)] hover:text-white hover:underline transition-colors font-semibold"
                 title="Element.io"
               >
-                <MatrixIcon className="w-3.5 h-3.5 text-[#60cdff]" />
+                <MatrixIcon className="w-3.5 h-3.5 text-[var(--linkC,#9aa0a6)]" />
                 <span className="font-bold">Element.io</span>
                 <ExternalLink className="w-3 h-3 ml-0.5 opacity-70" />
               </a>
@@ -116,7 +116,7 @@ export const BloggerNotificationBar: React.FC = () => {
               onClick={() => setActiveSlide(idx)}
               className={`h-1.5 rounded-full transition-all duration-200 cursor-pointer ${
                 activeSlide === idx
-                  ? 'w-6 bg-[#60cdff] shadow-[0_0_6px_rgba(96,205,255,0.6)]'
+                  ? 'w-6 bg-[var(--linkC,#9aa0a6)] shadow-[0_0_6px_var(--linkC,#9aa0a6)]'
                   : 'w-3.5 bg-white/20 hover:bg-white/40'
               }`}
               title={`Slayt ${idx + 1}`}

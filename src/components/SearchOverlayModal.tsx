@@ -259,7 +259,7 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
       <div className="w-full max-w-2xl flex flex-col gap-3">
         
         {/* Arama Kutusu ve Motor Seçici (Search Wrap) */}
-        <div className="flex items-center gap-2 p-1.5 sm:p-2 rounded-lg bg-[#252526] border border-transparent shadow-2xl focus-within:border-[#60cdff]/50 transition-all">
+        <div className="flex items-center gap-2 p-1.5 sm:p-2 rounded-lg bg-[#252526] border border-transparent shadow-2xl focus-within:border-[var(--linkC,#9aa0a6)]/50 transition-all">
           
           {/* Arama Motoru Dropdown */}
           <select
@@ -306,7 +306,7 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
           <button
             type="button"
             onClick={() => handleExecuteSearch()}
-            className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-r from-[#38bdf8] to-[#0ea5e9] hover:from-[#7dd3fc] hover:to-[#38bdf8] text-[#0f172a] flex items-center justify-center font-bold text-base shadow-md active:scale-95 transition-all cursor-pointer shrink-0"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-[var(--linkB,#9aa0a6)] hover:opacity-90 text-[#0f172a] flex items-center justify-center font-bold text-base shadow-md active:scale-95 transition-all cursor-pointer shrink-0"
             title="Ara veya Git (Enter)"
           >
             <SearchNormalIcon className="w-4 h-4 stroke-[2.5]" />
@@ -329,7 +329,7 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
                 }}
                 className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all cursor-pointer border ${
                   isActive
-                    ? 'bg-[#60cdff]/15 text-[#60cdff] border-[#60cdff]/40 shadow-sm'
+                    ? 'bg-[var(--linkC,#9aa0a6)]/15 text-[var(--linkC,#9aa0a6)] border-[var(--linkC,#9aa0a6)]/40 shadow-sm'
                     : 'bg-[#1e1e1e] hover:bg-[#28282b] text-[#a3a3a3] hover:text-white border-transparent'
                 }`}
               >
@@ -349,8 +349,8 @@ export const SearchOverlayModal: React.FC<SearchOverlayModalProps> = ({
               </div>
             )}
             {hasShortcut && shortcutTarget && (
-              <div className="flex items-center gap-2 text-[#60cdff]">
-                <RankingIcon className="w-4 h-4 text-[#60cdff]" />
+              <div className="flex items-center gap-2 text-[var(--linkC,#9aa0a6)]">
+                <RankingIcon className="w-4 h-4 text-[var(--linkC,#9aa0a6)]" />
                 <span><strong>{shortcutTarget.label}</strong> üzerinde ara: <em>"{shortcutPayload}"</em></span>
               </div>
             )}

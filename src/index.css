@@ -7,7 +7,9 @@
     --darkBa: #2d2d30;
     --darkT: #fffdfc;
     --darkTa: #989b9f;
-    --linkB: #38bdf8;
+    --linkB: #9aa0a6;
+    --linkC: #9aa0a6;
+    --theme-color: #9aa0a6;
     --brand-orange: #ff5722;
     --contentL: rgba(255, 255, 255, 0.08);
 
@@ -15,7 +17,7 @@
     --bg-base-200: #252526;
     --bg-base-300: #2d2d30;
     --border-color: #252526;
-    --text-primary: #38bdf8;
+    --text-primary: #9aa0a6;
     --text-base: #fffdfc;
     --text-muted: #989b9f;
 
@@ -24,7 +26,7 @@
     --menuW: 230px;
     --pageW: 780px;
     --headerH: 60px;
-    --tv-nav-ring: #60cdff;
+    --tv-nav-ring: #9aa0a6;
   }
 
   /* Light mode (lgT) */
@@ -82,9 +84,9 @@ textarea {
   width: 14px !important;
   height: 14px !important;
   border-radius: 50% !important;
-  background: var(--tv-nav-ring, #60cdff) !important;
+  background: var(--tv-nav-ring, #9aa0a6) !important;
   border: 2px solid #ffffff !important;
-  box-shadow: 0 0 0 2px var(--tv-nav-ring, #60cdff), 0 2px 8px rgba(0,0,0,0.45) !important;
+  box-shadow: 0 0 0 2px var(--tv-nav-ring, #9aa0a6), 0 2px 8px rgba(0,0,0,0.45) !important;
   z-index: 2147483647 !important;
   pointer-events: none !important;
   opacity: 0;
@@ -107,7 +109,7 @@ textarea {
   margin-top: -11px !important;
   margin-left: -11px !important;
   border-radius: 50% !important;
-  background: var(--tv-nav-ring, #60cdff) !important;
+  background: var(--tv-nav-ring, #9aa0a6) !important;
   border: 3px solid #ffffff !important;
   box-shadow: 0 0 0 1.5px rgba(0,0,0,0.35), 0 4px 16px rgba(0,0,0,0.45) !important;
   z-index: 2147483647 !important;
@@ -370,11 +372,11 @@ body { top: 0 !important; }
 #fsMediaModal .fsZoomBtn:hover {
   background: rgba(255, 255, 255, 0.3) !important;
   transform: scale(1.1) !important;
-  color: #60cdff !important;
+  color: var(--linkC, #9aa0a6) !important;
 }
 #fsMediaModal .fsWideBtn.active,
 #fsMediaModal .fsZoomBtn.active {
-  background: #60cdff !important;
+  background: var(--linkC, #9aa0a6) !important;
   color: #000000 !important;
 }
 #fsMediaModal .fsWideBtn svg,
@@ -669,8 +671,8 @@ body { top: 0 !important; }
 
 .ns-input-wrap input:focus,
 .ns-input-wrap textarea:focus {
-  border-color: #60cdff !important;
-  box-shadow: 0 0 0 3px rgba(96, 205, 255, 0.22) !important;
+  border-color: var(--linkC, #9aa0a6) !important;
+  box-shadow: 0 0 0 3px rgba(154, 160, 166, 0.22) !important;
 }
 
 .ns-input-wrap label {
@@ -695,7 +697,7 @@ body { top: 0 !important; }
   left: 10px !important;
   font-size: 11px !important;
   font-weight: 600 !important;
-  color: #60cdff !important;
+  color: var(--linkC, #9aa0a6) !important;
   background: #252526 !important;
   opacity: 1 !important;
 }
@@ -727,20 +729,20 @@ body { top: 0 !important; }
   min-height: 48px !important;
   padding: 0 !important;
   border-radius: 14px !important;
-  background: var(--linkB, #38bdf8) !important;
+  background: var(--linkB, #9aa0a6) !important;
   color: #0f172a !important;
   border: none !important;
   cursor: pointer !important;
   flex-shrink: 0 !important;
   box-sizing: border-box !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  box-shadow: 0 3px 12px rgba(56, 189, 248, 0.25) !important;
+  box-shadow: 0 3px 12px rgba(154, 160, 166, 0.25) !important;
 }
 
 .ns-btn-next:hover {
   opacity: 0.92 !important;
   transform: translateY(-1px) !important;
-  box-shadow: 0 5px 16px rgba(56, 189, 248, 0.35) !important;
+  box-shadow: 0 5px 16px rgba(154, 160, 166, 0.35) !important;
 }
 
 .ns-btn-next:active {
@@ -778,9 +780,9 @@ body { top: 0 !important; }
   font-weight: 600 !important;
   cursor: pointer !important;
   border: none !important;
-  background: var(--linkB, #38bdf8) !important;
+  background: var(--linkB, #9aa0a6) !important;
   color: #0f172a !important;
-  box-shadow: 0 3px 14px rgba(56, 189, 248, 0.28) !important;
+  box-shadow: 0 3px 14px rgba(154, 160, 166, 0.28) !important;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 

@@ -271,7 +271,7 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
             className="group/badge inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/70 hover:bg-black/90 backdrop-blur-md text-white text-xs sm:text-sm font-medium transition-all duration-200 active:scale-95 shadow-lg cursor-pointer"
             title={`${activeSlide.category} kategorisine git`}
           >
-            <TagBloggerIcon className="w-3.5 h-3.5 text-[#60cdff]" />
+            <TagBloggerIcon className="w-3.5 h-3.5 text-[var(--linkC,#9aa0a6)]" />
             <span className="tracking-wide">
               {activeSlide.category}
             </span>
@@ -286,7 +286,7 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
             className={`h-2 rounded-full transition-all duration-300 shadow-md backdrop-blur-md cursor-pointer ${
               currentIndex % 2 === 0
                 ? 'w-7 sm:w-8 bg-white/40 hover:bg-white/60'
-                : 'w-9 sm:w-10 bg-[#60cdff] shadow-[0_0_10px_rgba(96,205,255,0.6)]'
+                : 'w-9 sm:w-10 bg-[var(--linkC,#9aa0a6)] shadow-[0_0_10px_var(--linkC,#9aa0a6)]'
             }`}
             aria-label="Önceki Çizgi Buton"
             title="Önceki Slayt"
@@ -297,7 +297,7 @@ export const BloggerHeroSlider: React.FC<BloggerHeroSliderProps> = ({
             className={`h-2 rounded-full transition-all duration-300 shadow-md backdrop-blur-md cursor-pointer ${
               currentIndex % 2 === 1
                 ? 'w-7 sm:w-8 bg-white/40 hover:bg-white/60'
-                : 'w-9 sm:w-10 bg-[#60cdff] shadow-[0_0_10px_rgba(96,205,255,0.6)]'
+                : 'w-9 sm:w-10 bg-[var(--linkC,#9aa0a6)] shadow-[0_0_10px_var(--linkC,#9aa0a6)]'
             }`}
             aria-label="Sonraki Çizgi Buton"
             title="Sonraki Slayt"

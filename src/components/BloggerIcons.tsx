@@ -44,8 +44,8 @@ export const FolderFavoriteIcon: React.FC<{ className?: string }> = ({ className
 export const FolderCodeIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
   <svg className={`line ${className}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
     <path d="M22 11V17C22 21 21 22 17 22H7C3 22 2 21 2 17V7C2 3 3 2 7 2H8.5C10 2 10.33 2.44 10.9 3.2L12.4 5.2C12.78 5.7 13 6 14 6H17C21 6 22 7 22 11Z" strokeMiterlimit="10" />
-    <path className="text-[#60cdff]" d="M9.5 12L7.5 14.5L9.5 17" />
-    <path className="text-[#60cdff]" d="M14.5 12L16.5 14.5L14.5 17" />
+    <path className="text-[var(--linkC,#9aa0a6)]" d="M9.5 12L7.5 14.5L9.5 17" />
+    <path className="text-[var(--linkC,#9aa0a6)]" d="M14.5 12L16.5 14.5L14.5 17" />
   </svg>
 );
 
@@ -87,11 +87,11 @@ export const TranslateIcon: React.FC<{ className?: string }> = ({ className = 'w
     <path d="M.5,2V18A1.5,1.5,0,0,0,2,19.5H17L10.5.5H2A1.5,1.5,0,0,0,.5,2Z" />
     <path d="M12,4.5H22A1.5,1.5,0,0,1,23.5,6V22A1.5,1.5,0,0,1,22,23.5H13.5l-1.5-4" />
     <line x1="17" x2="13.5" y1="19.5" y2="23.5" />
-    <line className="text-[#60cdff]" x1="14.5" x2="21.5" y1="10.5" y2="10.5" />
-    <line className="text-[#60cdff]" x1="17.5" x2="17.5" y1="9.5" y2="10.5" />
-    <path className="text-[#60cdff]" d="M20,10.5c0,1.1-1.77,4.42-4,6" />
-    <path className="text-[#60cdff]" d="M16,13c.54,1.33,4,4.5,4,4.5" />
-    <path className="text-[#60cdff]" d="M10.1,7.46a4,4,0,1,0,1.4,3h-4" />
+    <line className="text-[var(--linkC,#9aa0a6)]" x1="14.5" x2="21.5" y1="10.5" y2="10.5" />
+    <line className="text-[var(--linkC,#9aa0a6)]" x1="17.5" x2="17.5" y1="9.5" y2="10.5" />
+    <path className="text-[var(--linkC,#9aa0a6)]" d="M20,10.5c0,1.1-1.77,4.42-4,6" />
+    <path className="text-[var(--linkC,#9aa0a6)]" d="M16,13c.54,1.33,4,4.5,4,4.5" />
+    <path className="text-[var(--linkC,#9aa0a6)]" d="M10.1,7.46a4,4,0,1,0,1.4,3h-4" />
   </svg>
 );
 
@@ -195,16 +195,16 @@ export const ArrowSwapHorizontalIcon: React.FC<{ className?: string }> = ({ clas
   <svg className={`line ${className}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
     <path d="M20.5 14.99L15.49 20.01" strokeMiterlimit="10" />
     <path d="M3.5 14.99H20.5" strokeMiterlimit="10" />
-    <path className="text-[#60cdff]" d="M3.5 9.00999L8.51 3.98999" strokeMiterlimit="10" />
-    <path className="text-[#60cdff]" d="M20.5 9.01001H3.5" strokeMiterlimit="10" />
+    <path className="text-[var(--linkC,#9aa0a6)]" d="M3.5 9.00999L8.51 3.98999" strokeMiterlimit="10" />
+    <path className="text-[var(--linkC,#9aa0a6)]" d="M20.5 9.01001H3.5" strokeMiterlimit="10" />
   </svg>
 );
 
 export const SpeedometerIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
   <svg className={`line ${className}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
     <path d="M19.14 19.5C20.91 17.7 22 15.22 22 12.5C22 6.98 17.52 2.5 12 2.5C6.48 2.5 2 6.98 2 12.5C2 15.22 3.08 17.68 4.84 19.49" strokeMiterlimit="10" />
-    <path className="text-[#60cdff]" d="M12 21.5C13.8667 21.5 15.38 19.9867 15.38 18.12C15.38 16.2533 13.8667 14.74 12 14.74C10.1333 14.74 8.62 16.2533 8.62 18.12C8.62 19.9867 10.1333 21.5 12 21.5Z" strokeMiterlimit="10" />
-    <path className="text-[#60cdff]" d="M15.25 12H16C16.82 12 17.5 11.33 17.5 10.5C17.5 9.68 16.82 9 16 9C15.18 9 14.5 9.67 14.5 10.5V11.25C14.5 11.66 14.84 12 15.25 12Z" strokeMiterlimit="10" />
+    <path className="text-[var(--linkC,#9aa0a6)]" d="M12 21.5C13.8667 21.5 15.38 19.9867 15.38 18.12C15.38 16.2533 13.8667 14.74 12 14.74C10.1333 14.74 8.62 16.2533 8.62 18.12C8.62 19.9867 10.1333 21.5 12 21.5Z" strokeMiterlimit="10" />
+    <path className="text-[var(--linkC,#9aa0a6)]" d="M15.25 12H16C16.82 12 17.5 11.33 17.5 10.5C17.5 9.68 16.82 9 16 9C15.18 9 14.5 9.67 14.5 10.5V11.25C14.5 11.66 14.84 12 15.25 12Z" strokeMiterlimit="10" />
   </svg>
 );
 
