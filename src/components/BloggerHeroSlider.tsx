@@ -15,90 +15,90 @@ export interface BloggerSlide {
 
 export const BLOGGER_SLIDES: BloggerSlide[] = [
   {
+    id: 'Image01',
+    title: 'ALİ & NSONE',
+    subtitle: 'Teknoloji, Kodlama, Dijital Yaşam & Kişisel Keşif Platformu',
+    note: '*Ali Yıldız & Nsone Resmi Bilgi ve Dijital Arşiv Merkezi',
+    category: 'ALİ & NSONE',
+    collectionName: 'Genel',
+    imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&q=85'
+  },
+  {
     id: 'Image07',
-    title: 'Programlama',
-    subtitle: 'Programming, Kodlama, Geliştirici Araçları ve Algoritmalar',
+    title: 'Programlama & Kod',
+    subtitle: 'Modern Diller, Temiz Kod, Algoritmalar ve Geliştirici Kütüphaneleri',
     note: '*Küratörlü kod ve programlama kaynakları',
     category: 'Programlama',
     collectionName: 'Programlama',
-    imageUrl: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1920&q=85'
-  },
-  {
-    id: 'Image03',
-    title: 'Oyun',
-    subtitle: 'Gaming, Oyun Rehberleri, İpuçları ve Emülasyon',
-    note: '*Oyun arşivleri ve kaynak bağlantıları',
-    category: 'Oyun',
-    collectionName: 'Oyun',
-    imageUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=85'
-  },
-  {
-    id: 'Image04',
-    title: 'Bilgisayar',
-    subtitle: 'Sistem Yardımcıları, Donanım, Bulut ve Masaüstü Yazılımları',
-    note: '*Masaüstü ve sistem araçları deposu',
-    category: 'Bilgisayar',
-    collectionName: 'Araçlar',
-    imageUrl: 'https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=1920&q=85'
+    imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1920&q=85'
   },
   {
     id: 'Image05',
-    title: 'Teknoloji',
-    subtitle: 'Yapay Zeka, Gelecek Trendleri, LLM Modelleri ve API’ler',
+    title: 'Yapay Zeka & Teknoloji',
+    subtitle: 'Geleceğin Teknolojileri, Derin Öğrenme, LLM Modelleri ve İnovasyon',
     note: '*Yapay zeka ve teknoloji yer imleri',
     category: 'Teknoloji',
     collectionName: 'AI',
-    imageUrl: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1920&q=85'
+    imageUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1920&q=85'
+  },
+  {
+    id: 'Image03',
+    title: 'Oyun & Dijital Eğlence',
+    subtitle: 'Next-Gen Oyunlar, Donanım İpuçları, Emülasyon ve Arşivler',
+    note: '*Oyun arşivleri ve kaynak bağlantıları',
+    category: 'Oyun',
+    collectionName: 'Oyun',
+    imageUrl: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1920&q=85'
+  },
+  {
+    id: 'Image04',
+    title: 'Bilgisayar & Sistem',
+    subtitle: 'İşletim Sistemleri, Terminal Becerileri, Bulut ve Masaüstü Verimliliği',
+    note: '*Masaüstü ve sistem araçları deposu',
+    category: 'Bilgisayar',
+    collectionName: 'Araçlar',
+    imageUrl: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1920&q=85'
   },
   {
     id: 'Image06',
-    title: 'Telefon',
-    subtitle: 'Mobil Ekosistem, Android & iOS Uygulamaları ve Tweaks',
+    title: 'Mobil Ekosistem & Telefon',
+    subtitle: 'Android & iOS Gelişmiş Özellikler, Mobil Güvenlik ve Rehberler',
     note: '*Mobil platform rehberleri',
     category: 'Telefon',
     collectionName: 'Web Uygulamaları',
-    imageUrl: 'https://images.unsplash.com/photo-1556656793-08538906a9f8?auto=format&fit=crop&w=1920&q=85'
+    imageUrl: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1920&q=85'
   },
   {
     id: 'Image02',
-    title: 'Videolar',
-    subtitle: 'Medya, YouTube Kanalları, Sinema ve Görsel Sanatlar',
+    title: 'Sinema & Video Dünyası',
+    subtitle: 'Seçkin Belgeseller, Sinematografi, Prodüksiyon ve Video Sanatı',
     note: '*Seçkin video kanalları ve oynatma listeleri',
     category: 'Videolar',
     collectionName: 'Medya',
-    imageUrl: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1920&q=85'
-  },
-  {
-    id: 'Image01',
-    title: 'Konu Dışı',
-    subtitle: 'Günlük Yaşam, Verimlilik, Okumalar ve Düşünceler',
-    note: '*Günlük rutin ve yaşam bağlantıları',
-    category: 'Konu Dışı',
-    collectionName: 'Rutin',
-    imageUrl: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=85'
-  },
-  {
-    id: 'Image08',
-    title: 'Televizyon',
-    subtitle: 'Smart TV, Yayın Servisleri, Ekran ve Ev Sinema Sistemleri',
-    note: '*Televizyon ve ev eğlence teknolojileri',
-    category: 'Televizyon',
-    collectionName: 'Medya',
-    imageUrl: 'https://images.unsplash.com/photo-1461151304267-38535e780c79?auto=format&fit=crop&w=1920&q=85'
+    imageUrl: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1920&q=85'
   },
   {
     id: 'Image09',
-    title: 'Sanat',
-    subtitle: 'Tasarım, UI/UX, Yaratıcı Varlıklar ve Dijital Görsel Estetik',
+    title: 'Görsel Sanat & Tasarım',
+    subtitle: 'Minimalist Tasarım, UI/UX Estetiği ve Yaratıcı İlham Kaynakları',
     note: '*Dijital sanat ve estetik portfolyolar',
     category: 'Sanat',
     collectionName: 'Genel',
     imageUrl: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=1920&q=85'
   },
   {
+    id: 'Image08',
+    title: 'Televizyon & Medya',
+    subtitle: 'Smart TV Çözümleri, Medya Merkezleri ve Ev Sinema Rehberi',
+    note: '*Televizyon ve ev eğlence teknolojileri',
+    category: 'Televizyon',
+    collectionName: 'Medya',
+    imageUrl: 'https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&w=1920&q=85'
+  },
+  {
     id: 'Image10',
-    title: 'Ticaret',
-    subtitle: 'E-Ticaret, Finansal Veriler, Pazaryeri ve Analizler',
+    title: 'Dijital Finans & Ticaret',
+    subtitle: 'E-Ticaret Trendleri, Analitik Araçlar, Pazaryeri ve Dijital Ekonomi',
     note: '*Finans ve e-ticaret araçları',
     category: 'Ticaret',
     collectionName: 'Alışveriş',

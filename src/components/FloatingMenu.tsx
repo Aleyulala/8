@@ -97,6 +97,15 @@ export const FloatingMenu: React.FC<FloatingMenuProps> = ({
           align-items: center;
           gap: 12px;
           pointer-events: none;
+          transition: bottom 0.25s ease, inset-inline-end 0.25s ease;
+        }
+
+        /* Mobilde alt navigasyon menüsünün (BloggerMobileNav) üzerine binmemesi için yukarı kaldırıldı */
+        @media (max-width: 768px) {
+          .blogger-float-group {
+            bottom: calc(84px + env(safe-area-inset-bottom, 0px)) !important;
+            inset-inline-end: 16px !important;
+          }
         }
 
         .qeF {
