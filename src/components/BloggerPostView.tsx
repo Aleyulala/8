@@ -31,7 +31,9 @@ import {
   ArchiveAddIcon,
   ArchiveTickIcon,
   VkIcon,
-  MatrixIcon
+  MatrixIcon,
+  EmojiHappyIcon,
+  BloggerEyeIcon
 } from './BloggerIcons';
 import { MediaItem } from './UniversalMediaModal';
 import { getAuthorData } from '../utils/bloggerAuthors';
@@ -98,6 +100,44 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
 
   const currentAuthor = getAuthorData(link.authorName);
 
+  // Selamlama (Blogger XML 1:1 .pGrt)
+  const getGreeting = () => {
+    const h = new Date().getHours();
+    if (h < 4) return 'İyi uykular!';
+    if (h < 12) return 'Günaydın!';
+    if (h < 17) return 'İyi günler!';
+    if (h < 22) return 'İyi akşamlar!';
+    return 'İyi geceler!';
+  };
+
+  const [greeting, setGreeting] = useState(getGreeting);
+  const GREETING_OPTIONS = ['Günaydın!', 'İyi günler!', 'İyi akşamlar!', 'İyi geceler!', 'İyi uykular!', 'Hoş geldiniz!'];
+  const handleToggleGreeting = () => {
+    setGreeting(prev => {
+      const idx = GREETING_OPTIONS.indexOf(prev);
+      return GREETING_OPTIONS[(idx + 1) % GREETING_OPTIONS.length];
+    });
+  };
+
+  // Ticker bar states (#ticker-wrapper)
+  const otherPosts = allLinks.filter(l => l.id !== link.id && !l.isTrash);
+  const [tickerIndex, setTickerIndex] = useState(0);
+  const [isTickerVisible, setIsTickerVisible] = useState(true);
+
+  const currentTickerPost = otherPosts.length > 0 ? otherPosts[tickerIndex % otherPosts.length] : null;
+
+  const handleNextTicker = () => {
+    if (otherPosts.length > 0) {
+      setTickerIndex(prev => (prev + 1) % otherPosts.length);
+    }
+  };
+
+  const handlePrevTicker = () => {
+    if (otherPosts.length > 0) {
+      setTickerIndex(prev => (prev - 1 + otherPosts.length) % otherPosts.length);
+    }
+  };
+
   const handleCopy = () => {
     navigator.clipboard.writeText(link.url);
     setCopied(true);
@@ -107,42 +147,96 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
   return (
     <article className="space-y-6 max-w-[780px] mx-auto animate-in fade-in duration-200">
       
-      {/* 1. Üst Kontrol & Ekmek Kırıntısı Barı (.brdCmb) */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/5">
-        <div className="flex items-center gap-2 text-xs text-[#a1a1aa]">
+      {/* 1. Ticker Paneli (#ticker-wrapper - XML 1:1 Fotoğraftaki Fedora Android Studio Stili) */}
+      {isTickerVisible && currentTickerPost && (
+        <div className="h-12 rounded-[14px] bg-[#282828] border border-white/5 px-4 flex items-center justify-between gap-3 text-xs select-none shadow-sm transition-all">
+          <div className="flex items-center gap-3 overflow-hidden flex-1 min-w-0">
+            <button
+              type="button"
+              onClick={() => setIsTickerVisible(false)}
+              className="w-6 h-6 rounded-full bg-[#383838] hover:bg-[#444444] text-[#a3a3a3] hover:text-white flex items-center justify-center shrink-0 transition-colors cursor-pointer"
+              title="Kapat"
+              aria-label="Kapat"
+            >
+              <span className="text-[11px] leading-none">✕</span>
+            </button>
+
+            <span 
+              onClick={() => onNavigatePost(currentTickerPost)}
+              className="truncate font-semibold text-white/90 hover:text-[var(--linkC,#9aa0a6)] transition-colors cursor-pointer text-xs sm:text-[13px]"
+              title={currentTickerPost.title}
+            >
+              {currentTickerPost.title}
+            </span>
+          </div>
+
+          {/* Sağ Taraf Slayt Çizgi Butonları (.panel-slider-dots) */}
+          <div className="flex items-center gap-1.5 shrink-0">
+            <button 
+              type="button"
+              onClick={handlePrevTicker}
+              className="w-5 h-1.5 rounded-full bg-white/40 hover:bg-white transition-all cursor-pointer"
+              aria-label="Önceki"
+            />
+            <button 
+              type="button"
+              onClick={handleNextTicker}
+              className="w-5 h-1.5 rounded-full bg-white/20 hover:bg-white transition-all cursor-pointer"
+              aria-label="Sonraki"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* 2. Page Views & Greetings Rozetleri (.pGV - XML 1:1 Fotoğraftaki Birebir Konum) */}
+      <div className="pGV flex items-center gap-2 pt-0.5">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#252526] hover:bg-[#333333] border border-white/5 text-xs text-[#d4d4d4] font-medium transition-colors shadow-sm select-none">
+          <BloggerEyeIcon className="w-3.5 h-3.5 text-[#38bdf8]" />
+          <span>{link.views || 76} views</span>
+        </div>
+
+        <button 
+          type="button"
+          onClick={handleToggleGreeting}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#252526] hover:bg-[#333333] border border-white/5 text-xs text-[#d4d4d4] font-medium transition-colors cursor-pointer shadow-sm select-none active:scale-95"
+          title="Selamlama Değiştir"
+        >
+          <EmojiHappyIcon className="w-3.5 h-3.5 text-amber-400" />
+          <span>{greeting}</span>
+        </button>
+      </div>
+
+      {/* 3. Blogger XML 1:1 Breadcrumbs (.brdCmb) & Aksiyon Butonları */}
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-0.5">
+        <div className="brdCmb flex items-center gap-2 text-xs text-[#a1a1aa]">
+          <button 
+            onClick={onBack} 
+            className="hover:text-white transition-colors cursor-pointer font-medium"
+          >
+            Ana Sayfa
+          </button>
+          
+          <span className="text-[#52525b]">/</span>
+          
+          <span 
+            className="hover:underline cursor-pointer lowercase font-medium"
+            style={{ color: collection?.color || '#38bdf8' }}
+          >
+            {collection?.name || link.tags[0] || 'genel'}
+          </span>
+        </div>
+
+        {/* Sağ Taraf Aksiyon Butonları & Geri Dön */}
+        <div className="flex items-center gap-1.5">
           <button
             onClick={onBack}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#252526] hover:bg-[#333333] text-white border border-transparent transition-colors font-medium active:scale-95"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#252526] hover:bg-[#333333] text-white text-xs font-medium transition-colors active:scale-95 cursor-pointer"
+            title="Listeye Geri Dön"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Geri Dön</span>
           </button>
 
-          <span className="text-[#52525b]">/</span>
-          <button onClick={onBack} className="hover:text-white transition-colors">
-            Ana Sayfa
-          </button>
-          
-          {collection && (
-            <>
-              <span className="text-[#52525b]">/</span>
-              <span 
-                className="font-medium truncate max-w-[140px]"
-                style={{ color: collection.color || '#38bdf8' }}
-              >
-                {collection.name}
-              </span>
-            </>
-          )}
-
-          <span className="text-[#52525b] hidden sm:inline">/</span>
-          <span className="text-[#71717a] truncate max-w-[180px] hidden sm:inline">
-            {link.title || domain}
-          </span>
-        </div>
-
-        {/* Aksiyon Butonları */}
-        <div className="flex items-center gap-1.5">
           {/* Blogger XML 1:1 Yer İmleri / Kaydet Butonu (.bm-button) */}
           <button
             type="button"
@@ -195,40 +289,9 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
         </div>
       </div>
 
-      {/* 2. Gönderi Başlık ve Meta Bilgileri (.postHeaders) */}
-      <div className="space-y-3">
-        {/* Kategori Rozeti & Sabit Etiketi */}
-        <div className="flex items-center gap-2">
-          {collection ? (
-            <span 
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold border shadow-sm"
-              style={{ 
-                backgroundColor: `${collection.color || '#38bdf8'}20`,
-                borderColor: `${collection.color || '#38bdf8'}40`,
-                color: collection.color || '#38bdf8'
-              }}
-            >
-              <span 
-                className="w-2 h-2 rounded-full" 
-                style={{ backgroundColor: collection.color || '#38bdf8' }} 
-              />
-              <span>{collection.name}</span>
-            </span>
-          ) : (
-            <span className="px-3 py-1 rounded-lg bg-[#252526] text-xs text-[#a1a1aa] border border-transparent">
-              Genel
-            </span>
-          )}
-
-          {link.isPinned && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-transparent text-xs font-bold">
-              <PulseIcon className="w-3 h-3" />
-              <span>SABİTLENDİ</span>
-            </span>
-          )}
-        </div>
-
-        {/* Ana Başlık */}
+      {/* 4. Gönderi Başlık ve Meta Bilgileri (.postHeaders) */}
+      <div className="space-y-3 pt-1">
+        {/* Ana Başlık (.pTtl) */}
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight leading-snug">
           {link.title || link.url}
         </h1>
