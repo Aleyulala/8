@@ -2073,6 +2073,22 @@ export const SEED_LINKS: RawSeedLink[] = [
     "description": "OmniTools - Araçlar"
   },
   {
+    "title": "NoSignups",
+    "url": "https://nosignups.net/",
+    "categoryName": "Araçlar",
+    "tags": [
+      "araclar",
+      "tools",
+      "web"
+    ],
+    "color": "#10b981",
+    "isPinned": false,
+    "description": "NoSignups - Kayıt ve üyelik gerektirmeyen, doğrudan tarayıcıda çalışan açık kaynaklı web araçları ve servisler dizini.",
+    "views": 220,
+    "commentsCount": 4,
+    "authorName": "NEGRONN"
+  },
+  {
     "title": "Toolixy",
     "url": "https://toolixy.online/",
     "categoryName": "Araçlar",

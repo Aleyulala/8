@@ -27,7 +27,7 @@ export class SavedDatabase extends Dexie {
 
 export const db = new SavedDatabase();
 
-const CURRENT_SEED_VERSION = 'saved-main-360-sites-v10-rutin';
+const CURRENT_SEED_VERSION = 'saved-main-360-sites-v11-nosignups';
 
 export async function seedSavedMainData(force = false) {
   // Quick safety check: Rename any existing 'Routine' records to 'Rutin'
@@ -161,6 +161,33 @@ export async function initializeDatabase() {
         commentsCount: 4,
         authorName: 'NEGRONN',
         notes: 'Özgün Renk: #0ea5e9',
+        isPinned: false,
+        isArchived: false,
+        isRead: false,
+        isTrash: false,
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      });
+    }
+  } catch {
+    // ignore
+  }
+
+  // NoSignups.net kontrolü ve eklenmesi (Mevcut kullanıcı verilerini koruyarak garanti ekleme)
+  try {
+    const existingNosignups = await db.links.where('url').equals('https://nosignups.net/').or('url').equals('https://nosignups.net').first();
+    if (!existingNosignups) {
+      const araclarCol = await db.collections.where('name').equals('Araçlar').first();
+      await db.links.add({
+        url: 'https://nosignups.net/',
+        title: 'NoSignups',
+        description: 'NoSignups - Kayıt ve üyelik gerektirmeyen, doğrudan tarayıcıda çalışan açık kaynaklı web araçları ve servisler dizini.',
+        collectionId: araclarCol ? araclarCol.id! : null,
+        tags: ['araclar', 'tools', 'web'],
+        views: 220,
+        commentsCount: 4,
+        authorName: 'NEGRONN',
+        notes: 'Özgün Renk: #10b981',
         isPinned: false,
         isArchived: false,
         isRead: false,
