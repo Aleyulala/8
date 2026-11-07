@@ -59,9 +59,9 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
   counts,
   onOpenSearchModal
 }) => {
-  const [hizmetlerOpen, setHizmetlerOpen] = useState(true);
-  const [klasorOpen, setKlasorOpen] = useState(true);
-  const [gelistiriciOpen, setGelistiriciOpen] = useState(true);
+  const [hizmetlerOpen, setHizmetlerOpen] = useState(false);
+  const [klasorOpen, setKlasorOpen] = useState(false);
+  const [gelistiriciOpen, setGelistiriciOpen] = useState(false);
   const [localSearch] = useState('');
 
   if (!isOpen) return null;

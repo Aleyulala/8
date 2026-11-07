@@ -57,9 +57,9 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
   isCollapsed = false,
   onToggleSidebar
 }) => {
-  const [hizmetlerOpen, setHizmetlerOpen] = useState(true);
-  const [klasorOpen, setKlasorOpen] = useState(true);
-  const [gelistiriciOpen, setGelistiriciOpen] = useState(true);
+  const [hizmetlerOpen, setHizmetlerOpen] = useState(false);
+  const [klasorOpen, setKlasorOpen] = useState(false);
+  const [gelistiriciOpen, setGelistiriciOpen] = useState(false);
 
   // 1. ÇEKMECE KAPALIYKEN: Daraltılmış 75px Mini Bar (negronn.xml 1:1 Masaüstü Rail Modu)
   if (isCollapsed) {
