@@ -28,8 +28,7 @@ import {
   ArchiveAddIcon,
   ArchiveTickIcon,
   RankingIcon,
-  DocumentIcon,
-  HomeAltIcon
+  DocumentIcon
 } from './BloggerIcons';
 
 interface DashboardViewProps {
@@ -567,28 +566,6 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <path d="M20.5 12H3.67004" stroke="currentColor" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
-          )}
-
-          {/* Ana Sayfa Butonu / Logosu (.hmLnk - Blogger Plus UI 1:1) */}
-          {currentPage === 1 ? (
-            <div
-              className="hmLnk nPst active"
-              aria-label="Ana Sayfa"
-              aria-current="page"
-              title="Ana Sayfa (1. Sayfa)"
-            >
-              <HomeAltIcon className="w-[18px] h-[18px]" />
-            </div>
-          ) : (
-            <button
-              type="button"
-              className="hmLnk"
-              aria-label="Ana Sayfaya Git (1. Sayfa)"
-              onClick={() => handlePageChange(1)}
-              title="Ana Sayfaya Git (1. Sayfa)"
-            >
-              <HomeAltIcon className="w-[18px] h-[18px]" />
-            </button>
           )}
 
           {/* Numaralar (1, 2, 3, 4, 5...) */}
