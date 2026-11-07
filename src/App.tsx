@@ -64,6 +64,7 @@ export const App: React.FC = () => {
   const [selectedPost, setSelectedPost] = useState<LinkItem | null>(null);
   const [selectedCollectionId, setSelectedCollectionId] = useState<number | null>(null);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [resetPageTrigger, setResetPageTrigger] = useState<number>(0);
 
   // Universal Media Modal State (#fsMediaModal)
   const [mediaModal, setMediaModal] = useState<{
@@ -379,6 +380,26 @@ export const App: React.FC = () => {
     document.getElementById('mainScrollContainer')?.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleGoHome = () => {
+    setActiveView('dashboard');
+    setSelectedPost(null);
+    setSelectedCollectionId(null);
+    setSelectedTag(null);
+    setSearchQuery('');
+    setResetPageTrigger((prev) => prev + 1);
+    try {
+      const url = new URL(window.location.href);
+      url.search = '';
+      url.hash = '';
+      window.history.pushState({}, '', url.pathname);
+    } catch {}
+    const mainContainer = document.getElementById('mainScrollContainer');
+    if (mainContainer) {
+      mainContainer.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleTogglePin = async (id: number, current: boolean) => {
     await db.links.update(id, { isPinned: !current, updatedAt: Date.now() });
   };
@@ -491,10 +512,7 @@ export const App: React.FC = () => {
         }}
         onOpenImportExport={() => setIsImportExportOpen(true)}
         onOpenSettings={() => setIsSettingsOpen(true)}
-        onGoHome={() => {
-          setActiveView('dashboard');
-          setSearchQuery('');
-        }}
+        onGoHome={handleGoHome}
         onOpenPinned={() => {
           setActiveView('pinned');
           setSearchQuery('');
@@ -514,8 +532,12 @@ export const App: React.FC = () => {
             activeCollectionId={selectedCollectionId}
             activeTag={selectedTag}
             onSelectTab={(tab) => {
-              setActiveView(tab);
-              setSearchQuery('');
+              if (tab === 'dashboard') {
+                handleGoHome();
+              } else {
+                setActiveView(tab);
+                setSearchQuery('');
+              }
             }}
             onSelectCollection={(id) => {
               setSelectedCollectionId(id);
@@ -560,6 +582,7 @@ export const App: React.FC = () => {
                     tagsCount={tags.length}
                     pinnedCount={counts.pinned}
                     collectionMap={collectionMap}
+                    resetPageTrigger={resetPageTrigger}
                     onNavigateTab={(tab) => {
                       setActiveView(tab);
                       setSearchQuery('');
@@ -600,10 +623,7 @@ export const App: React.FC = () => {
                     link={selectedPost}
                     allLinks={allLinks}
                     collection={selectedPost.collectionId ? collectionMap.get(selectedPost.collectionId) : undefined}
-                    onBack={() => {
-                      setActiveView('dashboard');
-                      document.getElementById('mainScrollContainer')?.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
+                    onBack={handleGoHome}
                     onNavigatePost={(nextPost) => {
                       setSelectedPost(nextPost);
                       document.getElementById('mainScrollContainer')?.scrollTo({ top: 0, behavior: 'smooth' });
@@ -622,14 +642,8 @@ export const App: React.FC = () => {
 
                 {activeView === 'privacy' && (
                   <BloggerPrivacyView
-                    onBack={() => {
-                      setActiveView('dashboard');
-                      document.getElementById('mainScrollContainer')?.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                    onGoHome={() => {
-                      setActiveView('dashboard');
-                      document.getElementById('mainScrollContainer')?.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
+                    onBack={handleGoHome}
+                    onGoHome={handleGoHome}
                   />
                 )}
 
@@ -887,8 +901,12 @@ export const App: React.FC = () => {
         onClose={() => setIsDrawerOpen(false)}
         currentTab={activeView}
         onSelectTab={(tab) => {
-          setActiveView(tab);
-          setSearchQuery('');
+          if (tab === 'dashboard') {
+            handleGoHome();
+          } else {
+            setActiveView(tab);
+            setSearchQuery('');
+          }
         }}
         collections={collections}
         tags={tags}

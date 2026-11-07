@@ -905,6 +905,19 @@ body { top: 0 !important; }
   fill: none !important;
 }
 
+.blogN .hmLnk {
+  padding: 8px 12px !important;
+}
+
+.blogN .hmLnk svg,
+.blogN .hmLnk svg.line {
+  width: 18px !important;
+  height: 18px !important;
+  stroke: currentColor !important;
+  stroke-width: 1.8 !important;
+  fill: none !important;
+}
+
 :root.lgT .blogN > * {
   background: #f4f4f5 !important;
   color: #18181b !important;

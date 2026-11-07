@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo } from 'react';
+import React, { useRef, useState, useMemo, useEffect } from 'react';
 import { 
   Home, 
   Hash, 
@@ -28,7 +28,8 @@ import {
   ArchiveAddIcon,
   ArchiveTickIcon,
   RankingIcon,
-  DocumentIcon
+  DocumentIcon,
+  HomeAltIcon
 } from './BloggerIcons';
 
 interface DashboardViewProps {
@@ -37,6 +38,7 @@ interface DashboardViewProps {
   tagsCount: number;
   pinnedCount: number;
   collectionMap: Map<number, CollectionItem>;
+  resetPageTrigger?: number;
   onViewAllRecent: () => void;
   onViewCollection: (id: number) => void;
   onNavigateTab?: (tab: 'links' | 'pinned' | 'collections_list' | 'tags_list') => void;
@@ -161,6 +163,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   tagsCount,
   pinnedCount,
   collectionMap,
+  resetPageTrigger,
   onViewAllRecent,
   onViewCollection,
   onNavigateTab,
@@ -240,6 +243,26 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       return 1;
     }
   });
+
+  // SAVED logosu veya harici Home tetiklendiğinde sayfa 1'e dön
+  useEffect(() => {
+    if (resetPageTrigger) {
+      setCurrentPage(1);
+    }
+  }, [resetPageTrigger]);
+
+  // URL değişikliklerini dinle
+  useEffect(() => {
+    const handleUrlChange = () => {
+      try {
+        const p = new URLSearchParams(window.location.search).get('page');
+        const n = parseInt(p || '1', 10);
+        setCurrentPage(!isNaN(n) && n >= 1 ? n : 1);
+      } catch {}
+    };
+    window.addEventListener('popstate', handleUrlChange);
+    return () => window.removeEventListener('popstate', handleUrlChange);
+  }, []);
 
   // Toplam sayfa sayısı (en az 5 sayfa sekmesi sunacak şekilde dinamik)
   const totalPages = useMemo(() => {
@@ -544,6 +567,28 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <path d="M20.5 12H3.67004" stroke="currentColor" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
+          )}
+
+          {/* Ana Sayfa Butonu / Logosu (.hmLnk - Blogger Plus UI 1:1) */}
+          {currentPage === 1 ? (
+            <div
+              className="hmLnk nPst active"
+              aria-label="Ana Sayfa"
+              aria-current="page"
+              title="Ana Sayfa (1. Sayfa)"
+            >
+              <HomeAltIcon className="w-[18px] h-[18px]" />
+            </div>
+          ) : (
+            <button
+              type="button"
+              className="hmLnk"
+              aria-label="Ana Sayfaya Git (1. Sayfa)"
+              onClick={() => handlePageChange(1)}
+              title="Ana Sayfaya Git (1. Sayfa)"
+            >
+              <HomeAltIcon className="w-[18px] h-[18px]" />
+            </button>
           )}
 
           {/* Numaralar (1, 2, 3, 4, 5...) */}

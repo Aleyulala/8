@@ -295,15 +295,20 @@ export const BloggerHeader: React.FC<BloggerHeaderProps> = ({
           <MenuHamburgerIcon className="w-4 h-4" />
         </button>
 
-        <div 
-          onClick={onGoHome}
-          className="cursor-pointer flex items-center gap-2 group select-none ml-1"
-          title="Ana Sayfaya Git"
+        <a 
+          href="./"
+          onClick={(e) => {
+            e.preventDefault();
+            onGoHome();
+          }}
+          className="cursor-pointer flex items-center gap-2 group select-none ml-1 no-underline"
+          title="Ana Sayfaya Git (SAVED)"
+          aria-label="Ana Sayfa"
         >
           <span className="font-extrabold text-base sm:text-lg tracking-wider text-white group-hover:text-[var(--linkC,#9aa0a6)] transition-colors uppercase font-mono">
             SAVED
           </span>
-        </div>
+        </a>
       </div>
 
       {/* Orta Bölüm: Blogger Hap Tasarımlı Arama Çubuğu (Bul...) */}

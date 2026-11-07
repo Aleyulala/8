@@ -27,6 +27,14 @@ export const HomeIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-
   </svg>
 );
 
+export const HomeAltIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
+  <svg className={`line ${className}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <g transform="translate(2.400000, 2.000000)">
+      <path d="M1.24344979e-14,11.713 C1.24344979e-14,6.082 0.614,6.475 3.919,3.41 C5.365,2.246 7.615,0 9.558,0 C11.5,0 13.795,2.235 15.254,3.41 C18.559,6.475 19.172,6.082 19.172,11.713 C19.172,20 17.213,20 9.586,20 C1.959,20 1.24344979e-14,20 1.24344979e-14,11.713 Z" />
+    </g>
+  </svg>
+);
+
 export const Folder2Icon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
   <svg className={`line ${className}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
     <path d="M8 2H17C19 2 20 3 20 5V6.38" strokeMiterlimit="10" />
