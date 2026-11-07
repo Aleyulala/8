@@ -448,13 +448,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 )}
               </div>
 
-              {/* Alt Satır: Yayınlandı! + Tarih + Daha */}
+              {/* Alt Satır: Tarih + Daha */}
               <div className="pt-3 border-t border-white/5 flex items-center justify-between text-xs text-[#9ca3af]">
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#457f57] text-white text-[10px] font-semibold">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-200 animate-pulse" />
-                    Yayınlandı!
-                  </span>
                   <span className="text-[11px] text-[#71717a]">{formatDate(pinnedPost.createdAt)}</span>
                 </div>
 

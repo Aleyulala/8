@@ -133,6 +133,20 @@ textarea {
   background: #2ed573 !important;
 }
 
+/* XML 1:1 Left Drawer (.mnMn & .mSoc) Icon Sizing */
+.mSoc svg, .mnMn svg, .blogger-drawer .mnMn svg, .blogger-drawer .mSoc svg {
+  width: 18px !important;
+  height: 18px !important;
+  flex-shrink: 0 !important;
+  opacity: 0.8;
+}
+.mnMn a:hover svg,
+.mnMn button:hover svg,
+.mnMn div:hover > div > svg,
+.mSoc a:hover svg {
+  opacity: 1 !important;
+}
+
 /* Hide Google Translate top banner & elements */
 body[style*='position'] { position: relative !important; }
 body[style*='top'] { top: unset !important; }

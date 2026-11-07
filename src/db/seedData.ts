@@ -20,7 +20,7 @@ export const SEED_COLLECTIONS = [
     "description": "Genel sohbet, serbest paylaşımlar ve konu dışı öneriler"
   },
   {
-    "name": "Routine",
+    "name": "Rutin",
     "color": "#38bdf8",
     "icon": "calendar-check",
     "description": "Günlük rutinler, ajanda, mail ve notlar"
@@ -107,7 +107,7 @@ export const SEED_COLLECTIONS = [
 
 export const SEED_TAGS = [
   {
-    "name": "routine"
+    "name": "rutin"
   },
   {
     "name": "gunluk"
@@ -244,62 +244,62 @@ export const SEED_LINKS: RawSeedLink[] = [
   {
     "title": "Google Calendar",
     "url": "https://calendar.google.com/",
-    "categoryName": "Routine",
+    "categoryName": "Rutin",
     "tags": [
-      "routine",
+      "rutin",
       "gunluk"
     ],
     "color": "#1a73e8",
     "isPinned": false,
-    "description": "Google Calendar - Routine"
+    "description": "Google Calendar - Rutin"
   },
   {
     "title": "Gmail",
     "url": "https://mail.google.com/",
-    "categoryName": "Routine",
+    "categoryName": "Rutin",
     "tags": [
-      "routine",
+      "rutin",
       "gunluk"
     ],
     "color": "#ea4335",
     "isPinned": true,
-    "description": "Gmail - Routine"
+    "description": "Gmail - Rutin"
   },
   {
     "title": "ALİ YILDIZ Blog",
     "url": "https://aleyulala.blogspot.com/",
-    "categoryName": "Routine",
+    "categoryName": "Rutin",
     "tags": [
-      "routine",
+      "rutin",
       "gunluk"
     ],
     "color": "#ff5722",
     "isPinned": false,
-    "description": "ALİ YILDIZ Blog - Routine"
+    "description": "ALİ YILDIZ Blog - Rutin"
   },
   {
     "title": "Google Tasks",
     "url": "https://tasks.google.com/",
-    "categoryName": "Routine",
+    "categoryName": "Rutin",
     "tags": [
-      "routine",
+      "rutin",
       "gunluk"
     ],
     "color": "#1a73e8",
     "isPinned": false,
-    "description": "Google Tasks - Routine"
+    "description": "Google Tasks - Rutin"
   },
   {
     "title": "Google Keep",
     "url": "https://keep.google.com/",
-    "categoryName": "Routine",
+    "categoryName": "Rutin",
     "tags": [
-      "routine",
+      "rutin",
       "gunluk"
     ],
     "color": "#fbbc04",
     "isPinned": false,
-    "description": "Google Keep - Routine"
+    "description": "Google Keep - Rutin"
   },
   {
     "title": "e-Devlet",

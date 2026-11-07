@@ -173,12 +173,9 @@ export const LinkCard: React.FC<LinkCardProps> = ({
           )}
         </div>
 
-        {/* Alt Bilgi: Yayınlandı! + Tarih + Daha (.pInf) */}
+        {/* Alt Bilgi: Tarih + Daha (.pInf) */}
         <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[11px] text-[#71717a]">
           <div className="flex items-center gap-1.5">
-            <span className="px-1.5 py-0.5 rounded bg-[#457f57] text-white text-[10px] font-medium">
-              Yayınlandı!
-            </span>
             <span>{formatDate(link.createdAt)}</span>
           </div>
 

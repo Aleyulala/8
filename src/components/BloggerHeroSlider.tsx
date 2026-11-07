@@ -74,7 +74,7 @@ export const BLOGGER_SLIDES: BloggerSlide[] = [
     subtitle: 'Günlük Yaşam, Verimlilik, Okumalar ve Düşünceler',
     note: '*Günlük rutin ve yaşam bağlantıları',
     category: 'Konu Dışı',
-    collectionName: 'Routine',
+    collectionName: 'Rutin',
     imageUrl: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=85'
   },
   {

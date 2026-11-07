@@ -76,7 +76,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
 
       {/* Drawer Panel (.mainL / .mnBr) */}
       <aside 
-        className="relative w-[85vw] max-w-[360px] bg-[#1e1e1e] border-r border-[#252526] h-full flex flex-col justify-between shadow-2xl z-10 overflow-hidden transform transition-transform duration-300 ease-out"
+        className="blogger-drawer relative w-[85vw] max-w-[360px] bg-[#1e1e1e] border-r border-[#252526] h-full flex flex-col justify-between shadow-2xl z-10 overflow-hidden transform transition-transform duration-300 ease-out"
       >
         {/* Drawer Header (.mnH - XML 1:1) */}
         <div className="h-[60px] px-4 border-b border-[#252526] flex items-center justify-between bg-[#1e1e1e]">
@@ -88,7 +88,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
             title="Kapat"
             aria-label="Kapat"
           >
-            <CloseIcon className="w-4 h-4" />
+            <CloseIcon className="w-4 h-4 close-icon" />
           </button>
         </div>
 
@@ -113,11 +113,11 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               placeholder="Bul... (Ctrl+K)"
               className="w-full bg-[#252526] group-hover:bg-[#28282b] border border-transparent group-hover:border-[var(--linkC,#9aa0a6)]/30 rounded-lg pl-9 pr-3 py-2 text-xs text-white placeholder-[#737373] outline-none transition-colors cursor-pointer"
             />
-            <SearchNormalIcon className="w-4 h-4 text-[#737373] group-hover:text-[var(--linkC,#9aa0a6)] transition-colors absolute left-2.5 top-2.5 pointer-events-none" />
+            <SearchNormalIcon className="w-[18px] h-[18px] text-[#737373] group-hover:text-[var(--linkC,#9aa0a6)] transition-colors absolute left-2.5 top-2.5 pointer-events-none" />
           </div>
 
           {/* Blogger Gezinme Menüsü (.mnMn) */}
-          <ul className="space-y-1">
+          <ul className="space-y-1 mnMn">
             
             {/* 1. KÖK BUTON: Ana Sayfa (svg.home) - XML 1:1: Sadece ana sayfa DIŞINDAKİ sayfalarda gözükür (!data:view.isHomepage) */}
             {currentTab !== 'dashboard' && (
@@ -130,7 +130,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
                   className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium transition-colors cursor-pointer text-[#d4d4d4] hover:bg-[#252526]/70 hover:text-white"
                 >
                   <div className="flex items-center gap-2.5">
-                    <HomeIcon className="w-4 h-4 text-[var(--linkC,#9aa0a6)]" />
+                    <HomeIcon className="w-[18px] h-[18px] shrink-0 opacity-80 text-[var(--linkC,#9aa0a6)]" />
                     <span className="font-semibold text-xs">Ana Sayfa</span>
                   </div>
                 </button>
@@ -144,7 +144,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
                 className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-[#d4d4d4] hover:bg-[#252526] hover:text-white cursor-pointer transition-colors relative"
               >
                 <div className="flex items-center gap-2.5">
-                  <Hierarchy4Icon className="w-4 h-4 text-[var(--linkC,#9aa0a6)]" />
+                  <Hierarchy4Icon className="w-[18px] h-[18px] shrink-0 opacity-80 text-[var(--linkC,#9aa0a6)]" />
                   <span>Hizmetler</span>
                 </div>
                 {/* xml 1:1 li.nt bildirim noktası */}
@@ -169,7 +169,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <MessageNotif1Icon className="w-3.5 h-3.5 text-[var(--linkC,#9aa0a6)]" />
+                        <MessageNotif1Icon className="w-[18px] h-[18px] shrink-0 opacity-80 text-[var(--linkC,#9aa0a6)]" />
                         <span>Etkileşimler</span>
                       </div>
                       <span className="text-[10px] text-[#9ca3af] font-mono">{counts.pinned}</span>
@@ -185,7 +185,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
                       className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[var(--linkC,#9aa0a6)] transition-colors"
                     >
                       <div className="flex items-center gap-2">
-                        <Edit3Icon className="w-3.5 h-3.5 text-[#9ca3af]" />
+                        <Edit3Icon className="w-[18px] h-[18px] shrink-0 opacity-80 text-[#9ca3af]" />
                         <span>Notlarınız</span>
                       </div>
                     </a>
@@ -200,7 +200,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
                       className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[var(--linkC,#9aa0a6)] transition-colors"
                     >
                       <div className="flex items-center gap-2">
-                        <Profile2UserIcon className="w-3.5 h-3.5 text-[#9ca3af]" />
+                        <Profile2UserIcon className="w-[18px] h-[18px] shrink-0 opacity-80 text-[#9ca3af]" />
                         <span>Forumlarınız</span>
                       </div>
                     </a>
@@ -216,7 +216,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
                 className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-[#d4d4d4] hover:bg-[#252526] hover:text-white cursor-pointer transition-colors"
               >
                 <div className="flex items-center gap-2.5">
-                  <FlashIcon className="w-4 h-4 text-amber-400" />
+                  <FlashIcon className="w-[18px] h-[18px] shrink-0 opacity-80 text-amber-400" />
                   <span>Klasör</span>
                   <span className="badge-new text-[var(--linkC,#9aa0a6)] text-[11px] font-bold ml-1">
                     New!
@@ -241,7 +241,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <EyeIcon className="w-3.5 h-3.5 text-[#9ca3af]" />
+                        <EyeIcon className="w-[18px] h-[18px] shrink-0 opacity-80 text-[#9ca3af]" />
                         <span>İlgi Alanları</span>
                       </div>
                       <span className="text-[10px] text-[#9ca3af] font-mono">{counts.all}</span>
@@ -262,7 +262,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <Verify1Icon className="w-3.5 h-3.5 text-[#9ca3af]" />
+                        <Verify1Icon className="w-[18px] h-[18px] shrink-0 opacity-80 text-[#9ca3af]" />
                         <span>Politikalar</span>
                       </div>
                       <span className="text-[10px] text-[#9ca3af] font-mono">Yasal</span>
@@ -278,7 +278,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
                       className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[var(--linkC,#9aa0a6)] transition-colors"
                     >
                       <div className="flex items-center gap-2">
-                        <SmsEditIcon className="w-3.5 h-3.5 text-[#9ca3af]" />
+                        <SmsEditIcon className="w-[18px] h-[18px] shrink-0 opacity-80 text-[#9ca3af]" />
                         <span>Geri Bildirim</span>
                       </div>
                     </a>
@@ -299,7 +299,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
                 className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-[#d4d4d4] hover:bg-[#252526] hover:text-white cursor-pointer transition-colors"
               >
                 <div className="flex items-center gap-2.5">
-                  <FolderCodeIcon className="w-4 h-4 text-[var(--linkC,#9aa0a6)]" />
+                  <FolderCodeIcon className="w-[18px] h-[18px] shrink-0 opacity-80 text-[var(--linkC,#9aa0a6)]" />
                   <span>Geliştiriciler</span>
                 </div>
                 <ChevronDownIcon className={`w-3.5 h-3.5 text-[#989b9f] transition-transform duration-300 ${gelistiriciOpen ? 'rotate-180' : ''}`} />
@@ -319,7 +319,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
                       className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[var(--linkC,#9aa0a6)] transition-colors cursor-pointer"
                     >
                       <div className="flex items-center gap-2">
-                        <ArrowSwapHorizontalIcon className="w-3.5 h-3.5 text-[#9ca3af]" />
+                        <ArrowSwapHorizontalIcon className="w-[18px] h-[18px] shrink-0 opacity-80 text-[#9ca3af]" />
                         <span>Ters Çevir</span>
                         <span className="text-[var(--linkC,#9aa0a6)] text-[10px] font-bold">New!</span>
                       </div>
@@ -335,7 +335,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
                       className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[var(--linkC,#9aa0a6)] transition-colors"
                     >
                       <div className="flex items-center gap-2">
-                        <SearchNormalIcon className="w-3.5 h-3.5 text-[#9ca3af]" />
+                        <SearchNormalIcon className="w-[18px] h-[18px] shrink-0 opacity-80 text-[#9ca3af]" />
                         <span>Detaylı Ara</span>
                       </div>
                     </a>
@@ -350,7 +350,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
                       className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[var(--linkC,#9aa0a6)] transition-colors"
                     >
                       <div className="flex items-center gap-2">
-                        <SpeedometerIcon className="w-3.5 h-3.5 text-[#9ca3af]" />
+                        <SpeedometerIcon className="w-[18px] h-[18px] shrink-0 opacity-80 text-[#9ca3af]" />
                         <span>Hız Testi</span>
                       </div>
                     </a>
@@ -374,16 +374,16 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
             </a>
           </div>
 
-          <div className="flex items-center justify-between text-[#a3a3a3] px-2">
+          <div className="mSoc flex items-center justify-between text-[#a3a3a3] px-1">
             {/* 1. Instagram */}
             <a
               href="https://www.instagram.com/aleyul.ala/"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[#e1306c] hover:text-white flex items-center justify-center transition-all duration-200"
+              className="w-8 h-8 rounded-full bg-[#252526] hover:bg-[#e1306c] hover:text-white flex items-center justify-center transition-all duration-200"
               title="Instagram"
             >
-              <InstagramIcon className="w-3.5 h-3.5" />
+              <InstagramIcon className="w-[18px] h-[18px] shrink-0 opacity-80" />
             </a>
 
             {/* 2. Telegram */}
@@ -391,10 +391,10 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               href="https://t.me/aleyyulala"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[#229ed9] hover:text-white flex items-center justify-center transition-all duration-200"
+              className="w-8 h-8 rounded-full bg-[#252526] hover:bg-[#229ed9] hover:text-white flex items-center justify-center transition-all duration-200"
               title="Telegram"
             >
-              <TelegramIcon className="w-3.5 h-3.5" />
+              <TelegramIcon className="w-[18px] h-[18px] shrink-0 opacity-80" />
             </a>
 
             {/* 3. Element.io / Matrix */}
@@ -402,10 +402,10 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               href="https://matrix.to/#/#negronn-show:matrix.org"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[var(--linkC,#9aa0a6)] hover:text-black flex items-center justify-center transition-all duration-200"
+              className="w-8 h-8 rounded-full bg-[#252526] hover:bg-[var(--linkC,#9aa0a6)] hover:text-black flex items-center justify-center transition-all duration-200"
               title="Element.io / Matrix: @negronn:matrix.org"
             >
-              <MatrixIcon className="w-3.5 h-3.5" />
+              <MatrixIcon className="w-[18px] h-[18px] shrink-0 opacity-80" />
             </a>
 
             {/* 4. VKontakte */}
@@ -413,28 +413,28 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               href="https://vk.com/negronn"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[#4680c2] hover:text-white flex items-center justify-center transition-all duration-200"
+              className="w-8 h-8 rounded-full bg-[#252526] hover:bg-[#4680c2] hover:text-white flex items-center justify-center transition-all duration-200"
               title="VK (VKontakte)"
             >
-              <VkIcon className="w-3.5 h-3.5" />
+              <VkIcon className="w-[18px] h-[18px] shrink-0 opacity-80" />
             </a>
 
             {/* 5. E-posta */}
             <a
               href="mailto:mrstar14155@gmail.com"
-              className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[#ea4335] hover:text-white flex items-center justify-center transition-all duration-200"
+              className="w-8 h-8 rounded-full bg-[#252526] hover:bg-[#ea4335] hover:text-white flex items-center justify-center transition-all duration-200"
               title="E-posta: mrstar14155@gmail.com"
             >
-              <MailIcon className="w-3.5 h-3.5" />
+              <MailIcon className="w-[18px] h-[18px] shrink-0 opacity-80" />
             </a>
 
             {/* 6. Whatsapp / Telefon */}
             <a
               href="tel:05446412904"
-              className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[#25d366] hover:text-white flex items-center justify-center transition-all duration-200"
+              className="w-8 h-8 rounded-full bg-[#252526] hover:bg-[#25d366] hover:text-white flex items-center justify-center transition-all duration-200"
               title="Telefon / Whatsapp: 0544 641 29 04"
             >
-              <WhatsappIcon className="w-3.5 h-3.5" />
+              <WhatsappIcon className="w-[18px] h-[18px] shrink-0 opacity-80" />
             </a>
           </div>
 

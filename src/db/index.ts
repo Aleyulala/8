@@ -27,9 +27,17 @@ export class SavedDatabase extends Dexie {
 
 export const db = new SavedDatabase();
 
-const CURRENT_SEED_VERSION = 'saved-main-360-sites-v9-konu-disi';
+const CURRENT_SEED_VERSION = 'saved-main-360-sites-v10-rutin';
 
 export async function seedSavedMainData(force = false) {
+  // Quick safety check: Rename any existing 'Routine' records to 'Rutin'
+  try {
+    await db.collections.where('name').equals('Routine').modify({ name: 'Rutin' });
+    await db.tags.where('name').equals('routine').modify({ name: 'rutin' });
+  } catch {
+    // Ignore error if table not ready yet
+  }
+
   const collectionsCount = await db.collections.count();
   const dummyCol = await db.collections.where('name').equals('Research and Studies').first();
   const seedSetting = await db.settings.get('seed_version');

@@ -368,9 +368,6 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
             {/* Metin İçeriği (.iCtnt) */}
             <div className="space-y-1.5 pt-1">
               <div className="flex items-center gap-2 text-xs">
-                <span className="px-1.5 py-0.5 rounded bg-[#457f57] text-white text-[10px] font-medium">
-                  Yayınlandı!
-                </span>
                 <span className="text-[11px] text-[#71717a]">{formatDate(featuredFirst.createdAt)}</span>
                 <span className="text-[11px] text-[#60cdff] hover:underline lowercase">{featuredFirst.tags[0] || 'genel'}</span>
               </div>
@@ -402,9 +399,6 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
                 className="group cursor-pointer select-none space-y-1 transition-colors"
               >
                 <div className="flex items-center gap-2 text-xs">
-                  <span className="px-1.5 py-0.5 rounded bg-[#457f57] text-white text-[10px] font-medium">
-                    Yayınlandı!
-                  </span>
                   <span className="text-[11px] text-[#71717a]">{formatDate(post.createdAt)}</span>
                   <span className="text-[11px] text-[#60cdff] hover:underline lowercase">{category}</span>
                 </div>
