@@ -505,10 +505,11 @@ export const App: React.FC = () => {
       {/* 2. ANA GÖVDE: SOL BAR + ORTA İÇERİK + SAĞ BAR */}
       <div className="flex flex-1 overflow-hidden min-h-0">
         
-        {/* SOL BAR: Blogger Navigation Sidebar (.mainL - Desktop: Kapalıyken 72px Mini Bar, Açıkken 230px) */}
+        {/* SOL BAR: Blogger Navigation Sidebar (.mainL - Desktop: Kapalıyken 75px Mini Bar, Açıkken 230px) */}
         <div className="hidden md:flex shrink-0">
           <BloggerSidebar
             isCollapsed={!isSidebarOpen}
+            onToggleSidebar={() => setIsSidebarOpen(prev => !prev)}
             currentTab={activeView === 'post_detail' ? 'dashboard' : activeView}
             activeCollectionId={selectedCollectionId}
             activeTag={selectedTag}

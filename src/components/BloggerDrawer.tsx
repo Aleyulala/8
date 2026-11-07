@@ -1,31 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  ExternalLink,
-  Layers,
-  Zap,
-  MessageSquare,
-  FileText,
-  ClipboardList,
-  Eye,
-  ShieldCheck,
-  Send,
-  Code2,
-  Sparkles,
-  Phone
-} from 'lucide-react';
+import React, { useState } from 'react';
 import { 
   HomeIcon,
-  FolderFavoriteIcon,
-  SearchNormalIcon,
+  Hierarchy4Icon,
+  FlashIcon,
+  FolderCodeIcon,
+  MessageNotif1Icon,
+  Edit3Icon,
+  Profile2UserIcon,
+  EyeIcon,
+  Verify1Icon,
+  SmsEditIcon,
   ArrowSwapHorizontalIcon,
+  SearchNormalIcon,
   SpeedometerIcon,
   CloseIcon,
+  ChevronDownIcon,
   InstagramIcon, 
   TelegramIcon, 
   MailIcon, 
-  GithubIcon,
   VkIcon,
-  MatrixIcon
+  MatrixIcon,
+  WhatsappIcon
 } from './BloggerIcons';
 import { CollectionItem, TagItem } from '../types';
 
@@ -62,14 +57,12 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
   currentTab,
   onSelectTab,
   counts,
-  onSearchSubmit,
   onOpenSearchModal
 }) => {
   const [hizmetlerOpen, setHizmetlerOpen] = useState(true);
   const [klasorOpen, setKlasorOpen] = useState(true);
   const [gelistiriciOpen, setGelistiriciOpen] = useState(true);
-  const [socialExpanded, setSocialExpanded] = useState(false);
-  const [localSearch, setLocalSearch] = useState('');
+  const [localSearch] = useState('');
 
   if (!isOpen) return null;
 
@@ -83,11 +76,11 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
 
       {/* Drawer Panel (.mainL / .mnBr) */}
       <aside 
-        className="relative w-[85vw] max-w-[480px] bg-[#1e1e1e] border-r border-[#252526] h-full flex flex-col justify-between shadow-2xl z-10 overflow-hidden transform transition-transform duration-300 ease-out"
+        className="relative w-[85vw] max-w-[360px] bg-[#1e1e1e] border-r border-[#252526] h-full flex flex-col justify-between shadow-2xl z-10 overflow-hidden transform transition-transform duration-300 ease-out"
       >
         {/* Drawer Header (.mnH - XML 1:1) */}
         <div className="h-[60px] px-4 border-b border-[#252526] flex items-center justify-between bg-[#1e1e1e]">
-          <span className="text-sm font-medium text-[#989b9f]">Menü</span>
+          <span className="text-sm font-medium text-[#989b9f]">Gezinme Menüsü</span>
 
           <button
             onClick={onClose}
@@ -126,7 +119,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
           {/* Blogger Gezinme Menüsü (.mnMn) */}
           <ul className="space-y-1">
             
-            {/* 1. KÖK BUTON: Ana Sayfa */}
+            {/* 1. KÖK BUTON: Ana Sayfa (svg.home) */}
             <li>
               <button
                 onClick={() => {
@@ -146,32 +139,25 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               </button>
             </li>
 
-            {/* 3. KLASÖR 1: Hizmetler (+ / − Genişletilebilir) */}
-            <li className="pt-1">
+            {/* 2. KLASÖR 1: Hizmetler (svg.hierarchy-4) */}
+            <li className="pt-1 relative">
               <div 
                 onClick={() => setHizmetlerOpen(!hizmetlerOpen)}
-                className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-[#d4d4d4] hover:bg-[#252526] hover:text-white cursor-pointer transition-colors"
+                className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-[#d4d4d4] hover:bg-[#252526] hover:text-white cursor-pointer transition-colors relative"
               >
                 <div className="flex items-center gap-2.5">
-                  <Layers className="w-4 h-4 text-[#60cdff]" />
+                  <Hierarchy4Icon className="w-4 h-4 text-[#60cdff]" />
                   <span>Hizmetler</span>
                 </div>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setHizmetlerOpen(!hizmetlerOpen);
-                  }}
-                  className="w-5 h-5 rounded-full bg-[#1e1e1e] hover:bg-[#333333] border border-white/10 flex items-center justify-center text-xs font-bold text-[#60cdff] transition-all cursor-pointer"
-                  aria-label={hizmetlerOpen ? "Daralt" : "Genişlet"}
-                >
-                  {hizmetlerOpen ? '−' : '+'}
-                </button>
+                {/* xml 1:1 li.nt bildirim noktası */}
+                <span className="absolute top-2 left-2 w-2 h-2 rounded-full bg-[#60cdff] shadow-[0_0_8px_#60cdff]" />
+                
+                <ChevronDownIcon className={`w-3.5 h-3.5 text-[#989b9f] transition-transform duration-300 ${hizmetlerOpen ? 'rotate-180' : ''}`} />
               </div>
 
               {hizmetlerOpen && (
                 <ul className="space-y-0.5 pl-3 border-l border-white/10 ml-4 mt-1">
-                  {/* 1. Etkileşimler (Saved Sabitlenenler) */}
+                  {/* 1. Etkileşimler (svg.message-notif-1) */}
                   <li>
                     <button
                       onClick={() => {
@@ -185,77 +171,65 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <FolderFavoriteIcon className="w-3.5 h-3.5 text-amber-400" />
+                        <MessageNotif1Icon className="w-3.5 h-3.5 text-[#60cdff]" />
                         <span>Etkileşimler</span>
                       </div>
                       <span className="text-[10px] text-[#9ca3af] font-mono">{counts.pinned}</span>
                     </button>
                   </li>
 
-                  {/* 2. Notlarınız (NotebookLM) */}
+                  {/* 2. Notlarınız (svg.edit-3) */}
                   <li>
                     <a
                       href="https://notebooklm.google.com/"
                       target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+                      rel="nofollow noreferrer noopener"
+                      className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors"
                     >
                       <div className="flex items-center gap-2">
-                        <FileText className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
+                        <Edit3Icon className="w-3.5 h-3.5 text-[#9ca3af]" />
                         <span>Notlarınız</span>
                       </div>
-                      <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
                     </a>
                   </li>
 
-                  {/* 3. Forumlarınız (Google Forms) */}
+                  {/* 3. Forumlarınız (svg.profile-2user) */}
                   <li>
                     <a
                       href="https://docs.google.com/forms/u/0/"
                       target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+                      rel="nofollow noreferrer noopener"
+                      className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors"
                     >
                       <div className="flex items-center gap-2">
-                        <ClipboardList className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
+                        <Profile2UserIcon className="w-3.5 h-3.5 text-[#9ca3af]" />
                         <span>Forumlarınız</span>
                       </div>
-                      <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
                     </a>
                   </li>
                 </ul>
               )}
             </li>
 
-            {/* 4. KLASÖR 2: Klasör (+ / − Genişletilebilir) */}
+            {/* 3. KLASÖR 2: Klasör (svg.flash) */}
             <li className="pt-1">
               <div 
                 onClick={() => setKlasorOpen(!klasorOpen)}
                 className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-[#d4d4d4] hover:bg-[#252526] hover:text-white cursor-pointer transition-colors"
               >
                 <div className="flex items-center gap-2.5">
-                  <Zap className="w-4 h-4 text-amber-400" />
+                  <FlashIcon className="w-4 h-4 text-amber-400" />
                   <span>Klasör</span>
-                  <span className="px-1.5 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 text-[9px] font-bold">
+                  <span className="badge-new text-[#60cdff] text-[11px] font-bold ml-1">
                     New!
                   </span>
                 </div>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setKlasorOpen(!klasorOpen);
-                  }}
-                  className="w-5 h-5 rounded-full bg-[#1e1e1e] hover:bg-[#333333] border border-white/10 flex items-center justify-center text-xs font-bold text-[#60cdff] transition-all cursor-pointer"
-                  aria-label={klasorOpen ? "Daralt" : "Genişlet"}
-                >
-                  {klasorOpen ? '−' : '+'}
-                </button>
+                <ChevronDownIcon className={`w-3.5 h-3.5 text-[#989b9f] transition-transform duration-300 ${klasorOpen ? 'rotate-180' : ''}`} />
               </div>
 
               {klasorOpen && (
                 <ul className="space-y-0.5 pl-3 border-l border-white/10 ml-4 mt-1">
-                  {/* 1. İlgi Alanları (Saved: Tüm Bağlantılar) */}
+                  {/* 1. İlgi Alanları (svg.eye) */}
                   <li>
                     <button
                       onClick={() => {
@@ -269,14 +243,14 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <Eye className="w-3.5 h-3.5 text-[#9ca3af]" />
+                        <EyeIcon className="w-3.5 h-3.5 text-[#9ca3af]" />
                         <span>İlgi Alanları</span>
                       </div>
                       <span className="text-[10px] text-[#9ca3af] font-mono">{counts.all}</span>
                     </button>
                   </li>
 
-                  {/* 2. Politikalar (Saved Gizlilik Politikası & Lisans) */}
+                  {/* 2. Politikalar (svg.verify-1) */}
                   <li>
                     <button
                       onClick={() => {
@@ -290,58 +264,52 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <ShieldCheck className="w-3.5 h-3.5 text-[#9ca3af]" />
+                        <Verify1Icon className="w-3.5 h-3.5 text-[#9ca3af]" />
                         <span>Politikalar</span>
                       </div>
                       <span className="text-[10px] text-[#9ca3af] font-mono">Yasal</span>
                     </button>
                   </li>
 
-                  {/* 3. Geri Bildirim (Saved GitHub Discussions) */}
+                  {/* 3. Geri Bildirim (svg.sms-edit) */}
                   <li>
                     <a
-                      href="https://github.com/Aleyulala/saved/discussions"
+                      href="https://github.com/Aleyulala/saved/discussions/?pli=1"
                       target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+                      rel="nofollow noreferrer noopener"
+                      className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors"
                     >
                       <div className="flex items-center gap-2">
-                        <Send className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
+                        <SmsEditIcon className="w-3.5 h-3.5 text-[#9ca3af]" />
                         <span>Geri Bildirim</span>
                       </div>
-                      <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
                     </a>
                   </li>
                 </ul>
               )}
             </li>
 
-            {/* 5. KLASÖR 3: Geliştirici (+ / − Genişletilebilir) */}
+            {/* XML 1:1 Bölücü Çizgi (.mnMn > li.br::after) */}
+            <li className="py-1">
+              <div className="w-full h-px bg-white/10 my-1" />
+            </li>
+
+            {/* 4. KLASÖR 3: Geliştiriciler (svg.folder-code) */}
             <li className="pt-1">
               <div 
                 onClick={() => setGelistiriciOpen(!gelistiriciOpen)}
                 className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-[#d4d4d4] hover:bg-[#252526] hover:text-white cursor-pointer transition-colors"
               >
                 <div className="flex items-center gap-2.5">
-                  <Code2 className="w-4 h-4 text-[#60cdff]" />
-                  <span>Geliştirici</span>
+                  <FolderCodeIcon className="w-4 h-4 text-[#60cdff]" />
+                  <span>Geliştiriciler</span>
                 </div>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setGelistiriciOpen(!gelistiriciOpen);
-                  }}
-                  className="w-5 h-5 rounded-full bg-[#1e1e1e] hover:bg-[#333333] border border-white/10 flex items-center justify-center text-xs font-bold text-[#60cdff] transition-all cursor-pointer"
-                  aria-label={gelistiriciOpen ? "Daralt" : "Genişlet"}
-                >
-                  {gelistiriciOpen ? '−' : '+'}
-                </button>
+                <ChevronDownIcon className={`w-3.5 h-3.5 text-[#989b9f] transition-transform duration-300 ${gelistiriciOpen ? 'rotate-180' : ''}`} />
               </div>
 
               {gelistiriciOpen && (
                 <ul className="space-y-0.5 pl-3 border-l border-white/10 ml-4 mt-1">
-                  {/* 1. Ters Çevir (RTL / Yön Değiştirme) */}
+                  {/* 1. Ters Çevir (svg.arrow-swap-horizontal) */}
                   <li>
                     <button
                       type="button"
@@ -350,68 +318,71 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
                         const next = current === 'rtl' ? 'ltr' : 'rtl';
                         document.documentElement.setAttribute('dir', next);
                       }}
-                      className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group cursor-pointer"
+                      className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors cursor-pointer"
                     >
                       <div className="flex items-center gap-2">
-                        <ArrowSwapHorizontalIcon className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
+                        <ArrowSwapHorizontalIcon className="w-3.5 h-3.5 text-[#9ca3af]" />
                         <span>Ters Çevir</span>
-                        <span className="px-1.5 py-0.5 rounded-full bg-cyan-950/80 text-[#60cdff] text-[9px] font-bold">
-                          New!
-                        </span>
+                        <span className="text-[#60cdff] text-[10px] font-bold">New!</span>
                       </div>
                     </button>
                   </li>
 
-                  {/* 2. Detaylı Ara (Google Zengin Sonuçlar Testi) */}
+                  {/* 2. Detaylı Ara (svg.search-normal-1) */}
                   <li>
                     <a
                       href="https://search.google.com/test/rich-results"
                       target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+                      rel="nofollow noreferrer noopener"
+                      className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors"
                     >
                       <div className="flex items-center gap-2">
-                        <SearchNormalIcon className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
+                        <SearchNormalIcon className="w-3.5 h-3.5 text-[#9ca3af]" />
                         <span>Detaylı Ara</span>
                       </div>
-                      <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
                     </a>
                   </li>
 
-                  {/* 3. Hız Testi (Google PageSpeed Insights) */}
+                  {/* 3. Hız Testi (svg.speedometer) */}
                   <li>
                     <a
                       href="https://pagespeed.web.dev/analysis"
                       target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors group"
+                      rel="nofollow noreferrer noopener"
+                      className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-[#d4d4d4] hover:bg-[#252526] hover:text-[#60cdff] transition-colors"
                     >
                       <div className="flex items-center gap-2">
-                        <SpeedometerIcon className="w-3.5 h-3.5 text-[#9ca3af] group-hover:text-[#60cdff]" />
+                        <SpeedometerIcon className="w-3.5 h-3.5 text-[#9ca3af]" />
                         <span>Hız Testi</span>
                       </div>
-                      <ExternalLink className="w-3 h-3 text-[#71717a] group-hover:text-[#60cdff]" />
                     </a>
                   </li>
                 </ul>
               )}
             </li>
 
-            {/* 6. KLASÖR 4 kaldırıldı */}
-
           </ul>
-
         </div>
 
-        {/* Drawer Footer: 6 Sosyal Ağ Butonu (.mnMob / .mSoc) */}
-        <div className="p-3 border-t border-[rgba(255,255,255,0.08)] bg-[#252526] space-y-2.5">
-          <div className="flex items-center justify-between text-[#a3a3a3] px-1">
+        {/* Alt Bölüm (.mnMob Footer): E-posta (.PageList02) + 6 Sosyal Buton (.LinkList04 / .mSoc) */}
+        <div className="p-4 border-t border-[#252526] bg-[#1e1e1e] space-y-3">
+          {/* PageList02: E-posta */}
+          <div className="text-center">
+            <a
+              href="mailto:mrstar14155@gmail.com"
+              className="text-[11px] text-[#989b9f] hover:text-[#60cdff] transition-colors font-mono tracking-wider"
+            >
+              ────Epostaৎ────
+            </a>
+          </div>
+
+          <div className="flex items-center justify-between text-[#a3a3a3] px-2">
             {/* 1. Instagram */}
             <a
               href="https://www.instagram.com/aleyul.ala/"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-7 h-7 rounded-full bg-[#1e1e1e] hover:bg-[#e1306c] hover:text-white flex items-center justify-center transition-all duration-200"
+              className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[#e1306c] hover:text-white flex items-center justify-center transition-all duration-200"
               title="Instagram"
             >
               <InstagramIcon className="w-3.5 h-3.5" />
@@ -422,7 +393,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               href="https://t.me/aleyyulala"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-7 h-7 rounded-full bg-[#1e1e1e] hover:bg-[#229ed9] hover:text-white flex items-center justify-center transition-all duration-200"
+              className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[#229ed9] hover:text-white flex items-center justify-center transition-all duration-200"
               title="Telegram"
             >
               <TelegramIcon className="w-3.5 h-3.5" />
@@ -433,18 +404,18 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               href="https://matrix.to/#/#negronn-show:matrix.org"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-7 h-7 rounded-full bg-[#1e1e1e] hover:bg-[#38bdf8] hover:text-black flex items-center justify-center transition-all duration-200"
+              className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[#38bdf8] hover:text-black flex items-center justify-center transition-all duration-200"
               title="Element.io / Matrix: @negronn:matrix.org"
             >
               <MatrixIcon className="w-3.5 h-3.5" />
             </a>
 
-            {/* 4. VKontakte (VK) */}
+            {/* 4. VKontakte */}
             <a
               href="https://vk.com/negronn"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-7 h-7 rounded-full bg-[#1e1e1e] hover:bg-[#4680c2] hover:text-white flex items-center justify-center transition-all duration-200"
+              className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[#4680c2] hover:text-white flex items-center justify-center transition-all duration-200"
               title="VK (VKontakte)"
             >
               <VkIcon className="w-3.5 h-3.5" />
@@ -453,23 +424,23 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
             {/* 5. E-posta */}
             <a
               href="mailto:mrstar14155@gmail.com"
-              className="w-7 h-7 rounded-full bg-[#1e1e1e] hover:bg-[#ea4335] hover:text-white flex items-center justify-center transition-all duration-200"
+              className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[#ea4335] hover:text-white flex items-center justify-center transition-all duration-200"
               title="E-posta: mrstar14155@gmail.com"
             >
               <MailIcon className="w-3.5 h-3.5" />
             </a>
 
-            {/* 6. Telefon */}
+            {/* 6. Whatsapp / Telefon */}
             <a
               href="tel:05446412904"
-              className="w-7 h-7 rounded-full bg-[#1e1e1e] hover:bg-[#10b981] hover:text-white flex items-center justify-center transition-all duration-200"
-              title="Telefon: 0544 641 29 04"
+              className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[#25d366] hover:text-white flex items-center justify-center transition-all duration-200"
+              title="Telefon / Whatsapp: 0544 641 29 04"
             >
-              <Phone className="w-3.5 h-3.5" />
+              <WhatsappIcon className="w-3.5 h-3.5" />
             </a>
           </div>
 
-          <div className="flex items-center justify-between text-[10px] text-[#989b9f] font-mono px-1">
+          <div className="flex items-center justify-between text-[10px] text-[#989b9f] font-mono px-2">
             <span>GNU GPL v3.0</span>
             <span>v1.0 • Plus UI</span>
           </div>
