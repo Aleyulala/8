@@ -73,14 +73,14 @@ export const BloggerFooter: React.FC<BloggerFooterProps> = ({
                 </a>
               </div>
 
-              {/* RSS Feed Bağlantısı */}
+              {/* RSS Feed Bağlantısı (GitHub Native Atom / RSS Akışı) */}
               <div className="pt-1">
                 <a
-                  href="https://negronshow.blogspot.com/feeds/posts/default?alt=rss"
+                  href="https://github.com/Aleyulala/saved/commits/main.atom"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-xs text-[#989b9f] hover:text-[var(--linkC,#9aa0a6)] transition-colors"
-                  title="Feed"
+                  title="GitHub SAVED RSS/Atom Akışı"
                 >
                   <Rss className="w-3.5 h-3.5" />
                   <span>Feed</span>

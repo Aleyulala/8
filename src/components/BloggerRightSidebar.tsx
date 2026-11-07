@@ -188,7 +188,7 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
     target.style.overflowY = scrollH > 220 ? 'auto' : 'hidden';
   };
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!contactName.trim()) {
       goToStep(0);
@@ -207,18 +207,67 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
     }
 
     setIsSending(true);
-    setTimeout(() => {
+    setErrorMessage('');
+
+    const accessKey = localStorage.getItem('nsone_web3forms_key') || '';
+
+    try {
+      if (accessKey) {
+        const response = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            access_key: accessKey,
+            name: contactName.trim(),
+            email: contactEmail.trim(),
+            message: contactMessage.trim(),
+            from_name: 'SAVED - Nsone Bot',
+            subject: `SAVED Nsone Bot - Yeni Mesaj: ${contactName.trim()}`
+          })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          setIsSending(false);
+          setSentSuccess(true);
+          setTimeout(() => {
+            setSentSuccess(false);
+            setContactName('');
+            setContactEmail('');
+            setContactMessage('');
+            setCurrentStep(0);
+            setErrorMessage('');
+          }, 4000);
+          return;
+        } else {
+          throw new Error(data.message || 'Gönderim başarısız oldu.');
+        }
+      } else {
+        // Web3Forms anahtarı henüz girilmemişse, doğrudan mailto fallback'i çalıştır:
+        const mailtoUrl = `mailto:mrstar14155@gmail.com?subject=${encodeURIComponent(
+          'SAVED Nsone Bot Mesajı - ' + contactName.trim()
+        )}&body=${encodeURIComponent(
+          `Ad: ${contactName.trim()}\nE-posta: ${contactEmail.trim()}\n\nMesaj:\n${contactMessage.trim()}`
+        )}`;
+        window.open(mailtoUrl, '_blank');
+        setIsSending(false);
+        setSentSuccess(true);
+        setTimeout(() => {
+          setSentSuccess(false);
+          setContactName('');
+          setContactEmail('');
+          setContactMessage('');
+          setCurrentStep(0);
+          setErrorMessage('');
+        }, 4000);
+      }
+    } catch (err: any) {
       setIsSending(false);
-      setSentSuccess(true);
-      setTimeout(() => {
-        setSentSuccess(false);
-        setContactName('');
-        setContactEmail('');
-        setContactMessage('');
-        setCurrentStep(0);
-        setErrorMessage('');
-      }, 3500);
-    }, 600);
+      triggerShake(3, err.message || 'Gönderim sırasında bir hata oluştu.');
+    }
   };
 
   const content = (

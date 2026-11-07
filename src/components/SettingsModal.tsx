@@ -12,7 +12,8 @@ import {
   AlertTriangle,
   Bookmark,
   Copy,
-  Check
+  Check,
+  Send
 } from 'lucide-react';
 import { resetDatabase } from '../db';
 
@@ -44,6 +45,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   const [isResetting, setIsResetting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [copiedBookmarklet, setCopiedBookmarklet] = useState(false);
+  const [web3FormsKey, setWeb3FormsKey] = useState<string>(() => {
+    return localStorage.getItem('nsone_web3forms_key') || '';
+  });
+  const [savedKeyMsg, setSavedKeyMsg] = useState(false);
 
   const bookmarkletCode = `javascript:(function(){var u=encodeURIComponent(window.location.href);var t=encodeURIComponent(document.title);window.open('https://aleyulala.github.io/x/?url='+u+'&title='+t,'_blank');})();`;
 
@@ -152,6 +157,47 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 className="bg-[#38bdf8] h-2 rounded-full transition-all"
                 style={{ width: `${Math.max(1, Math.min(100, storageInfo.percentage))}%` }}
               />
+            </div>
+          </div>
+
+          {/* Nsone Bot - Web3Forms İletişim API Anahtarı */}
+          <div className="p-4 rounded-xl bg-[#171717] border border-[#383838] space-y-2">
+            <div className="text-xs font-bold uppercase tracking-wider text-[var(--linkC,#9aa0a6)] flex items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                <Send className="w-4 h-4" />
+                <span>Nsone Bot İletişim Servisi (Web3Forms)</span>
+              </div>
+              <a
+                href="https://web3forms.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[10px] text-[var(--linkC,#9aa0a6)] hover:underline lowercase font-mono"
+              >
+                anahtar al (ücretsiz)
+              </a>
+            </div>
+            <p className="text-xs text-[#8e8e8e] leading-relaxed">
+              Nsone Bot'tan gönderilen mesajların doğrudan e-postanıza (<strong className="text-neutral-200">mrstar14155@gmail.com</strong>) iletilmesi için Web3Forms Access Key'inizi girin:
+            </p>
+            <div className="flex items-center gap-2 pt-1">
+              <input
+                type="text"
+                value={web3FormsKey}
+                onChange={(e) => {
+                  const val = e.target.value.trim();
+                  setWeb3FormsKey(val);
+                  localStorage.setItem('nsone_web3forms_key', val);
+                  setSavedKeyMsg(true);
+                  setTimeout(() => setSavedKeyMsg(false), 2000);
+                }}
+                placeholder="Örn: a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                className="flex-1 px-3 py-2 rounded-lg bg-[#212121] border border-[#383838] text-xs text-white focus:outline-none focus:border-[var(--linkC,#9aa0a6)] font-mono"
+              />
+              {savedKeyMsg && (
+                <span className="text-[11px] text-emerald-400 font-semibold shrink-0">
+                  Kaydedildi!
+                </span>
+              )}
             </div>
           </div>
 
