@@ -1627,6 +1627,20 @@ export const SEED_LINKS: RawSeedLink[] = [
     "description": "NFSMWO - Oyun"
   },
   {
+    "title": "NFS Carbon Online",
+    "url": "https://nfscrb.xyz/",
+    "categoryName": "Oyun",
+    "tags": [
+      "oyun",
+      "games",
+      "nfs",
+      "racing"
+    ],
+    "color": "#f59e0b",
+    "isPinned": true,
+    "description": "NFS Carbon Online – Need for Speed: Carbon multiplayer in your browser - Oyun"
+  },
+  {
     "title": "Shell Shockers",
     "url": "https://shellshockers.io/",
     "categoryName": "Oyun",

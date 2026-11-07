@@ -27,7 +27,7 @@ export class SavedDatabase extends Dexie {
 
 export const db = new SavedDatabase();
 
-const CURRENT_SEED_VERSION = 'saved-main-360-sites-v7';
+const CURRENT_SEED_VERSION = 'saved-main-360-sites-v8';
 
 export async function seedSavedMainData(force = false) {
   const collectionsCount = await db.collections.count();

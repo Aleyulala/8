@@ -16,6 +16,7 @@ import {
   Link as LinkIcon
 } from 'lucide-react';
 import { PRIVACY_SECTIONS, PrivacySection } from '../data/privacyContent';
+import { getAuthorData } from '../utils/bloggerAuthors';
 import { 
   Verify1Icon, 
   BloggerBIcon, 
@@ -36,6 +37,7 @@ export const BloggerPrivacyView: React.FC<BloggerPrivacyViewProps> = ({
 }) => {
   const [activeSectionId, setActiveSectionId] = useState<string>('');
   const [copiedLink, setCopiedLink] = useState(false);
+  const authorData = getAuthorData('NEGRONN');
 
   // Generate direct canonical policy link for Blogger embedding
   const privacyDirectUrl = `${window.location.origin}${window.location.pathname}?view=privacy`;
@@ -79,7 +81,7 @@ export const BloggerPrivacyView: React.FC<BloggerPrivacyViewProps> = ({
   };
 
   return (
-    <div className="w-full min-h-full pb-20 select-text">
+    <div className="w-full max-w-[780px] mx-auto min-h-full pb-20 select-text">
       
       {/* 1. ÜST NAVİGASYON ÇUBUĞU */}
       <div className="flex items-center justify-between py-3 mb-5 border-b border-[#252526]">
@@ -247,10 +249,15 @@ export const BloggerPrivacyView: React.FC<BloggerPrivacyViewProps> = ({
 
         <div className="admPs">
           <div className="admIm">
-            <div className="im relative w-12 h-12 rounded-full bg-gradient-to-tr from-[#38bdf8] to-indigo-600 p-0.5 shadow-lg shrink-0">
-              <div className="w-full h-full rounded-full bg-[#1e1e1e] flex items-center justify-center font-bold text-lg text-white">
-                N
-              </div>
+            <div className="im relative w-12 h-12 rounded-full overflow-hidden bg-[#1e1e1e] ring-2 ring-white/10 shadow-lg shrink-0">
+              <img
+                src={authorData.avatar}
+                alt={authorData.name}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = 'none';
+                }}
+              />
               <div className="absolute -bottom-0.5 -right-0.5 bg-[#1e1e1e] rounded-full p-0.5">
                 <Verify1Icon className="w-3.5 h-3.5 text-[#38bdf8]" />
               </div>
@@ -259,26 +266,23 @@ export const BloggerPrivacyView: React.FC<BloggerPrivacyViewProps> = ({
 
           <div className="admI">
             <div className="flex items-center justify-between flex-wrap gap-2">
-              <bdi className="admN font-bold text-sm text-white" data-write="Yazan:" data-text="NEGRONN">
+              <bdi className="admN font-bold text-sm text-white" data-write="Yazan:" data-text={authorData.name}>
                 <span className="text-xs text-[#71717a] font-normal mr-1">Yazan:</span>
-                <span>NEGRONN</span>
+                <span>{authorData.name}</span>
                 <Verify1Icon className="w-3.5 h-3.5 text-[#38bdf8]" />
                 <span className="text-[10px] px-2 py-0.5 rounded-lg bg-[#1e1e1e] text-[#60cdff] font-semibold ml-1">
-                  Blogger &amp; Yazılım Mimarı
+                  {authorData.role}
                 </span>
               </bdi>
             </div>
 
             <p className="admA text-xs text-[#d4d4d4] leading-relaxed">
-              Saved Startpage, açık kaynak yazılım felsefesi ve gizlilik odaklı mimarisiyle 
-              geliştirilmiş yer imi ve bilgi yönetim sistemidir. Tüm kullanıcı verileri yalnızca 
-              kullanıcının yerel tarayıcısında (IndexedDB / localStorage) barındırılır. 
-              Katkıda bulunmak veya tartışmalara katılmak için <a href="https://matrix.to/#/#negronn-show:matrix.org" target="_blank" rel="noopener noreferrer" className="text-[#60cdff] hover:underline font-semibold">Topluluk</a> kanalımıza katılabilirsiniz.
+              {authorData.bio} Soru, öneri ve tartışmalara katılmak için <a href={authorData.communityUrl} target="_blank" rel="noopener noreferrer" className="text-[#60cdff] hover:underline font-semibold">Topluluk</a> kanalımıza katılabilirsiniz.
             </p>
 
             <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
               <a
-                href="https://aleyulala.blogspot.com/"
+                href={authorData.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#d4d4d4] hover:text-white transition-colors"
@@ -289,7 +293,7 @@ export const BloggerPrivacyView: React.FC<BloggerPrivacyViewProps> = ({
               </a>
 
               <a
-                href="https://matrix.to/#/#negronn-show:matrix.org"
+                href={authorData.communityUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#60cdff] hover:text-white transition-colors border border-[#60cdff]/20 hover:border-[#60cdff]/50 font-medium"
@@ -300,7 +304,7 @@ export const BloggerPrivacyView: React.FC<BloggerPrivacyViewProps> = ({
               </a>
 
               <a
-                href="https://t.me/aleyyulala"
+                href={authorData.telegram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#229ed9] text-[#d4d4d4] hover:text-white transition-colors"
@@ -311,7 +315,7 @@ export const BloggerPrivacyView: React.FC<BloggerPrivacyViewProps> = ({
               </a>
 
               <a
-                href="https://vk.com/negronn"
+                href={authorData.vk}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#4680c2] text-[#d4d4d4] hover:text-white transition-colors"
@@ -322,7 +326,7 @@ export const BloggerPrivacyView: React.FC<BloggerPrivacyViewProps> = ({
               </a>
 
               <a
-                href="mailto:mrstar14155@gmail.com"
+                href={`mailto:${authorData.email}`}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1e1e] hover:bg-[#ea4335] text-[#d4d4d4] hover:text-white transition-colors"
                 title="E-posta İletişim"
               >

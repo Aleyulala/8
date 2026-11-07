@@ -403,10 +403,10 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
 
         </div>
 
-        {/* Drawer Footer: Sosyal Medya & Topluluk İkonları (.mnMob / .mSoc + Genişletme) */}
-        <div className="p-3 border-t border-[rgba(255,255,255,0.08)] bg-[#252526] space-y-2">
-          <div className="flex items-center justify-around text-[#a3a3a3]">
-            {/* Instagram */}
+        {/* Drawer Footer: 6 Sosyal Ağ Butonu (.mnMob / .mSoc) */}
+        <div className="p-3 border-t border-[rgba(255,255,255,0.08)] bg-[#252526] space-y-2.5">
+          <div className="flex items-center justify-between text-[#a3a3a3] px-1">
+            {/* 1. Instagram */}
             <a
               href="https://www.instagram.com/aleyul.ala/"
               target="_blank"
@@ -417,7 +417,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               <InstagramIcon className="w-3.5 h-3.5" />
             </a>
 
-            {/* Telegram */}
+            {/* 2. Telegram */}
             <a
               href="https://t.me/aleyyulala"
               target="_blank"
@@ -428,7 +428,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               <TelegramIcon className="w-3.5 h-3.5" />
             </a>
 
-            {/* Element.io / Matrix */}
+            {/* 3. Element.io / Matrix */}
             <a
               href="https://matrix.to/#/#negronn-show:matrix.org"
               target="_blank"
@@ -439,7 +439,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               <MatrixIcon className="w-3.5 h-3.5" />
             </a>
 
-            {/* VKontakte (VK) */}
+            {/* 4. VKontakte (VK) */}
             <a
               href="https://vk.com/negronn"
               target="_blank"
@@ -450,7 +450,7 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               <VkIcon className="w-3.5 h-3.5" />
             </a>
 
-            {/* E-posta */}
+            {/* 5. E-posta */}
             <a
               href="mailto:mrstar14155@gmail.com"
               className="w-7 h-7 rounded-full bg-[#1e1e1e] hover:bg-[#ea4335] hover:text-white flex items-center justify-center transition-all duration-200"
@@ -459,40 +459,15 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
               <MailIcon className="w-3.5 h-3.5" />
             </a>
 
-            {/* Genişlet Butonu (.mSocT) */}
-            <button
-              type="button"
-              onClick={() => setSocialExpanded(!socialExpanded)}
-              className="w-6 h-6 rounded-full border border-white/20 hover:border-[#60cdff] text-white hover:text-[#60cdff] flex items-center justify-center font-bold text-xs transition-all cursor-pointer"
-              title={socialExpanded ? "Sosyal Medyayı Daralt" : "Daha Fazla Sosyal Bağlantı"}
+            {/* 6. Telefon */}
+            <a
+              href="tel:05446412904"
+              className="w-7 h-7 rounded-full bg-[#1e1e1e] hover:bg-[#10b981] hover:text-white flex items-center justify-center transition-all duration-200"
+              title="Telefon: 0544 641 29 04"
             >
-              {socialExpanded ? '−' : '+'}
-            </button>
+              <Phone className="w-3.5 h-3.5" />
+            </a>
           </div>
-
-          {/* Genişletilmiş İletişim / Sosyal Menü */}
-          {socialExpanded && (
-            <div className="pt-2 border-t border-white/5 flex items-center justify-center gap-4 text-xs animate-in fade-in duration-200">
-              <a
-                href="tel:05446412904"
-                className="inline-flex items-center gap-1.5 text-[#9ca3af] hover:text-[#60cdff] transition-colors"
-                title="Telefon ile İletişim"
-              >
-                <Phone className="w-3 h-3" />
-                <span>0544 641 29 04</span>
-              </a>
-              <span className="text-[#52525b]">•</span>
-              <a
-                href="https://github.com/Aleyulala/saved"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-[#9ca3af] hover:text-white transition-colors"
-              >
-                <GithubIcon className="w-3 h-3" />
-                <span>GitHub Depo</span>
-              </a>
-            </div>
-          )}
 
           <div className="flex items-center justify-between text-[10px] text-[#989b9f] font-mono px-1">
             <span>GNU GPL v3.0</span>

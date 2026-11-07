@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { CollectionItem, LinkItem } from '../types';
 import { formatDate, getDomain, getFaviconUrl } from '../utils/favicon';
+import { getAuthorData } from '../utils/bloggerAuthors';
 import { 
   Verify1Icon, 
   EyeIcon, 
@@ -49,6 +50,7 @@ export const LinkCard: React.FC<LinkCardProps> = ({
   const views = link.views || Math.abs(link.title.length * 3 + 12);
   const comments = link.commentsCount !== undefined ? link.commentsCount : (link.isPinned ? 3 : Math.abs(link.title.length % 3));
   const author = link.authorName || 'NEGRONN';
+  const authorData = getAuthorData(author);
 
   // Thumbnail fallback: use link.thumbnail if available, else curated aesthetic background
   const hasThumbnail = Boolean(link.thumbnail && !imgError);
@@ -130,12 +132,18 @@ export const LinkCard: React.FC<LinkCardProps> = ({
           </button>
         </div>
 
-        {/* Sol Alt: Yazar / Marka Rozeti (AI ✔ / NEGRONN ✔) */}
+        {/* Sol Alt: Yazar / Marka Rozeti (.aNm - XML 1:1) */}
         <div className="absolute bottom-2 left-2 z-10">
-          <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-black/75 backdrop-blur-md text-white text-[10px] font-bold shadow-sm tracking-wide">
-            <span className="w-3.5 h-3.5 rounded-full bg-[#1e1e1e] flex items-center justify-center text-[7px] text-[#60cdff] font-extrabold">
-              {author.charAt(0)}
-            </span>
+          <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-black/75 backdrop-blur-md text-white text-[10px] font-bold shadow-sm tracking-wide">
+            <img
+              src={authorData.avatar}
+              alt={author}
+              className="w-3.5 h-3.5 rounded-full object-cover shrink-0 ring-1 ring-white/20"
+              loading="lazy"
+              onError={(e) => {
+                (e.target as HTMLElement).style.display = 'none';
+              }}
+            />
             <span>{author}</span>
             <Verify1Icon className="w-3 h-3 text-[#60cdff]" />
           </div>

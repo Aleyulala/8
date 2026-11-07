@@ -34,6 +34,7 @@ import {
   MatrixIcon
 } from './BloggerIcons';
 import { MediaItem } from './UniversalMediaModal';
+import { getAuthorData } from '../utils/bloggerAuthors';
 
 interface BloggerPostViewProps {
   link: LinkItem;
@@ -94,6 +95,8 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
   const currentIndex = activeLinks.findIndex(l => l.id === link.id);
   const prevLink = currentIndex > 0 ? activeLinks[currentIndex - 1] : null;
   const nextLink = currentIndex >= 0 && currentIndex < activeLinks.length - 1 ? activeLinks[currentIndex + 1] : null;
+
+  const currentAuthor = getAuthorData(link.authorName);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(link.url);
@@ -233,10 +236,15 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
         {/* Yazar & Tarih Meta Bilgisi (.pInf) */}
         <div className="flex flex-wrap items-center gap-4 text-xs text-[#a1a1aa] pt-1">
           <div className="flex items-center gap-1.5">
-            <span className="w-5 h-5 rounded-full bg-gradient-to-tr from-[#38bdf8] to-indigo-600 flex items-center justify-center text-[10px] text-white font-bold">
-              N
-            </span>
-            <span className="text-white font-semibold">{link.authorName || 'NEGRONN'}</span>
+            <img
+              src={currentAuthor.avatar}
+              alt={currentAuthor.name}
+              className="w-5 h-5 rounded-full object-cover shadow-sm shrink-0 ring-1 ring-white/10"
+              onError={(e) => {
+                (e.target as HTMLElement).style.display = 'none';
+              }}
+            />
+            <span className="text-white font-semibold">{currentAuthor.name}</span>
             <Verify1Icon className="w-3.5 h-3.5 text-[#38bdf8]" />
           </div>
 
@@ -434,10 +442,15 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
 
         <div className="admPs">
           <div className="admIm">
-            <div className="im relative w-11 h-11 rounded-full bg-gradient-to-tr from-[#38bdf8] via-indigo-500 to-rose-500 p-0.5 shadow-md shrink-0">
-              <div className="w-full h-full rounded-full bg-[#1e1e1e] flex items-center justify-center font-bold text-base text-white">
-                N
-              </div>
+            <div className="im relative w-11 h-11 rounded-full overflow-hidden bg-[#1e1e1e] ring-2 ring-white/10 shadow-md shrink-0">
+              <img
+                src={currentAuthor.avatar}
+                alt={currentAuthor.name}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = 'none';
+                }}
+              />
               <div className="absolute -bottom-0.5 -right-0.5 bg-[#1e1e1e] rounded-full p-0.5">
                 <Verify1Icon className="w-3.5 h-3.5 text-[#38bdf8]" />
               </div>
@@ -446,22 +459,23 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
 
           <div className="admI">
             <div className="flex items-center justify-between flex-wrap gap-2">
-              <bdi className="admN font-bold text-sm text-white" data-write="Yazan:" data-text="NEGRONN">
+              <bdi className="admN font-bold text-sm text-white" data-write="Yazan:" data-text={currentAuthor.name}>
                 <span className="text-xs text-[#71717a] font-normal mr-1">Yazan:</span>
-                <span>NEGRONN</span>
+                <span>{currentAuthor.name}</span>
                 <Verify1Icon className="w-3.5 h-3.5 text-[#38bdf8]" />
                 <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[#ff5722]/20 text-[#ff5722] font-semibold ml-1">BLOGGER</span>
               </bdi>
-              <span className="text-[11px] text-[#71717a]">Yazar &amp; Yazılım Mimarı</span>
+              <span className="text-[11px] text-[#71717a]">{currentAuthor.role}</span>
             </div>
 
-            <div className="admA text-xs text-[#d4d4d4] leading-relaxed">
-              Saved Startpage ve Blogger ağının mimarı. Local-first açık kaynaklı sistemler, gizlilik odaklı web teknolojileri ve dijital içerik üretimi. Soru, öneri ve sohbet için <a href="https://matrix.to/#/#negronn-show:matrix.org" target="_blank" rel="noopener noreferrer" className="text-[#60cdff] hover:underline font-semibold">Topluluk</a> kanalımıza katılabilirsiniz.
-            </div>
+            <div 
+              className="admA text-xs text-[#d4d4d4] leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: currentAuthor.bio + ` Soru, öneri ve sohbet için <a href="${currentAuthor.communityUrl}" target="_blank" rel="noopener noreferrer" class="text-[#60cdff] hover:underline font-semibold">Topluluk</a> kanalımıza katılabilirsiniz.` }}
+            />
 
             <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
               <a
-                href="https://aleyulala.blogspot.com/"
+                href={currentAuthor.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#d4d4d4] hover:text-white transition-colors"
@@ -472,7 +486,7 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
               </a>
 
               <a
-                href="https://matrix.to/#/#negronn-show:matrix.org"
+                href={currentAuthor.communityUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#1e1e1e] hover:bg-[#333333] text-[#60cdff] hover:text-white transition-colors border border-[#60cdff]/20 hover:border-[#60cdff]/50 font-medium"
@@ -483,7 +497,7 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
               </a>
 
               <a
-                href="https://t.me/aleyyulala"
+                href={currentAuthor.telegram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#1e1e1e] hover:bg-[#229ed9] text-[#d4d4d4] hover:text-white transition-colors"
@@ -494,7 +508,7 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
               </a>
 
               <a
-                href="https://vk.com/negronn"
+                href={currentAuthor.vk}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#1e1e1e] hover:bg-[#4680c2] text-[#d4d4d4] hover:text-white transition-colors"
@@ -505,7 +519,7 @@ export const BloggerPostView: React.FC<BloggerPostViewProps> = ({
               </a>
 
               <a
-                href="mailto:mrstar14155@gmail.com"
+                href={`mailto:${currentAuthor.email}`}
                 className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#1e1e1e] hover:bg-[#ea4335] text-[#d4d4d4] hover:text-white transition-colors"
                 title="E-posta"
               >

@@ -57,11 +57,20 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
   const startTagsX = useRef(0);
   const startScrollLeft = useRef(0);
 
-  // Form states for "Bize Ulaşın"
+  // Nsone Bot Carousel Slider states
+  const [currentStep, setCurrentStep] = useState<number>(0);
   const [contactName, setContactName] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [contactMessage, setContactMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [sentSuccess, setSentSuccess] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+  const [shakeStep, setShakeStep] = useState<number | null>(null);
+
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const msgInputRef = useRef<HTMLTextAreaElement>(null);
+  const submitBtnRef = useRef<HTMLButtonElement>(null);
 
   const checkTagScroll = () => {
     if (!tagsTrackRef.current) return;
@@ -105,16 +114,111 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
   const featuredFirst = popularPosts[0];
   const listPosts = popularPosts.slice(1, 5);
 
+  const validateEmail = (val: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+  };
+
+  const triggerShake = (step: number, errorText: string) => {
+    setErrorMessage(errorText);
+    setShakeStep(step);
+    setTimeout(() => {
+      setShakeStep(null);
+    }, 350);
+  };
+
+  const goToStep = (step: number) => {
+    setCurrentStep(step);
+    setErrorMessage('');
+    setTimeout(() => {
+      if (step === 0) nameInputRef.current?.focus();
+      else if (step === 1) emailInputRef.current?.focus();
+      else if (step === 2) {
+        if (msgInputRef.current) {
+          msgInputRef.current.focus();
+          msgInputRef.current.style.height = 'auto';
+          const scrollH = msgInputRef.current.scrollHeight;
+          const newH = Math.min(220, Math.max(48, scrollH));
+          msgInputRef.current.style.height = `${newH}px`;
+          msgInputRef.current.style.overflowY = scrollH > 220 ? 'auto' : 'hidden';
+        }
+      } else if (step === 3) {
+        submitBtnRef.current?.focus();
+      }
+    }, 120);
+  };
+
+  const handleNext0 = () => {
+    const n = contactName.trim();
+    if (!n || n.length < 2) {
+      triggerShake(0, 'Lütfen adınızı girin.');
+      nameInputRef.current?.focus();
+      return;
+    }
+    goToStep(1);
+  };
+
+  const handleNext1 = () => {
+    const em = contactEmail.trim();
+    if (!em || !validateEmail(em)) {
+      triggerShake(1, 'Lütfen geçerli bir e-posta adresi girin.');
+      emailInputRef.current?.focus();
+      return;
+    }
+    goToStep(2);
+  };
+
+  const handleNext2 = () => {
+    const msg = contactMessage.trim();
+    if (!msg || msg.length < 2) {
+      triggerShake(2, 'Lütfen mesajınızı yazın.');
+      msgInputRef.current?.focus();
+      return;
+    }
+    goToStep(3);
+  };
+
+  const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContactMessage(e.target.value);
+    if (errorMessage) setErrorMessage('');
+    const target = e.target;
+    target.style.height = 'auto';
+    const scrollH = target.scrollHeight;
+    const newH = Math.min(220, Math.max(48, scrollH));
+    target.style.height = `${newH}px`;
+    target.style.overflowY = scrollH > 220 ? 'auto' : 'hidden';
+  };
+
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!contactMessage.trim()) return;
-    setSentSuccess(true);
+    if (!contactName.trim()) {
+      goToStep(0);
+      triggerShake(0, 'Lütfen adınızı girin.');
+      return;
+    }
+    if (!contactEmail.trim() || !validateEmail(contactEmail.trim())) {
+      goToStep(1);
+      triggerShake(1, 'Lütfen geçerli bir e-posta adresi girin.');
+      return;
+    }
+    if (!contactMessage.trim()) {
+      goToStep(2);
+      triggerShake(2, 'Lütfen mesajınızı yazın.');
+      return;
+    }
+
+    setIsSending(true);
     setTimeout(() => {
-      setSentSuccess(false);
-      setContactName('');
-      setContactEmail('');
-      setContactMessage('');
-    }, 3000);
+      setIsSending(false);
+      setSentSuccess(true);
+      setTimeout(() => {
+        setSentSuccess(false);
+        setContactName('');
+        setContactEmail('');
+        setContactMessage('');
+        setCurrentStep(0);
+        setErrorMessage('');
+      }, 3500);
+    }, 600);
   };
 
   const content = (
@@ -331,81 +435,177 @@ export const BloggerRightSidebar: React.FC<BloggerRightSidebarProps> = ({
         </div>
       </section>
 
-      {/* Widget 3: Bize Ulaşın (#ContactForm2) */}
-      <section aria-label="Bize Ulaşın" className="rounded-xl bg-[#252526] p-4 space-y-3.5 shadow-sm border border-transparent">
+      {/* Widget 3: Bize Ulaşın (#ContactForm2) - Nsone Bot Carousel Slider */}
+      <section aria-label="Bize Ulaşın" id="ContactForm2" className="rounded-2xl bg-[#252526] p-4 shadow-sm border border-white/5">
         
-        <div className="flex items-center gap-2 border-b border-[#333333] pb-2">
-          <ChatBloggerIcon className="w-4 h-4 text-[#60cdff]" />
-          <h2 className="text-sm font-bold text-white tracking-wide">
-            Bize Ulaşın
-          </h2>
+        {/* Nsone Bot Başlığı */}
+        <div className="flex items-center gap-3 pb-3 border-b border-white/10 mb-3">
+          <div className="relative w-10 h-10 rounded-full bg-[#60cdff]/20 border border-[#60cdff]/30 flex items-center justify-center text-[#60cdff] shrink-0">
+            <ChatBloggerIcon className="w-5 h-5" />
+            <span
+              className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-[#252526] shadow-[0_0_8px_rgba(16,185,129,0.6)]"
+              title="Çevrimiçi"
+            />
+          </div>
+          <div className="flex flex-col">
+            <span className="font-bold text-white text-sm leading-tight">Nsone Bot</span>
+            <span className="text-emerald-400 text-[11px] font-medium leading-tight">Çevrimiçi</span>
+          </div>
+        </div>
+
+        {/* Nsone Bot Tane Tane Mesaj Baloncukları */}
+        <div className="flex flex-col gap-1.5 max-w-[96%] mb-3.5">
+          <div className="rounded-[18px_18px_18px_4px] bg-white/[0.06] border border-white/10 p-2.5 px-3.5 text-xs text-slate-200 leading-relaxed shadow-sm">
+            Merhaba! 👋
+          </div>
+          <div className="rounded-[4px_18px_18px_4px] bg-white/[0.06] border border-white/10 p-2.5 px-3.5 text-xs text-slate-200 leading-relaxed shadow-sm">
+            Bir sorunuz, öneriniz veya mesajınız varsa lütfen aşağıdaki formu doldurarak bize iletin.
+          </div>
+          <div className="rounded-[4px_18px_18px_4px] bg-white/[0.06] border border-white/10 p-2.5 px-3.5 text-xs text-slate-200 leading-relaxed shadow-sm">
+            <div>Size e-posta adresinizden en kısa sürede dönüş yapacağız.</div>
+            <div className="flex items-center justify-end gap-1 text-[10px] text-white/50 mt-1">
+              <span>Şimdi</span>
+              <svg className="w-3.5 h-3.5 stroke-[#38bdf8] fill-none" strokeWidth="2" viewBox="0 0 24 24">
+                <path d="M18 6L7 17l-5-5M22 10l-7.5 7.5L13 16" />
+              </svg>
+            </div>
+          </div>
         </div>
 
         {sentSuccess ? (
-          <div className="p-3 rounded-xl bg-emerald-500/20 text-emerald-300 text-xs text-center font-medium">
-            Mesajınız başarıyla iletildi! Teşekkür ederiz.
+          <div className="p-3.5 rounded-xl bg-emerald-500/15 border border-emerald-500/20 text-emerald-400 text-xs text-center font-medium animate-in fade-in">
+            Mesajınız başarıyla iletildi! En kısa sürede dönüş yapacağız.
           </div>
         ) : (
-          <form onSubmit={handleContactSubmit} className="space-y-2.5">
-            <div>
-              <input
-                type="text"
-                placeholder="İsim"
-                value={contactName}
-                onChange={(e) => setContactName(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg bg-[#1e1e1e] border border-transparent focus:border-[#60cdff]/50 text-white text-xs outline-none transition-colors"
-                required
-              />
+          <form onSubmit={handleContactSubmit}>
+            <div className="ns-slider-container">
+              {/* 0. Ad (İsim) Slaytı */}
+              <div className={`ns-slide ${currentStep === 0 ? 'active' : currentStep > 0 ? 'passed' : ''} ${shakeStep === 0 ? 'ns-shake' : ''}`}>
+                <div className="ns-input-wrap">
+                  <input
+                    ref={nameInputRef}
+                    type="text"
+                    value={contactName}
+                    onChange={(e) => {
+                      setContactName(e.target.value);
+                      if (errorMessage) setErrorMessage('');
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleNext0();
+                      }
+                    }}
+                    placeholder=" "
+                    autoComplete="name"
+                  />
+                  <label>İsim</label>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleNext0}
+                  className="ns-btn-next"
+                  title="İleri"
+                  aria-label="İleri"
+                >
+                  <svg viewBox="0 0 24 24">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* 1. E-posta Slaytı */}
+              <div className={`ns-slide ${currentStep === 1 ? 'active' : currentStep > 1 ? 'passed' : ''} ${shakeStep === 1 ? 'ns-shake' : ''}`}>
+                <div className="ns-input-wrap">
+                  <input
+                    ref={emailInputRef}
+                    type="email"
+                    value={contactEmail}
+                    onChange={(e) => {
+                      setContactEmail(e.target.value);
+                      if (errorMessage) setErrorMessage('');
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleNext1();
+                      }
+                    }}
+                    placeholder=" "
+                    autoComplete="email"
+                  />
+                  <label>E-posta</label>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleNext1}
+                  className="ns-btn-next"
+                  title="İleri"
+                  aria-label="İleri"
+                >
+                  <svg viewBox="0 0 24 24">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* 2. Mesaj Slaytı */}
+              <div className={`ns-slide ns-slide-msg ${currentStep === 2 ? 'active' : currentStep > 2 ? 'passed' : ''} ${shakeStep === 2 ? 'ns-shake' : ''}`}>
+                <div className="ns-input-wrap ns-msg-field">
+                  <textarea
+                    ref={msgInputRef}
+                    rows={1}
+                    value={contactMessage}
+                    onChange={handleMessageChange}
+                    onKeyDown={(e) => {
+                      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                        e.preventDefault();
+                        handleNext2();
+                      }
+                    }}
+                    placeholder=" "
+                  />
+                  <label>Mesajınız</label>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleNext2}
+                  className="ns-btn-next"
+                  title="İleri"
+                  aria-label="İleri"
+                >
+                  <svg viewBox="0 0 24 24">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* 3. Gönder Butonu Slaytı */}
+              <div className={`ns-slide ${currentStep === 3 ? 'active' : ''} ${shakeStep === 3 ? 'ns-shake' : ''}`}>
+                <button
+                  ref={submitBtnRef}
+                  type="submit"
+                  disabled={isSending}
+                  className="ns-btn-submit"
+                >
+                  <svg viewBox="0 0 24 24">
+                    <line x1="22" y1="2" x2="11" y2="13" />
+                    <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                  </svg>
+                  <span>{isSending ? 'Gönderiliyor...' : 'Mesajı Gönder'}</span>
+                </button>
+              </div>
             </div>
-            <div>
-              <input
-                type="email"
-                placeholder="E-posta *"
-                value={contactEmail}
-                onChange={(e) => setContactEmail(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg bg-[#1e1e1e] border border-transparent focus:border-[#60cdff]/50 text-white text-xs outline-none transition-colors"
-                required
-              />
-            </div>
-            <div>
-              <textarea
-                placeholder="Mesajınız *"
-                value={contactMessage}
-                onChange={(e) => setContactMessage(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Tab') {
-                    e.stopPropagation();
-                    if (!e.shiftKey) {
-                      e.preventDefault();
-                      const submitBtn = e.currentTarget.form?.querySelector<HTMLButtonElement>('button[type="submit"]');
-                      if (submitBtn) submitBtn.focus();
-                    } else {
-                      e.preventDefault();
-                      const emailInput = e.currentTarget.form?.querySelector<HTMLInputElement>('input[type="email"]');
-                      if (emailInput) emailInput.focus();
-                    }
-                  }
-                }}
-                rows={3}
-                className="w-full px-3 py-2 rounded-lg bg-[#1e1e1e] border border-transparent focus:border-[#60cdff]/50 text-white text-xs outline-none transition-colors resize-y min-h-[80px] max-h-[320px]"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              onKeyDown={(e) => {
-                if (e.key === 'Tab' && e.shiftKey) {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  const txt = e.currentTarget.form?.querySelector<HTMLTextAreaElement>('textarea');
-                  if (txt) txt.focus();
-                }
-              }}
-              className="w-full flex items-center justify-center gap-1.5 py-2 px-4 rounded-lg bg-gradient-to-r from-[#38bdf8] to-[#0ea5e9] hover:from-[#7dd3fc] hover:to-[#38bdf8] text-[#0f172a] font-bold text-xs shadow-md shadow-sky-500/20 active:scale-98 transition-all cursor-pointer"
-            >
-              <Send className="w-3.5 h-3.5" />
-              <span>Gönder</span>
-            </button>
+
+            {/* Hata Bildirimi */}
+            {errorMessage && (
+              <div className="mt-2.5 p-2 rounded-lg bg-red-500/10 text-red-400 text-xs text-center font-medium">
+                {errorMessage}
+              </div>
+            )}
           </form>
         )}
       </section>

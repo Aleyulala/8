@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   HomeIcon, 
   SearchNormalIcon, 
@@ -20,8 +20,6 @@ export const BloggerMobileNav: React.FC<BloggerMobileNavProps> = ({
   onOpenDrawer,
   onOpenSearch
 }) => {
-  const [activeHover, setActiveHover] = useState<string | null>(null);
-
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -72,21 +70,17 @@ export const BloggerMobileNav: React.FC<BloggerMobileNavProps> = ({
         <ul className="flex items-center justify-around h-12 m-0 p-0 list-none">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isHovered = activeHover === item.id;
-            const showExpanded = item.isActive || isHovered;
 
             return (
               <li 
                 key={item.id} 
                 className="flex items-center justify-center flex-1"
-                onMouseEnter={() => setActiveHover(item.id)}
-                onMouseLeave={() => setActiveHover(null)}
               >
                 <button
                   onClick={item.onClick}
-                  data-text={item.label}
                   aria-label={item.label}
-                  className={`group relative inline-flex items-center justify-center h-10 px-3 rounded-full transition-all duration-200 active:scale-95 ${
+                  title={item.label}
+                  className={`group relative inline-flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200 active:scale-95 ${
                     item.isActive
                       ? 'bg-[#38bdf8]/15 text-[#38bdf8] font-bold shadow-inner'
                       : item.isSpecial
@@ -97,17 +91,6 @@ export const BloggerMobileNav: React.FC<BloggerMobileNavProps> = ({
                   <Icon className={`w-5 h-5 shrink-0 transition-transform duration-150 ${
                     item.isActive ? 'stroke-[2.5] scale-110' : 'stroke-[1.8] group-hover:scale-110'
                   }`} />
-                  
-                  {/* Expanding label pill (Median UI .mobC data-text) */}
-                  <span 
-                    className={`overflow-hidden whitespace-nowrap text-[11px] tracking-tight transition-all duration-200 ${
-                      showExpanded 
-                        ? 'max-w-[70px] ml-1.5 opacity-90' 
-                        : 'max-w-0 opacity-0'
-                    }`}
-                  >
-                    {item.label}
-                  </span>
                 </button>
               </li>
             );

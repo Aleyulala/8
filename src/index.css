@@ -502,12 +502,26 @@ body { top: 0 !important; }
   right: 0;
   background: #252526;
   border-radius: 12px;
-  width: 270px;
+  width: 288px;
+  max-width: calc(100vw - 24px);
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   border: 1px solid rgba(255,255,255,0.08);
   overflow: hidden;
   z-index: 50;
   animation: fadeInDown .2s ease-out;
+}
+@media (max-width: 640px) {
+  .bX .admAbt, .admAbt {
+    padding: 16px;
+    margin: 20px 0;
+  }
+  .admAbt .admPs {
+    gap: 12px !important;
+  }
+  .wPrf {
+    right: -8px;
+    width: calc(100vw - 24px);
+  }
 }
 .wPrf .prfH {
   padding: 10px 14px;
@@ -555,4 +569,238 @@ body { top: 0 !important; }
   margin-top: 10px;
   font-size: 11px;
   color: #71717a;
+}
+
+/* ========================================================
+   NSONE BOT YATAY KAYAN CAROUSEL SLIDER (.ns-slider-container)
+   ======================================================== */
+.ns-slider-container {
+  position: relative !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  min-height: 52px !important;
+  padding: 8px 2px 4px 2px !important;
+  box-sizing: border-box !important;
+}
+
+.ns-slide {
+  position: absolute !important;
+  top: 8px !important;
+  left: 2px !important;
+  right: 2px !important;
+  width: calc(100% - 4px) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  box-sizing: border-box !important;
+  transition: transform 0.32s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.28s ease, visibility 0.32s !important;
+  transform: translateX(110%) !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.ns-slide.active {
+  position: relative !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  transform: translateX(0%) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+.ns-slide.passed {
+  position: absolute !important;
+  transform: translateX(-110%) !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.ns-slide-msg {
+  align-items: flex-end !important;
+}
+
+@keyframes nsShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+.ns-shake {
+  animation: nsShake 0.32s ease !important;
+}
+
+/* Plu$ UI Floating Label .ns-input-wrap Alanları */
+.ns-input-wrap {
+  position: relative !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+
+.ns-input-wrap input,
+.ns-input-wrap textarea {
+  display: block !important;
+  width: 100% !important;
+  height: 48px !important;
+  margin: 0 !important;
+  outline: none !important;
+  font-family: inherit !important;
+  font-size: 0.9rem !important;
+  padding: 13px 14px !important;
+  border-radius: 14px !important;
+  background: rgba(0, 0, 0, 0.28) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  color: #fffdfc !important;
+  box-sizing: border-box !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+:root.lgT .ns-input-wrap input,
+:root.lgT .ns-input-wrap textarea {
+  background: rgba(0, 0, 0, 0.04) !important;
+  border-color: rgba(0, 0, 0, 0.16) !important;
+  color: #18181b !important;
+}
+
+.ns-input-wrap input:focus,
+.ns-input-wrap textarea:focus {
+  border-color: #60cdff !important;
+  box-shadow: 0 0 0 3px rgba(96, 205, 255, 0.22) !important;
+}
+
+.ns-input-wrap label {
+  position: absolute !important;
+  top: 14px !important;
+  left: 14px !important;
+  font-size: 0.88rem !important;
+  color: #888888 !important;
+  pointer-events: none !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  background: transparent !important;
+  padding: 0 4px !important;
+  border-radius: 4px !important;
+  line-height: 1 !important;
+}
+
+.ns-input-wrap input:focus ~ label,
+.ns-input-wrap textarea:focus ~ label,
+.ns-input-wrap input:not(:placeholder-shown) ~ label,
+.ns-input-wrap textarea:not(:placeholder-shown) ~ label {
+  top: -8px !important;
+  left: 10px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  color: #60cdff !important;
+  background: #252526 !important;
+  opacity: 1 !important;
+}
+
+:root.lgT .ns-input-wrap input:focus ~ label,
+:root.lgT .ns-input-wrap textarea:focus ~ label,
+:root.lgT .ns-input-wrap input:not(:placeholder-shown) ~ label,
+:root.lgT .ns-input-wrap textarea:not(:placeholder-shown) ~ label {
+  background: #f4f4f5 !important;
+}
+
+.ns-msg-field textarea {
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 220px !important;
+  resize: none !important;
+  overflow-y: hidden !important;
+  line-height: 20px !important;
+}
+
+/* Sadece İleri Butonu (Kare 48x48) */
+.ns-btn-next {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
+  padding: 0 !important;
+  border-radius: 14px !important;
+  background: var(--linkB, #38bdf8) !important;
+  color: #0f172a !important;
+  border: none !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 3px 12px rgba(56, 189, 248, 0.25) !important;
+}
+
+.ns-btn-next:hover {
+  opacity: 0.92 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 5px 16px rgba(56, 189, 248, 0.35) !important;
+}
+
+.ns-btn-next:active {
+  transform: translateY(0) scale(0.98) !important;
+}
+
+.ns-btn-next svg {
+  width: 20px !important;
+  height: 20px !important;
+  stroke: currentColor !important;
+  stroke-width: 2.2 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  fill: none !important;
+  transition: transform 0.2s ease !important;
+}
+
+.ns-btn-next:hover svg {
+  transform: translateX(3px) !important;
+}
+
+/* Gönder Butonu (Tam Genişlik) */
+.ns-btn-submit {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  height: 48px !important;
+  border-radius: 14px !important;
+  padding: 0 24px !important;
+  margin: 0 !important;
+  font-family: inherit !important;
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  border: none !important;
+  background: var(--linkB, #38bdf8) !important;
+  color: #0f172a !important;
+  box-shadow: 0 3px 14px rgba(56, 189, 248, 0.28) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.ns-btn-submit:hover {
+  opacity: 0.92 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 18px rgba(56, 189, 248, 0.38) !important;
+}
+
+.ns-btn-submit svg {
+  width: 18px !important;
+  height: 18px !important;
+  stroke: currentColor !important;
+  stroke-width: 2.2 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  fill: none !important;
+  transition: transform 0.25s ease !important;
+}
+
+.ns-btn-submit:hover svg {
+  transform: translate(2px, -2px) scale(1.1) !important;
 }

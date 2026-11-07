@@ -505,41 +505,40 @@ export const App: React.FC = () => {
       {/* 2. ANA GÖVDE: SOL BAR + ORTA İÇERİK + SAĞ BAR */}
       <div className="flex flex-1 overflow-hidden min-h-0">
         
-        {/* SOL BAR: Blogger Navigation Sidebar (.mainL - Desktop) */}
-        {isSidebarOpen && (
-          <div className="hidden md:flex shrink-0">
-            <BloggerSidebar
-              currentTab={activeView === 'post_detail' ? 'dashboard' : activeView}
-              activeCollectionId={selectedCollectionId}
-              activeTag={selectedTag}
-              onSelectTab={(tab) => {
-                setActiveView(tab);
-                setSearchQuery('');
-              }}
-              onSelectCollection={(id) => {
-                setSelectedCollectionId(id);
-                setActiveView('collection');
-                setSearchQuery('');
-              }}
-              onSelectTag={(tag) => {
-                setSelectedTag(tag);
-                setActiveView('tag');
-                setSearchQuery('');
-              }}
-              collections={collections}
-              tags={tags}
-              counts={counts}
-              onOpenNewLink={() => {
-                setEditingLink(null);
-                setIsAddModalOpen(true);
-              }}
-              onOpenManageCollections={() => setIsCollectionsModalOpen(true)}
-              onOpenManageTags={() => setIsTagsModalOpen(true)}
-              onOpenSettings={() => setIsSettingsOpen(true)}
-              onOpenImportExport={() => setIsImportExportOpen(true)}
-            />
-          </div>
-        )}
+        {/* SOL BAR: Blogger Navigation Sidebar (.mainL - Desktop: Kapalıyken 72px Mini Bar, Açıkken 230px) */}
+        <div className="hidden md:flex shrink-0">
+          <BloggerSidebar
+            isCollapsed={!isSidebarOpen}
+            currentTab={activeView === 'post_detail' ? 'dashboard' : activeView}
+            activeCollectionId={selectedCollectionId}
+            activeTag={selectedTag}
+            onSelectTab={(tab) => {
+              setActiveView(tab);
+              setSearchQuery('');
+            }}
+            onSelectCollection={(id) => {
+              setSelectedCollectionId(id);
+              setActiveView('collection');
+              setSearchQuery('');
+            }}
+            onSelectTag={(tag) => {
+              setSelectedTag(tag);
+              setActiveView('tag');
+              setSearchQuery('');
+            }}
+            collections={collections}
+            tags={tags}
+            counts={counts}
+            onOpenNewLink={() => {
+              setEditingLink(null);
+              setIsAddModalOpen(true);
+            }}
+            onOpenManageCollections={() => setIsCollectionsModalOpen(true)}
+            onOpenManageTags={() => setIsTagsModalOpen(true)}
+            onOpenSettings={() => setIsSettingsOpen(true)}
+            onOpenImportExport={() => setIsImportExportOpen(true)}
+          />
+        </div>
 
         {/* BİRLEŞİK KAYDIRMA ALANI: Orta İçerik ve Sağ Bar BİRLİKTE Kayar (.mainW) */}
         <div 

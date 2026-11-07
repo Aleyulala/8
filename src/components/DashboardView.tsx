@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { CollectionItem, LinkItem } from '../types';
 import { formatDate, getDomain, getFaviconUrl } from '../utils/favicon';
+import { getAuthorData } from '../utils/bloggerAuthors';
 import { DashboardItem } from './DashboardItem';
 import { LinkCard } from './LinkCard';
 import { BloggerHeroSlider } from './BloggerHeroSlider';
@@ -293,15 +294,26 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 </button>
               </div>
 
-              {/* Sol Alt: SAVED ✔ Rozeti */}
+              {/* Sol Alt: Yazar Rozeti (.aNm - XML 1:1) */}
               <div className="absolute bottom-2.5 left-2.5 z-10">
-                <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-black/75 backdrop-blur-md text-white text-[10px] font-bold shadow-sm">
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#1e1e1e] flex items-center justify-center text-[7px] text-[#60cdff] font-extrabold">
-                    N
-                  </span>
-                  <span>{pinnedPost.authorName || 'NEGRONN'}</span>
-                  <Verify1Icon className="w-3 h-3 text-[#60cdff]" />
-                </div>
+                {(() => {
+                  const pinnedAuthor = getAuthorData(pinnedPost.authorName || 'NEGRONN');
+                  return (
+                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-black/75 backdrop-blur-md text-white text-[10px] font-bold shadow-sm">
+                      <img
+                        src={pinnedAuthor.avatar}
+                        alt={pinnedPost.authorName || 'NEGRONN'}
+                        className="w-3.5 h-3.5 rounded-full object-cover shrink-0 ring-1 ring-white/20"
+                        loading="lazy"
+                        onError={(e) => {
+                          (e.target as HTMLElement).style.display = 'none';
+                        }}
+                      />
+                      <span>{pinnedPost.authorName || 'NEGRONN'}</span>
+                      <Verify1Icon className="w-3 h-3 text-[#60cdff]" />
+                    </div>
+                  );
+                })()}
               </div>
             </div>
 
