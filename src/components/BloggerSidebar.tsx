@@ -71,25 +71,23 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
         <div className="p-2 space-y-2 flex-1 overflow-visible pt-3">
           <ul className="space-y-2">
             
-            {/* 1. Ana Sayfa (svg.home) */}
-            <li className="relative group flex justify-center">
-              <button
-                onClick={() => onSelectTab('dashboard')}
-                className={`w-11 h-11 flex items-center justify-center rounded-xl transition-all cursor-pointer ${
-                  currentTab === 'dashboard'
-                    ? 'bg-[#252526] text-[#38bdf8] shadow-sm ring-1 ring-[#38bdf8]/30'
-                    : 'text-[#9ca3af] hover:bg-[#252526] hover:text-white'
-                }`}
-                title="Ana Sayfa"
-                aria-label="Ana Sayfa"
-              >
-                <HomeIcon className="w-5 h-5 text-[#38bdf8]" />
-              </button>
-              {/* Uçan Etiket (Flyout Tooltip) */}
-              <div className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2.5 py-1.5 rounded-lg bg-[#252526] border border-white/10 text-white text-xs font-semibold whitespace-nowrap shadow-2xl opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50">
-                Ana Sayfa
-              </div>
-            </li>
+            {/* 1. Ana Sayfa (svg.home) - XML 1:1: Sadece ana sayfa DIŞINDAKİ sayfalarda gözükür (!data:view.isHomepage) */}
+            {currentTab !== 'dashboard' && (
+              <li className="relative group flex justify-center">
+                <button
+                  onClick={() => onSelectTab('dashboard')}
+                  className="w-11 h-11 flex items-center justify-center rounded-xl transition-all cursor-pointer text-[#9ca3af] hover:bg-[#252526] hover:text-white"
+                  title="Ana Sayfa"
+                  aria-label="Ana Sayfa"
+                >
+                  <HomeIcon className="w-5 h-5 text-[#38bdf8]" />
+                </button>
+                {/* Uçan Etiket (Flyout Tooltip) */}
+                <div className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2.5 py-1.5 rounded-lg bg-[#252526] border border-white/10 text-white text-xs font-semibold whitespace-nowrap shadow-2xl opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50">
+                  Ana Sayfa
+                </div>
+              </li>
+            )}
 
             {/* 2. Hizmetler (svg.hierarchy-4) */}
             <li className="relative group flex justify-center nt">
@@ -325,22 +323,20 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
         {/* Blogger Gezinme Menüsü (.mnMn) */}
         <ul className="space-y-1">
           
-          {/* 1. Ana Sayfa (svg.home) */}
-          <li>
-            <button
-              onClick={() => onSelectTab('dashboard')}
-              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium transition-colors cursor-pointer ${
-                currentTab === 'dashboard'
-                  ? 'bg-[#252526] text-[#38bdf8]'
-                  : 'text-[#d4d4d4] hover:bg-[#252526]/70 hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-2.5">
-                <HomeIcon className="w-4 h-4 text-[#38bdf8]" />
-                <span className="font-semibold text-xs">Ana Sayfa</span>
-              </div>
-            </button>
-          </li>
+          {/* 1. Ana Sayfa (svg.home) - XML 1:1: Sadece ana sayfa DIŞINDAKİ sayfalarda gözükür (!data:view.isHomepage) */}
+          {currentTab !== 'dashboard' && (
+            <li>
+              <button
+                onClick={() => onSelectTab('dashboard')}
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium transition-colors cursor-pointer text-[#d4d4d4] hover:bg-[#252526]/70 hover:text-white"
+              >
+                <div className="flex items-center gap-2.5">
+                  <HomeIcon className="w-4 h-4 text-[#38bdf8]" />
+                  <span className="font-semibold text-xs">Ana Sayfa</span>
+                </div>
+              </button>
+            </li>
+          )}
 
           {/* 2. Hizmetler (svg.hierarchy-4) */}
           <li className="pt-1 relative">

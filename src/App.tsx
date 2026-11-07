@@ -510,7 +510,7 @@ export const App: React.FC = () => {
           <BloggerSidebar
             isCollapsed={!isSidebarOpen}
             onToggleSidebar={() => setIsSidebarOpen(prev => !prev)}
-            currentTab={activeView === 'post_detail' ? 'dashboard' : activeView}
+            currentTab={activeView}
             activeCollectionId={selectedCollectionId}
             activeTag={selectedTag}
             onSelectTab={(tab) => {

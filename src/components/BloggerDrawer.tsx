@@ -119,25 +119,23 @@ export const BloggerDrawer: React.FC<BloggerDrawerProps> = ({
           {/* Blogger Gezinme Menüsü (.mnMn) */}
           <ul className="space-y-1">
             
-            {/* 1. KÖK BUTON: Ana Sayfa (svg.home) */}
-            <li>
-              <button
-                onClick={() => {
-                  onClose();
-                  onSelectTab('dashboard');
-                }}
-                className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium transition-colors cursor-pointer ${
-                  currentTab === 'dashboard'
-                    ? 'bg-[#252526] text-[#38bdf8]'
-                    : 'text-[#d4d4d4] hover:bg-[#252526]/70 hover:text-white'
-                }`}
-              >
-                <div className="flex items-center gap-2.5">
-                  <HomeIcon className="w-4 h-4 text-[#38bdf8]" />
-                  <span className="font-semibold text-xs">Ana Sayfa</span>
-                </div>
-              </button>
-            </li>
+            {/* 1. KÖK BUTON: Ana Sayfa (svg.home) - XML 1:1: Sadece ana sayfa DIŞINDAKİ sayfalarda gözükür (!data:view.isHomepage) */}
+            {currentTab !== 'dashboard' && (
+              <li>
+                <button
+                  onClick={() => {
+                    onClose();
+                    onSelectTab('dashboard');
+                  }}
+                  className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium transition-colors cursor-pointer text-[#d4d4d4] hover:bg-[#252526]/70 hover:text-white"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <HomeIcon className="w-4 h-4 text-[#38bdf8]" />
+                    <span className="font-semibold text-xs">Ana Sayfa</span>
+                  </div>
+                </button>
+              </li>
+            )}
 
             {/* 2. KLASÖR 1: Hizmetler (svg.hierarchy-4) */}
             <li className="pt-1 relative">
