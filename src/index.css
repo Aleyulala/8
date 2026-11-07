@@ -806,3 +806,107 @@ body { top: 0 !important; }
 .ns-btn-submit:hover svg {
   transform: translate(2px, -2px) scale(1.1) !important;
 }
+
+/*--[ Blogger Plus UI Numbered Pagination (.blogN / #blog-pager) ]--*/
+.blogN {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  line-height: 20px !important;
+  margin: 40px 0 24px !important;
+  max-width: 100% !important;
+  user-select: none !important;
+}
+
+.blogN > * {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  padding: 6px 14px !important;
+  border-radius: 8px !important;
+  color: #fffdfc !important;
+  background: #252526 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  font-family: inherit !important;
+  text-decoration: none !important;
+}
+
+.blogN button {
+  cursor: pointer !important;
+  outline: none !important;
+}
+
+.blogN button:hover {
+  background: #323235 !important;
+  color: var(--linkC, #9aa0a6) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+}
+
+.blogN button:active {
+  transform: translateY(0) scale(0.96) !important;
+}
+
+.blogN .active,
+.blogN button.active,
+.blogN .nPst.active {
+  background: var(--linkC, #9aa0a6) !important;
+  color: #121212 !important;
+  border-color: var(--linkC, #9aa0a6) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 0 16px rgba(154, 160, 166, 0.4) !important;
+}
+
+.blogN .disabled,
+.blogN div.disabled {
+  opacity: 0.3 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: transparent !important;
+}
+
+.blogN .ellipsis,
+.blogN div.ellipsis {
+  background: transparent !important;
+  border: none !important;
+  color: #71717a !important;
+  min-width: 28px !important;
+  box-shadow: none !important;
+}
+
+.blogN svg.line {
+  width: 16px !important;
+  height: 16px !important;
+  stroke: currentColor !important;
+  stroke-width: 2.2 !important;
+  fill: none !important;
+}
+
+:root.lgT .blogN > * {
+  background: #f4f4f5 !important;
+  color: #18181b !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+:root.lgT .blogN button:hover {
+  background: #e4e4e7 !important;
+  color: var(--linkC, #5f6368) !important;
+  border-color: rgba(0, 0, 0, 0.16) !important;
+}
+
+:root.lgT .blogN .active,
+:root.lgT .blogN button.active {
+  background: var(--linkC, #5f6368) !important;
+  color: #ffffff !important;
+  border-color: var(--linkC, #5f6368) !important;
+}
+

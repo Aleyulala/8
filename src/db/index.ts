@@ -27,7 +27,7 @@ export class SavedDatabase extends Dexie {
 
 export const db = new SavedDatabase();
 
-const CURRENT_SEED_VERSION = 'saved-main-360-sites-v8';
+const CURRENT_SEED_VERSION = 'saved-main-360-sites-v9-konu-disi';
 
 export async function seedSavedMainData(force = false) {
   const collectionsCount = await db.collections.count();
@@ -35,8 +35,8 @@ export async function seedSavedMainData(force = false) {
   const seedSetting = await db.settings.get('seed_version');
 
   // Trigger migration if empty, if it still contains dummy collection, if force is requested, or if seed version not current
-  if (collectionsCount === 0 || dummyCol || force || !seedSetting || seedSetting.value !== CURRENT_SEED_VERSION) {
-    if (collectionsCount === 0 || dummyCol || force || collectionsCount < 14) {
+  if (collectionsCount === 0 || dummyCol || force || collectionsCount < 15 || !seedSetting || seedSetting.value !== CURRENT_SEED_VERSION) {
+    if (collectionsCount === 0 || dummyCol || force || collectionsCount < 15 || !seedSetting || seedSetting.value !== CURRENT_SEED_VERSION) {
       await db.transaction('rw', db.links, db.collections, db.tags, db.settings, async () => {
         // Clear previous dummy data
         await db.links.clear();

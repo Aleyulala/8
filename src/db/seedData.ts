@@ -14,6 +14,12 @@ export interface RawSeedLink {
 
 export const SEED_COLLECTIONS = [
   {
+    "name": "Konu Dışı",
+    "color": "#9aa0a6",
+    "icon": "messages-square",
+    "description": "Genel sohbet, serbest paylaşımlar ve konu dışı öneriler"
+  },
+  {
     "name": "Routine",
     "color": "#38bdf8",
     "icon": "calendar-check",
@@ -181,6 +187,60 @@ export const SEED_TAGS = [
 ];
 
 export const SEED_LINKS: RawSeedLink[] = [
+  {
+    "title": "GitHub Discussions (Saved)",
+    "url": "https://github.com/Aleyulala/saved/discussions",
+    "categoryName": "Konu Dışı",
+    "tags": ["konu-disi", "forum", "topluluk"],
+    "color": "#9aa0a6",
+    "isPinned": false,
+    "description": "Saved projesi topluluk tartışmaları ve soru-cevap alanı"
+  },
+  {
+    "title": "Matrix Topluluk Sohbeti",
+    "url": "https://matrix.to/#/#negronn-show:matrix.org",
+    "categoryName": "Konu Dışı",
+    "tags": ["konu-disi", "matrix", "sohbet"],
+    "color": "#0dbd8b",
+    "isPinned": false,
+    "description": "Negronn Show Matrix odası ve anlık sohbet kanalı"
+  },
+  {
+    "title": "Ekşi Sözlük",
+    "url": "https://eksisozluk.com/",
+    "categoryName": "Konu Dışı",
+    "tags": ["konu-disi", "sozluk", "gundem"],
+    "color": "#53a849",
+    "isPinned": false,
+    "description": "Kutsal bilgi kaynağı ve serbest tartışma platformu"
+  },
+  {
+    "title": "Reddit Türkiye",
+    "url": "https://www.reddit.com/r/Turkey/",
+    "categoryName": "Konu Dışı",
+    "tags": ["konu-disi", "reddit", "topluluk"],
+    "color": "#ff4500",
+    "isPinned": false,
+    "description": "Reddit Türkiye topluluğu ve serbest paylaşımlar"
+  },
+  {
+    "title": "DonanımHaber Forum - Konu Dışı",
+    "url": "https://forum.donanimhaber.com/konu-disi--f286",
+    "categoryName": "Konu Dışı",
+    "tags": ["konu-disi", "forum", "dh"],
+    "color": "#e02b20",
+    "isPinned": false,
+    "description": "Türkiye'nin en köklü konu dışı ve serbest tartışma forumu"
+  },
+  {
+    "title": "Technopat Sosyal",
+    "url": "https://www.technopat.net/sosyal/",
+    "categoryName": "Konu Dışı",
+    "tags": ["konu-disi", "teknoloji", "sosyal"],
+    "color": "#00a4e4",
+    "isPinned": false,
+    "description": "Teknoloji, donanım ve konu dışı serbest paylaşımlar"
+  },
   {
     "title": "Google Calendar",
     "url": "https://calendar.google.com/",

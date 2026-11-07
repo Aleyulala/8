@@ -1,8 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import { 
   Home, 
   Hash, 
   Clock, 
+  ChevronLeft,
   ChevronRight, 
   SlidersHorizontal,
   Plus,
@@ -175,22 +176,134 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 }) => {
   const activeLinks = links.filter(l => !l.isTrash && !l.isArchived);
   
+  // 1. Kategoriler: "Konu Dışı" her zaman ilk sırada (Sayfa 1'de) yer alır
+  const sortedCollections = useMemo(() => {
+    const list = [...collections];
+    list.sort((a, b) => {
+      const isA = a.name.toLowerCase().includes('konu');
+      const isB = b.name.toLowerCase().includes('konu');
+      if (isA && !isB) return -1;
+      if (!isA && isB) return 1;
+      return 0;
+    });
+
+    if (!list.some(c => c.name.toLowerCase().includes('konu'))) {
+      list.unshift({
+        id: -999,
+        name: 'Konu Dışı',
+        color: '#9aa0a6',
+        icon: 'messages-square',
+        description: 'Genel sohbet, öneriler ve konu dışı paylaşımlar',
+        createdAt: Date.now()
+      });
+    }
+    return list;
+  }, [collections]);
+
   // Featured Pinned Post (e.g. Notbook Lm Projelerim Hakkında)
   const pinnedPost = activeLinks.find(l => l.isPinned && l.thumbnail) || activeLinks.find(l => l.isPinned) || activeLinks[0];
 
-  // Latest Posts (En Son Yayınlar: excluding the pinned post if possible, taking next 6)
-  const latestPosts = activeLinks
-    .filter(l => pinnedPost ? l.id !== pinnedPost.id : true)
-    .slice(0, 6);
+  // Group links by collection with Konu Dışı fallback guarantee
+  const linksByCollection = useMemo(() => {
+    const map: Record<number, LinkItem[]> = {};
+    activeLinks.forEach(l => {
+      if (l.collectionId) {
+        if (!map[l.collectionId]) map[l.collectionId] = [];
+        map[l.collectionId].push(l);
+      }
+    });
 
-  // Group links by collection
-  const linksByCollection: Record<number, LinkItem[]> = {};
-  activeLinks.forEach(l => {
-    if (l.collectionId) {
-      if (!linksByCollection[l.collectionId]) linksByCollection[l.collectionId] = [];
-      linksByCollection[l.collectionId].push(l);
+    // Konu Dışı koleksiyonunun bağlantılarını garantile
+    const konuCol = sortedCollections.find(c => c.name.toLowerCase().includes('konu'));
+    if (konuCol && konuCol.id) {
+      if (!map[konuCol.id] || map[konuCol.id].length === 0) {
+        const fallback = activeLinks.filter(l => 
+          l.tags.some(t => t.toLowerCase().includes('konu') || t.toLowerCase().includes('forum') || t.toLowerCase().includes('sozluk') || t.toLowerCase().includes('topluluk')) ||
+          l.title.toLowerCase().includes('forum') ||
+          l.title.toLowerCase().includes('sohbet') ||
+          (l.collectionId && collectionMap.get(l.collectionId)?.name.toLowerCase() === 'forum')
+        );
+        map[konuCol.id] = fallback.length > 0 ? fallback : activeLinks.slice(0, 10);
+      }
+    }
+    return map;
+  }, [activeLinks, sortedCollections, collectionMap]);
+
+  // Sayfalama (Blogger Plus UI 1 2 3 4 5... Pager Motoru)
+  const POSTS_PER_PAGE = 6;
+  const [currentPage, setCurrentPage] = useState<number>(() => {
+    try {
+      const p = new URLSearchParams(window.location.search).get('page');
+      const n = parseInt(p || '1', 10);
+      return !isNaN(n) && n >= 1 ? n : 1;
+    } catch {
+      return 1;
     }
   });
+
+  // Toplam sayfa sayısı (en az 5 sayfa sekmesi sunacak şekilde dinamik)
+  const totalPages = useMemo(() => {
+    const availableCount = activeLinks.filter(l => pinnedPost ? l.id !== pinnedPost.id : true).length;
+    const postPages = Math.ceil(Math.max(1, availableCount) / POSTS_PER_PAGE);
+    const catPages = Math.max(1, sortedCollections.length);
+    return Math.max(5, Math.min(catPages, postPages));
+  }, [activeLinks, pinnedPost, sortedCollections.length]);
+
+  // Geçerli sayfanın gönderileri (En Son Yayınlar: Sayfaya göre 6'şar 6'şar değişir)
+  const latestPosts = useMemo(() => {
+    const available = activeLinks.filter(l => pinnedPost ? l.id !== pinnedPost.id : true);
+    const startIdx = (currentPage - 1) * POSTS_PER_PAGE;
+    const slice = available.slice(startIdx, startIdx + POSTS_PER_PAGE);
+    if (slice.length === 0) {
+      return available.slice(0, POSTS_PER_PAGE);
+    }
+    return slice;
+  }, [activeLinks, pinnedPost, currentPage]);
+
+  // Sayfalar ilerledikçe değişen kategoriler:
+  // Sayfa 1: Konu Dışı (Blogger negronshow ile birebir)
+  // Sayfa 2+: Sırasıyla diğer kategoriler
+  const pageCategories = useMemo(() => {
+    if (sortedCollections.length === 0) return [];
+    const catIdx = (currentPage - 1) % sortedCollections.length;
+    return [sortedCollections[catIdx]];
+  }, [sortedCollections, currentPage]);
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage < 1 || newPage > totalPages || newPage === currentPage) return;
+    setCurrentPage(newPage);
+    try {
+      const url = new URL(window.location.href);
+      if (newPage === 1) {
+        url.searchParams.delete('page');
+      } else {
+        url.searchParams.set('page', String(newPage));
+      }
+      window.history.pushState({}, '', url.toString());
+    } catch {}
+
+    const anchor = document.getElementById('latestPostsAnchor');
+    if (anchor) {
+      anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  // 1 2 3 4 5 Numaratör Butonları (Blogger Plus UI Algoritması)
+  const pageNumbers = useMemo(() => {
+    const items: (number | string)[] = [];
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) items.push(i);
+    } else {
+      for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+          items.push(i);
+        } else if (i === currentPage - 2 || i === currentPage + 2) {
+          items.push('...');
+        }
+      }
+    }
+    return items.filter((item, idx, arr) => item !== '...' || arr[idx - 1] !== '...');
+  }, [totalPages, currentPage]);
 
   return (
     <div className="space-y-6 pb-12">
@@ -354,6 +467,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </section>
       )}
 
+      {/* Çapa: Sayfa Değiştiğinde Buraya Kay */}
+      <div id="latestPostsAnchor" className="scroll-mt-24" />
+
       {/* 5. En Son Yayınlar (Latest Posts - 3 Sütunlu Blogger Grid) */}
       <section aria-label="En Son Yayınlar" className="space-y-3 pt-2">
         <div className="flex items-center justify-between">
@@ -361,6 +477,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <DocumentIcon className="w-5 h-5 text-[#60cdff]" />
             <h2 className="text-sm sm:text-base font-bold text-white tracking-wide">
               En Son Yayınlar
+              {totalPages > 1 && (
+                <span className="text-xs font-normal text-[#9aa0a6] ml-2 font-mono">
+                  (Sayfa {currentPage}/{totalPages})
+                </span>
+              )}
             </h2>
           </div>
 
@@ -386,8 +507,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
       </section>
 
-      {/* 6. Kategorilere Göre Vitrin Kaydırıcıları (.cat-showcase-carousel) */}
-      {collections.map((col) => {
+      {/* 6. Sayfalar İlerledikçe Değişen Kategori Vitrini (Sayfa 1: Konu Dışı, Sayfa 2+: Sırasıyla Diğerleri) */}
+      {pageCategories.map((col) => {
         const colLinks = (col.id && linksByCollection[col.id]) || [];
         if (colLinks.length === 0) return null;
 
@@ -402,6 +523,83 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           />
         );
       })}
+
+      {/* 7. Blogger Plus UI Sayfalama Numaratörü (.blogN #blog-pager 1 2 3 4 5...) */}
+      {totalPages > 1 && (
+        <nav aria-label="Sayfalama Numaratörü" className="blogN numP" id="blog-pager">
+          {/* Önceki Sayfa (<) */}
+          {currentPage > 1 ? (
+            <button
+              type="button"
+              className="nwLnk"
+              aria-label="Önceki Sayfa"
+              onClick={() => handlePageChange(currentPage - 1)}
+              title="Önceki Sayfa"
+            >
+              <svg className="line" viewBox="0 0 24 24">
+                <path d="M9.57 5.92993L3.5 11.9999L9.57 18.0699" stroke="currentColor" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M20.5 12H3.67004" stroke="currentColor" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          ) : (
+            <div className="nwLnk nPst disabled" aria-disabled="true" title="İlk Sayfadasınız">
+              <svg className="line" viewBox="0 0 24 24">
+                <path d="M9.57 5.92993L3.5 11.9999L9.57 18.0699" stroke="currentColor" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M20.5 12H3.67004" stroke="currentColor" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+          )}
+
+          {/* Numaralar (1, 2, 3, 4, 5...) */}
+          {pageNumbers.map((item, idx) => {
+            if (item === '...') {
+              return (
+                <div key={`ellipsis-${idx}`} className="nPst ellipsis" aria-hidden="true">
+                  ...
+                </div>
+              );
+            }
+            const pageNum = item as number;
+            const isActive = pageNum === currentPage;
+            return (
+              <button
+                key={`page-${pageNum}`}
+                type="button"
+                className={`page-num-btn ${isActive ? 'active nPst' : ''}`}
+                aria-label={`Sayfa ${pageNum}`}
+                aria-current={isActive ? 'page' : undefined}
+                onClick={() => handlePageChange(pageNum)}
+                title={`Sayfa ${pageNum}`}
+              >
+                {pageNum}
+              </button>
+            );
+          })}
+
+          {/* Sonraki Sayfa (>) */}
+          {currentPage < totalPages ? (
+            <button
+              type="button"
+              className="olLnk"
+              aria-label="Sonraki Sayfa"
+              onClick={() => handlePageChange(currentPage + 1)}
+              title="Sonraki Sayfa"
+            >
+              <svg className="line" viewBox="0 0 24 24">
+                <path d="M14.4301 5.92993L20.5001 11.9999L14.4301 18.0699" stroke="currentColor" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M3.5 12H20.33" stroke="currentColor" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          ) : (
+            <div className="olLnk nPst disabled" aria-disabled="true" title="Son Sayfadasınız">
+              <svg className="line" viewBox="0 0 24 24">
+                <path d="M14.4301 5.92993L20.5001 11.9999L14.4301 18.0699" stroke="currentColor" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M3.5 12H20.33" stroke="currentColor" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+          )}
+        </nav>
+      )}
 
     </div>
   );
