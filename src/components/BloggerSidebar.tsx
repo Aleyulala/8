@@ -274,71 +274,17 @@ export const BloggerSidebar: React.FC<BloggerSidebarProps> = ({
           </ul>
         </div>
 
-        {/* Alt Bölüm: 6 Buton (.mnMob / .mSoc - Daraltılmış Mod) */}
-        <div className="p-2 border-t border-[#252526] bg-[#1e1e1e]">
-          <div className="grid grid-cols-2 gap-1.5 justify-items-center text-[#a3a3a3]">
-            {/* 1. Instagram */}
-            <a
-              href="https://www.instagram.com/aleyul.ala/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[#e1306c] hover:text-white flex items-center justify-center transition-all duration-200"
-              title="Instagram"
-            >
-              <InstagramIcon className="w-3.5 h-3.5" />
-            </a>
-
-            {/* 2. Telegram */}
-            <a
-              href="https://t.me/aleyyulala"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[#229ed9] hover:text-white flex items-center justify-center transition-all duration-200"
-              title="Telegram"
-            >
-              <TelegramIcon className="w-3.5 h-3.5" />
-            </a>
-
-            {/* 3. Element.io / Matrix */}
-            <a
-              href="https://matrix.to/#/#negronn-show:matrix.org"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[#38bdf8] hover:text-black flex items-center justify-center transition-all duration-200"
-              title="Element.io / Matrix: @negronn:matrix.org"
-            >
-              <MatrixIcon className="w-3.5 h-3.5" />
-            </a>
-
-            {/* 4. VKontakte */}
-            <a
-              href="https://vk.com/negronn"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[#4680c2] hover:text-white flex items-center justify-center transition-all duration-200"
-              title="VK (VKontakte)"
-            >
-              <VkIcon className="w-3.5 h-3.5" />
-            </a>
-
-            {/* 5. E-posta */}
-            <a
-              href="mailto:mrstar14155@gmail.com"
-              className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[#ea4335] hover:text-white flex items-center justify-center transition-all duration-200"
-              title="E-posta: mrstar14155@gmail.com"
-            >
-              <MailIcon className="w-3.5 h-3.5" />
-            </a>
-
-            {/* 6. Telefon */}
-            <a
-              href="tel:05446412904"
-              className="w-7 h-7 rounded-full bg-[#252526] hover:bg-[#10b981] hover:text-white flex items-center justify-center transition-all duration-200"
-              title="Telefon: 0544 641 29 04"
-            >
-              <Phone className="w-3.5 h-3.5" />
-            </a>
-          </div>
+        {/* Alt Bölüm: Tek + Butonu (XML 1:1 - Daraltılmış Mod) */}
+        <div className="p-3 border-t border-[#252526] bg-[#1e1e1e] flex justify-center items-center">
+          <button
+            type="button"
+            onClick={onOpenNewLink}
+            className="w-8 h-8 flex items-center justify-center rounded-lg text-[#9ca3af] hover:text-white hover:bg-[#252526] transition-colors cursor-pointer"
+            title="Yeni Bağlantı Ekle"
+            aria-label="Yeni Bağlantı Ekle"
+          >
+            <Plus className="w-4 h-4" />
+          </button>
         </div>
 
       </aside>

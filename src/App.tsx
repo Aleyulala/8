@@ -543,13 +543,15 @@ export const App: React.FC = () => {
         {/* BİRLEŞİK KAYDIRMA ALANI: Orta İçerik ve Sağ Bar BİRLİKTE Kayar (.mainW) */}
         <div 
           id="mainScrollContainer"
-          className="flex-1 h-[calc(100vh-60px)] overflow-y-auto overflow-x-hidden min-w-0 bg-[#1e1e1e]"
+          className="flex-1 h-[calc(100vh-60px)] overflow-y-auto overflow-x-hidden min-w-0 bg-[#1e1e1e] flex flex-col justify-between"
         >
-          <div className="max-w-[1280px] mx-auto px-4 sm:px-[25px] pt-4 sm:pt-[30px] pb-20">
-            <div className="flex flex-col lg:flex-row gap-[25px] items-start">
-              
-              {/* ORTA BÖLÜM: Ana İçerik Alanı (.blogB) */}
-              <main className="flex-1 min-w-0 w-full lg:w-[calc(100%-325px)]">
+          {/* Ana İçerik ve Sağ Bar Konteyneri */}
+          <div className="w-full flex-1">
+            <div className="max-w-[1280px] mx-auto px-4 sm:px-[25px] pt-4 sm:pt-[30px] pb-12">
+              <div className="flex flex-col lg:flex-row gap-[25px] items-start">
+                
+                {/* ORTA BÖLÜM: Ana İçerik Alanı (.blogB) */}
+                <main className="flex-1 min-w-0 w-full lg:w-[calc(100%-325px)]">
                 {activeView === 'dashboard' && (
                   <DashboardView
                     links={allLinks}
@@ -823,11 +825,12 @@ export const App: React.FC = () => {
                 />
               </aside>
 
+              </div>
             </div>
-
-            {/* Blogger Alt Footer Bölümü (.mainF) */}
-            <BloggerFooter onOpenPrivacy={() => setActiveView('privacy')} />
           </div>
+
+          {/* Blogger Alt Footer Bölümü (.mainF) - Tam Genişlik (Full Width) */}
+          <BloggerFooter onOpenPrivacy={() => setActiveView('privacy')} />
         </div>
 
       </div>

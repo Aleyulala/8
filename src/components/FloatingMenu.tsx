@@ -90,12 +90,12 @@ export const FloatingMenu: React.FC<FloatingMenuProps> = ({
         /* Blogger Float Menü (.qeF) & Scroll to Top / Bottom (.tTb) */
         .blogger-float-group {
           position: fixed;
-          bottom: 70px;
-          inset-inline-end: 20px;
+          bottom: 24px;
+          inset-inline-end: 24px;
           z-index: 40;
           display: flex;
           align-items: center;
-          gap: 14px;
+          gap: 12px;
           pointer-events: none;
         }
 
@@ -113,7 +113,7 @@ export const FloatingMenu: React.FC<FloatingMenuProps> = ({
           transition: transform .2s ease;
         }
         .qeF svg.line .c {
-          stroke: #60cdff;
+          stroke: #989b9f;
         }
 
         .qeT, .qeL > button {
@@ -122,10 +122,10 @@ export const FloatingMenu: React.FC<FloatingMenuProps> = ({
           justify-content: center;
           width: 36px;
           height: 36px;
-          background: #282828;
+          background: #252526;
           color: #ffffff;
           border: 1px solid #404045;
-          border-radius: 10px;
+          border-radius: 50%;
           box-shadow: 0 4px 12px rgba(0,0,0,0.25);
           cursor: pointer;
           transition: all 0.2s cubic-bezier(.4,0,.2,1);
@@ -230,9 +230,7 @@ export const FloatingMenu: React.FC<FloatingMenuProps> = ({
           stroke: #404045;
         }
         .tTb circle:last-of-type {
-          stroke: #60cdff;
-          stroke-dasharray: 100, 100;
-          transition: stroke-dashoffset 0.3s cubic-bezier(.5,1.7,.4,.8);
+          stroke: transparent;
         }
         .tTb path {
           stroke: #ffffff;
